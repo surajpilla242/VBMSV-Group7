@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VBMSV Solutions</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #eee;
+        text-align: center;
+    }
+
+    /* Header */
+    .header {
+        margin: 30px auto;
+        padding: 20px;
+        border: 4px solid black;
+        width: 60%;
+        border-radius: 40px;
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+    .logo span:nth-child(1) { color: #000080; }
+    .logo span:nth-child(2) { color: #3B1344; }
+    .logo span:nth-child(3) { color: #2f4f2f; }
+    .logo span:nth-child(4) { color: #8B4000; }
+    .logo span:nth-child(5) { color: #367588; }
+
+    .solutions {
+        color: #7b1e1e;
+        margin-left: 15px;
+    }
+
+    .people {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+        margin: 50px 0;
+    }
+
+    .user {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile {
+        width: 80px;
+        height: 80px;
+        background: #ccc;
+        border-radius: 50%;
+        position: relative;
+        border: 3px solid #999;
+    }
+
+    .profile::before {
+        content: "";
+        width: 25px;
+        height: 25px;
+        background: #999;
+        border-radius: 50%;
+        position: absolute;
+        top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .profile::after {
+        content: "";
+        width: 40px;
+        height: 20px;
+        background: #999;
+        border-radius: 20px 20px 0 0;
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .name {
+        margin-top: 10px;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .login-section {
+        background: #7b1e1e;
+        color: white;
+        padding: 40px;
+    }
+
+    .login-box {
+        max-width: 400px;
+        margin: auto;
+        text-align: left;
+    }
+
+    label {
+        font-size: 20px;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0 20px;
+        border-radius: 20px;
+        border: none;
+    }
+
+    button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 20px;
+    background: white;
+    color: #800000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    button:hover {
+        background: #f2f2f2;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="logo">
+        <span>V</span><span>B</span><span>M</span><span>S</span><span>V</span>
+        <span class="solutions">Solutions</span>
+    </div>
+</div>
+
+<div class="people">
+    <div class="user">
+        <div class="profile"></div>
+        <div class="name">Vivian Uyen Nguyen</div>
+    </div>
+
+    <div class="user">
+        <div class="profile"></div>
+        <div class="name">Balamir Sahin</div>
+    </div>
+
+    <div class="user">
+        <div class="profile"></div>
+        <div class="name">Maya Indira Neeranjun</div>
+    </div>
+
+    <div class="user">
+        <div class="profile"></div>
+        <div class="name">Suraj Pilla</div>
+    </div>
+
+    <div class="user">
+        <div class="profile"></div>
+        <div class="name">Vincent Veeraburuth Vest</div>
+    </div>
+</div>
+
+<div class="login-section">
+    <div class="login-box">
+        <label>Username:</label>
+        <input type="text" placeholder="Enter username">
+
+        <label>Password:</label>
+        <input type="password" placeholder="Enter password">
+
+        <button>Login</button>
+    </div>
+</div>
+
+</body>
+</html>
