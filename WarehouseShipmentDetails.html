@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipment Details - VBMSV Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eee;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+
+        .header {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 4px solid #7b1e1e;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .logo span:nth-child(1) { color: #000080; }
+        .logo span:nth-child(2) { color: #3B1344; }
+        .logo span:nth-child(3) { color: #2f4f2f; }
+        .logo span:nth-child(4) { color: #8B4000; }
+        .logo span:nth-child(5) { color: #367588; }
+
+        .solutions {
+            color: #7b1e1e;
+            margin-left: 8px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+            justify-content: flex-end;
+        }
+
+        .search-bar {
+            padding: 10px 20px;
+            border: 2px solid #333;
+            border-radius: 25px;
+            width: 320px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .header-icons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: #666;
+        }
+
+        .icon-btn:hover {
+            color: #333;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #7b1e1e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+            min-width: 180px;
+            z-index: 100;
+        }
+
+        .user-avatar:hover .user-dropdown {
+            display: block;
+        }
+
+        .user-dropdown div {
+            padding: 12px 16px;
+            cursor: pointer;
+            color: #333;
+            font-weight: normal;
+        }
+
+        .user-dropdown div:hover {
+            background: #f5f5f5;
+        }
+
+        .user-dropdown div:last-child {
+            border-top: 1px solid #eee;
+            color: #7b1e1e;
+        }
+
+        .nav-tabs {
+            background: white;
+            padding: 0 30px;
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .nav-tab {
+            padding: 15px 30px;
+            cursor: pointer;
+            border-radius: 25px 25px 0 0;
+            font-weight: 500;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #ff69b4, #7b1e1e);
+            color: white;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 18px;
+            background: #7b1e1e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background: #5f1616;
+        }
+
+        .shipment-header {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .shipment-title h1 {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .shipment-title p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .status {
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 700;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .status.scheduled { background: #cce5ff; color: #004085; }
+        .status.in-transit { background: #fff3cd; color: #856404; }
+        .status.arrived { background: #d4edda; color: #155724; }
+        .status.delivered { background: #d4edda; color: #155724; }
+        .status.delayed { background: #f8d7da; color: #721c24; }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid #7b1e1e;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #7b1e1e;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5f1616;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #7b1e1e;
+        }
+
+        .btn-secondary:hover {
+            background: #faf1f1;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .detail-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .detail-card h3 {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-card p {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .detail-card .label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 6px;
+        }
+
+        .content-row {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .section-card h2 {
+            font-size: 18px;
+            margin-bottom: 18px;
+            color: #333;
+        }
+
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 8px;
+            bottom: 8px;
+            width: 3px;
+            background: #7b1e1e;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 64px;
+            margin-bottom: 28px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 2px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #7b1e1e;
+            border: 3px solid white;
+            z-index: 2;
+        }
+
+        .timeline-item.pending::before {
+            background: #d3d3d3;
+        }
+
+        .timeline-item h4 {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .timeline-item .time {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .timeline-item .location {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .summary-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .summary-item {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 14px;
+        }
+
+        .summary-item .label {
+            font-size: 12px;
+            color: #777;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .summary-item .value {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .handoff-section {
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .custody-log {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .custody-log li {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 14px;
+            background: #fafafa;
+        }
+
+        .custody-log strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .footer {
+            background: #7b1e1e;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        @media (max-width: 1100px) {
+            .details-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-right {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .details-grid,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="logo">
+        <span>V</span><span>B</span><span>M</span><span>S</span><span>V</span>
+        <span class="solutions">Sol.</span>
+    </div>
+
+    <div class="header-right">
+        <input type="text" class="search-bar" placeholder="🔍 Search shipments, trucks, locations...">
+        <div class="header-icons">
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <button class="icon-btn" title="Settings">⚙️</button>
+            <div class="user-avatar">
+                VN
+                <div class="user-dropdown">
+                    <div><strong>Vivian Nguyen</strong></div>
+                    <div>ID: WH-204</div>
+                    <div>Role: Warehouse Employee</div>
+                    <div>Logout</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<nav class="nav-tabs">
+    <div class="nav-tab active">Shipment Details</div>
+</nav>
+
+<main class="main-content">
+    <a href="shipments.html" class="back-button">← Back to Shipments</a>
+
+    <div class="shipment-header">
+        <div class="shipment-title">
+            <h1 id="shipmentId">OUT-40127</h1>
+            <p id="shipmentSubtitle">Outbound shipment leaving this warehouse</p>
+        </div>
+        <div class="header-actions">
+            <span class="status scheduled" id="shipmentStatus">Scheduled</span>
+            <button class="btn btn-primary" id="advanceStatusBtn">Mark as In Transit</button>
+        </div>
+    </div>
+
+    <div class="details-grid">
+        <div class="detail-card">
+            <h3>Origin / Destination</h3>
+            <p id="routeLocation">Phoenix Distribution Hub</p>
+            <div class="label" id="routeLabel">Destination</div>
+        </div>
+        <div class="detail-card">
+            <h3>Departure / Arrival</h3>
+            <p id="routeTime">Apr 10, 2026, 09:30 AM</p>
+            <div class="label" id="timeLabel">Departure Time</div>
+        </div>
+        <div class="detail-card">
+            <h3>Truck ID</h3>
+            <p id="truckId">TRK-8821</p>
+            <div class="label">Assigned vehicle</div>
+        </div>
+        <div class="detail-card">
+            <h3>Lot Count / Alerts</h3>
+            <p id="lotAndAlert">18 lots · 2 open alerts</p>
+            <div class="label">Shipment summary</div>
+        </div>
+    </div>
+
+    <div class="content-row">
+        <section class="section-card">
+            <h2>Shipment Summary</h2>
+            <div class="summary-list">
+                <div class="summary-item">
+                    <div class="label">Shipment Number</div>
+                    <div class="value" id="summaryShipmentNumber">OUT-40127</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Direction</div>
+                    <div class="value" id="summaryDirection">Outbound</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Current Packaging Condition</div>
+                    <div class="value" id="summaryPackaging">Sealed / Intact</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Latest Transfer Route</div>
+                    <div class="value" id="summaryTransfer">Dock 3 → Truck Bay 2</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <h2>Shipment Timeline</h2>
+            <div class="timeline" id="timeline"></div>
+        </section>
+    </div>
+
+    <section class="section-card handoff-section">
+        <h2>Record New Handoff Event</h2>
+        <form id="handoffForm">
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label for="handoffLots">Lots Being Transferred</label>
+                    <input type="text" id="handoffLots" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="handoffTime">When the Handoff Occurred</label>
+                    <input type="datetime-local" id="handoffTime" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="handoffPackaging">Packaging Condition</label>
+                    <select id="handoffPackaging" required>
+                        <option value="Sealed / Intact">Sealed / Intact</option>
+                        <option value="Intact">Intact</option>
+                        <option value="Minor scuffing">Minor scuffing</option>
+                        <option value="Damaged corner wrap">Damaged corner wrap</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="handoffFrom">Moved From</label>
+                    <input type="text" id="handoffFrom" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="handoffTo">Moved To</label>
+                    <input type="text" id="handoffTo" required>
+                </div>
+            </div>
+
+            <div style="margin-top: 16px;">
+                <button type="submit" class="btn btn-primary">Save Handoff Event</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="section-card">
+        <h2>Custody Record</h2>
+        <ul class="custody-log" id="custodyLog"></ul>
+    </section>
+</main>
+
+<footer class="footer">
+    © 2026 VBMSV Solutions
+</footer>
+
+<script>
+    const shipmentData = {
+        'OUT-40127': {
+            direction: 'Outbound',
+            subtitle: 'Outbound shipment leaving this warehouse',
+            status: 'Scheduled',
+            locationLabel: 'Destination',
+            location: 'Phoenix Distribution Hub',
+            timeLabel: 'Departure Time',
+            time: '2026-04-10T09:30',
+            truckId: 'TRK-8821',
+            lotCount: 18,
+            openAlerts: 2,
+            lots: ['LOT-204', 'LOT-205', 'LOT-206', 'LOT-207'],
+            from: 'Cold Room A',
+            to: 'Dock 3',
+            packaging: 'Sealed / Intact',
+            custody: [
+                {
+                    lots: 'LOT-204, LOT-205',
+                    occurredAt: '2026-04-10 08:55',
+                    from: 'Cold Room A',
+                    to: 'Dock 3',
+                    packaging: 'Sealed / Intact'
+                },
+                {
+                    lots: 'LOT-206, LOT-207',
+                    occurredAt: '2026-04-10 09:08',
+                    from: 'Cold Room A',
+                    to: 'Dock 3',
+                    packaging: 'Minor scuffing'
+                }
+            ]
+        },
+        'OUT-40119': {
+            direction: 'Outbound',
+            subtitle: 'Outbound shipment leaving this warehouse',
+            status: 'In Transit',
+            locationLabel: 'Destination',
+            location: 'San Diego Clinic Network',
+            timeLabel: 'Departure Time',
+            time: '2026-04-10T07:15',
+            truckId: 'TRK-7714',
+            lotCount: 12,
+            openAlerts: 0,
+            lots: ['LOT-188', 'LOT-189'],
+            from: 'Staging Zone B',
+            to: 'Dock 1',
+            packaging: 'Sealed / Intact',
+            custody: [
+                {
+                    lots: 'LOT-188, LOT-189',
+                    occurredAt: '2026-04-10 06:50',
+                    from: 'Staging Zone B',
+                    to: 'Dock 1',
+                    packaging: 'Sealed / Intact'
+                }
+            ]
+        },
+        'OUT-40103': {
+            direction: 'Outbound',
+            subtitle: 'Outbound shipment leaving this warehouse',
+            status: 'Delivered',
+            locationLabel: 'Destination',
+            location: 'Las Vegas Medical Center',
+            timeLabel: 'Departure Time',
+            time: '2026-04-09T18:40',
+            truckId: 'TRK-6630',
+            lotCount: 9,
+            openAlerts: 1,
+            lots: ['LOT-171'],
+            from: 'Ambient Zone',
+            to: 'Dock 2',
+            packaging: 'Intact',
+            custody: [
+                {
+                    lots: 'LOT-171',
+                    occurredAt: '2026-04-09 18:15',
+                    from: 'Ambient Zone',
+                    to: 'Dock 2',
+                    packaging: 'Intact'
+                }
+            ]
+        },
+        'OUT-40098': {
+            direction: 'Outbound',
+            subtitle: 'Outbound shipment leaving this warehouse',
+            status: 'Delayed',
+            locationLabel: 'Destination',
+            location: 'Tucson Partner Warehouse',
+            timeLabel: 'Departure Time',
+            time: '2026-04-09T14:20',
+            truckId: 'TRK-6527',
+            lotCount: 15,
+            openAlerts: 4,
+            lots: ['LOT-160', 'LOT-161'],
+            from: 'Dock 5',
+            to: 'Outbound Bay 5',
+            packaging: 'Damaged corner wrap',
+            custody: []
+        },
+        'IN-87214': {
+            direction: 'Inbound',
+            subtitle: 'Inbound shipment arriving at this warehouse',
+            status: 'Scheduled',
+            locationLabel: 'Origin',
+            location: 'Fresno Consolidation Site',
+            timeLabel: 'Arrival Time',
+            time: '2026-04-10T11:00',
+            truckId: 'TRK-4592',
+            lotCount: 21,
+            openAlerts: 3,
+            lots: ['LOT-301', 'LOT-302', 'LOT-303'],
+            from: 'Truck 4592',
+            to: 'Inbound Gate',
+            packaging: 'Sealed / Intact',
+            custody: [
+                {
+                    lots: 'LOT-301',
+                    occurredAt: '2026-04-10 10:42',
+                    from: 'Truck 4592',
+                    to: 'Inbound Gate',
+                    packaging: 'Sealed / Intact'
+                }
+            ]
+        },
+        'IN-87201': {
+            direction: 'Inbound',
+            subtitle: 'Inbound shipment arriving at this warehouse',
+            status: 'Arrived',
+            locationLabel: 'Origin',
+            location: 'Sacramento Cold Chain Node',
+            timeLabel: 'Arrival Time',
+            time: '2026-04-10T06:20',
+            truckId: 'TRK-3320',
+            lotCount: 14,
+            openAlerts: 0,
+            lots: ['LOT-290', 'LOT-291'],
+            from: 'Truck 3320',
+            to: 'Receiving Dock 1',
+            packaging: 'Intact',
+            custody: [
+                {
+                    lots: 'LOT-290, LOT-291',
+                    occurredAt: '2026-04-10 06:18',
+                    from: 'Truck 3320',
+                    to: 'Receiving Dock 1',
+                    packaging: 'Intact'
+                }
+            ]
+        },
+        'IN-87188': {
+            direction: 'Inbound',
+            subtitle: 'Inbound shipment arriving at this warehouse',
+            status: 'In Transit',
+            locationLabel: 'Origin',
+            location: 'Reno Supply Facility',
+            timeLabel: 'Arrival Time',
+            time: '2026-04-09T22:55',
+            truckId: 'TRK-2844',
+            lotCount: 16,
+            openAlerts: 1,
+            lots: ['LOT-280'],
+            from: 'Truck 2844',
+            to: 'Inbound Staging',
+            packaging: 'Intact',
+            custody: []
+        },
+        'IN-87180': {
+            direction: 'Inbound',
+            subtitle: 'Inbound shipment arriving at this warehouse',
+            status: 'Delivered',
+            locationLabel: 'Origin',
+            location: 'Boise Transfer Site',
+            timeLabel: 'Arrival Time',
+            time: '2026-04-09T18:10',
+            truckId: 'TRK-2402',
+            lotCount: 10,
+            openAlerts: 0,
+            lots: ['LOT-276'],
+            from: 'Receiving Dock 3',
+            to: 'Storage Zone C',
+            packaging: 'Sealed / Intact',
+            custody: [
+                {
+                    lots: 'LOT-276',
+                    occurredAt: '2026-04-09 18:22',
+                    from: 'Receiving Dock 3',
+                    to: 'Storage Zone C',
+                    packaging: 'Sealed / Intact'
+                }
+            ]
+        }
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const shipmentId = urlParams.get('id') || 'OUT-40127';
+    const shipment = shipmentData[shipmentId] || shipmentData['OUT-40127'];
+
+    function formatDisplayDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleString([], {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    function statusClass(status) {
+        return status.toLowerCase().replace(/\s+/g, '-');
+    }
+
+    function renderHeader() {
+        document.getElementById('shipmentId').textContent = shipmentId;
+        document.getElementById('shipmentSubtitle').textContent = shipment.subtitle;
+
+        const statusEl = document.getElementById('shipmentStatus');
+        statusEl.textContent = shipment.status;
+        statusEl.className = 'status ' + statusClass(shipment.status);
+
+        document.getElementById('routeLocation').textContent = shipment.location;
+        document.getElementById('routeLabel').textContent = shipment.locationLabel;
+        document.getElementById('routeTime').textContent = formatDisplayDate(shipment.time);
+        document.getElementById('timeLabel').textContent = shipment.timeLabel;
+        document.getElementById('truckId').textContent = shipment.truckId;
+        document.getElementById('lotAndAlert').textContent = `${shipment.lotCount} lots · ${shipment.openAlerts} open alerts`;
+
+        document.getElementById('summaryShipmentNumber').textContent = shipmentId;
+        document.getElementById('summaryDirection').textContent = shipment.direction;
+        document.getElementById('summaryPackaging').textContent = shipment.packaging;
+        document.getElementById('summaryTransfer').textContent = `${shipment.from} → ${shipment.to}`;
+
+        const advanceBtn = document.getElementById('advanceStatusBtn');
+        if (shipment.status !== 'Scheduled') {
+            advanceBtn.style.display = 'none';
+        } else {
+            advanceBtn.style.display = 'inline-block';
+        }
+    }
+
+    function renderTimeline() {
+        const timeline = document.getElementById('timeline');
+        const timelineItems = [];
+
+        if (shipment.custody.length) {
+            shipment.custody.forEach(event => {
+                timelineItems.push(`
+                    <div class="timeline-item completed">
+                        <h4>Handoff Recorded</h4>
+                        <div class="time">${event.occurredAt}</div>
+                        <div class="location">${event.from} → ${event.to}</div>
+                    </div>
+                `);
+            });
+        }
+
+        if (shipment.status === 'Scheduled') {
+            timelineItems.push(`
+                <div class="timeline-item pending">
+                    <h4>Awaiting Departure / Arrival</h4>
+                    <div class="time">${formatDisplayDate(shipment.time)}</div>
+                    <div class="location">${shipment.locationLabel}: ${shipment.location}</div>
+                </div>
+            `);
+        } else {
+            timelineItems.push(`
+                <div class="timeline-item completed">
+                    <h4>${shipment.status}</h4>
+                    <div class="time">${formatDisplayDate(shipment.time)}</div>
+                    <div class="location">${shipment.locationLabel}: ${shipment.location}</div>
+                </div>
+            `);
+        }
+
+        timeline.innerHTML = timelineItems.join('');
+    }
+
+    function renderCustodyLog() {
+        const custodyLog = document.getElementById('custodyLog');
+
+        if (!shipment.custody.length) {
+            custodyLog.innerHTML = '<li>No custody events recorded yet.</li>';
+            return;
+        }
+
+        custodyLog.innerHTML = shipment.custody.map(event => `
+            <li>
+                <strong>${event.lots}</strong>
+                ${event.occurredAt} · ${event.from} → ${event.to}<br>
+                Packaging: ${event.packaging}
+            </li>
+        `).join('');
+    }
+
+    document.getElementById('advanceStatusBtn').addEventListener('click', () => {
+        shipment.status = 'In Transit';
+        renderHeader();
+        renderTimeline();
+    });
+
+    document.getElementById('handoffLots').value = shipment.lots.join(', ');
+    document.getElementById('handoffTime').value = new Date().toISOString().slice(0, 16);
+    document.getElementById('handoffPackaging').value = shipment.packaging;
+    document.getElementById('handoffFrom').value = shipment.from;
+    document.getElementById('handoffTo').value = shipment.to;
+
+    document.getElementById('handoffForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const newEvent = {
+            lots: document.getElementById('handoffLots').value,
+            occurredAt: formatDisplayDate(document.getElementById('handoffTime').value),
+            from: document.getElementById('handoffFrom').value,
+            to: document.getElementById('handoffTo').value,
+            packaging: document.getElementById('handoffPackaging').value
+        };
+
+        shipment.custody.unshift(newEvent);
+        shipment.from = newEvent.from;
+        shipment.to = newEvent.to;
+        shipment.packaging = newEvent.packaging;
+
+        renderHeader();
+        renderTimeline();
+        renderCustodyLog();
+    });
+
+    renderHeader();
+    renderTimeline();
+    renderCustodyLog();
+</script>
+</body>
+</html>
