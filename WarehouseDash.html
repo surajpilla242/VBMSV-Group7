@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -179,7 +179,7 @@
 
     .grid-split {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: 2fr 1fr;
         gap: 20px;
     }
 
@@ -359,51 +359,81 @@
 </nav>
 
 <main class="main-content">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Shipments</h3>
+            <div class="value">1,247</div>
+        </div>
+        <div class="stat-card">
+            <h3>In Transit</h3>
+            <div class="value">89</div>
+        </div>
+        <div class="stat-card">
+            <h3>Delivered</h3>
+            <div class="value">1,142</div>
+        </div>
+        <div class="stat-card">
+            <h3>Delayed</h3>
+            <div class="value">16</div>
+        </div>
+    </div>
+
     <div class="grid-split">
         <div class="section-card">
             <div class="section-header">
-                <h2>Warehouse Detail</h2>
+                <h2>Warehouse Overview</h2>
             </div>
-           
+            <div class="filter-row">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="pending">Pending</button>
+                <button class="filter-btn" data-filter="transit">In Transit</button>
+                <button class="filter-btn" data-filter="delivered">Delivered</button>
+            </div>
             <table class="shipment-table">
                 <thead>
                     <tr>
+                        <th>Task</th>
                         <th>Zone</th>
-                        <th>Type</th>
-                        <th>Temp Range(°C)</th>
-                        <th>Capacity</th>
-                        <th>In Use</th>
-                        <th>Utilization %</th>
-                        <th>Alert</th>
+                        <th>Shipments</th>
+                        <th>Priority</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr data-status="active">
-                        <td>1</td>
-                        <td>Refrigerated</td>
-                        <td>2-8</td>
-                        <td>1200</td>
-                        <td>816</td>
-                        <td>68%</td>
-                        <td>—</td>
+                        <td>Picking</td>
+                        <td>Zone A1</td>
+                        <td>42</td>
+                        <td>High</td>
+                        <td><span class="status in-transit">In Transit</span></td>
+                    </tr>
+                    <tr data-status="pending">
+                        <td>Staging</td>
+                        <td>Dock 3</td>
+                        <td>18</td>
+                        <td>Medium</td>
+                        <td><span class="status pending">Pending</span></td>
                     </tr>
                     <tr data-status="delayed">
-                        <td>2</td>
-                        <td>Freezer</td>
-                        <td>-25-15</td>
-                        <td>600</td>
-                        <td>540</td>
-                        <td>90%</td>
-                        <td><span class="status delayed">Open</span></td>
+                        <td>Loading</td>
+                        <td>Zone B2</td>
+                        <td>26</td>
+                        <td>High</td>
+                        <td><span class="status delayed">Delayed</span></td>
                     </tr>
-                    <tr data-status="active">
-                        <td>3</td>
-                        <td>Ambient</td>
-                        <td>15-25</td>
-                        <td>2,000</td>
-                        <td>400</td>
-                        <td>20%</td>
-                        <td>—</td>
+                    <tr data-status="delivered">
+                        <td>Receiving</td>
+                        <td>Zone C4</td>
+                        <td>55</td>
+                        <td>Low</td>
+                        <td><span class="status delivered">Delivered</span></td>
+                    </tr>
+                    <tr data-status="pending">
+                        <td>Inventory Count</td>
+                        <td>Zone D1</td>
+                        <td>32</td>
+                        <td>Medium</td>
+                        <td><span class="status pending">Pending</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -416,7 +446,10 @@
             </div>
         </div>
 
-        
+        <div class="section-card">
+            <h2>Performance Plot</h2>
+            <div class="chart-placeholder">Plot area</div>
+        </div>
     </div>
 </main>
 
