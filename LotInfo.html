@@ -4,8 +4,154 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lot Info | VBMSV Sol.</title>
-    <link rel="stylesheet" href="base.css">
     <style>
+        /* Base page styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eee;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid #7b1e1e;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span:nth-child(1) { color: #000080; }
+        .logo span:nth-child(2) { color: #3B1344; }
+        .logo span:nth-child(3) { color: #2f4f2f; }
+        .logo span:nth-child(4) { color: #8B4000; }
+        .logo span:nth-child(5) { color: #367588; }
+
+        .solutions {
+            color: #7b1e1e;
+            margin-left: 8px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-bar {
+            padding: 10px 20px;
+            border: 2px solid #333;
+            border-radius: 25px;
+            width: 300px;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .icon-btn:hover {
+            color: #333;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #7b1e1e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-avatar:hover .user-dropdown {
+            display: block;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            display: none;
+            padding: 12px;
+            min-width: 180px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .user-dropdown div {
+            margin-bottom: 8px;
+            color: #444;
+            font-size: 13px;
+        }
+
+        .user-dropdown div:last-child {
+            margin-bottom: 0;
+        }
+
+        .nav-tabs {
+            background: white;
+            padding: 0 30px;
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .nav-tab {
+            padding: 15px 25px;
+            cursor: pointer;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #ff69b4, #7b1e1e);
+            color: white;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .footer {
+            background: #7b1e1e;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
         .page-title {
             margin-bottom: 24px;
             display: flex;
