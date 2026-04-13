@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custody Event Log | VBMSV Sol.</title>
+    <style>
+        /* Base page styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eee;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid #7b1e1e;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span:nth-child(1) { color: #000080; }
+        .logo span:nth-child(2) { color: #3B1344; }
+        .logo span:nth-child(3) { color: #2f4f2f; }
+        .logo span:nth-child(4) { color: #8B4000; }
+        .logo span:nth-child(5) { color: #367588; }
+
+        .solutions {
+            color: #7b1e1e;
+            margin-left: 8px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-bar {
+            padding: 10px 20px;
+            border: 2px solid #333;
+            border-radius: 25px;
+            width: 300px;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .icon-btn:hover {
+            color: #333;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #7b1e1e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            display: none;
+            padding: 12px;
+            min-width: 180px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .user-avatar:hover .user-dropdown {
+            display: block;
+        }
+
+        .user-dropdown div {
+            margin-bottom: 8px;
+            color: #444;
+            font-size: 13px;
+        }
+
+        .user-dropdown div:last-child {
+            margin-bottom: 0;
+        }
+
+        .nav-tabs {
+            background: white;
+            padding: 0 30px;
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .nav-tab {
+            padding: 15px 25px;
+            cursor: pointer;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #ff69b4, #7b1e1e);
+            color: white;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .footer {
+            background: #7b1e1e;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            margin: 0;
+            color: #222;
+        }
+
+        .action-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .export-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .export-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #ff69b4, #7b1e1e);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(123, 30, 30, 0.18);
+        }
+
+        .filter-chip {
+            border: 1px solid #ddd;
+            background: white;
+            color: #444;
+            padding: 10px 16px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .filter-chip.active,
+        .filter-chip:hover {
+            background: #7b1e1e;
+            color: white;
+            border-color: #7b1e1e;
+        }
+
+        .log-card {
+            background: white;
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.05);
+        }
+
+        .log-card h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: #222;
+        }
+
+        .log-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .log-table th,
+        .log-table td {
+            padding: 16px 14px;
+            border-bottom: 1px solid #eef0f2;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .log-table th {
+            font-weight: 700;
+            background: #fafafa;
+            color: #333;
+            letter-spacing: 0.3px;
+        }
+
+        .log-table tbody tr:hover {
+            background: #fcfcfd;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .status-received { background: #eef8f3; color: #1f6f4f; }
+        .status-transferred { background: #fff4e8; color: #8b4a1f; }
+        .status-audited { background: #eef2ff; color: #3b319f; }
+
+        @media (max-width: 860px) {
+            .page-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .action-group {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .log-table th,
+            .log-table td {
+                padding: 12px 10px;
+                font-size: 13px;
+            }
+
+            .export-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <div class="logo">
+        <span>V</span><span>B</span><span>M</span><span>S</span><span>V</span>
+        <span class="solutions">Sol.</span>
+    </div>
+    <div class="header-right">
+        <input type="text" class="search-bar" placeholder="🔍 Search...">
+        <div class="header-icons">
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <button class="icon-btn" title="Settings">⚙️</button>
+            <div class="user-avatar">
+                VN
+                <div class="user-dropdown">
+                    <div><strong>Vivian Nguyen</strong></div>
+                    <div>ID: CC-101</div>
+                    <div>Role: Custody Supervisor</div>
+                    <div>Logout</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<nav class="nav-tabs">
+    <div class="nav-tab active">Custody Event Log</div>
+    <div class="nav-tab">Shipment Details</div>
+    <div class="nav-tab">Audit Trail</div>
+</nav>
+<main class="main-content">
+    <div class="page-header">
+        <h1>Custody Event Log</h1>
+        <div class="action-group">
+            <div class="export-actions">
+                <button class="export-btn" onclick="exportCsv()">Export CSV</button>
+                <button class="export-btn" onclick="exportExcel()">Export Excel</button>
+            </div>
+        </div>
+    </div>
+    <div class="action-group" style="margin-bottom: 24px;">
+        <span class="filter-chip active">All Events</span>
+        <span class="filter-chip">Received</span>
+        <span class="filter-chip">Transferred</span>
+        <span class="filter-chip">Audited</span>
+    </div>
+    <section class="log-card card">
+        <h2>Recent Custody Events</h2>
+        <table class="log-table" id="custodyTable">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>From Location</th>
+                    <th>To Location</th>
+                    <th>Event</th>
+                    <th>Operator</th>
+                    <th>Notes</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Apr 13, 2026 • 11:24</td>
+                    <td>Gate A4</td>
+                    <td>Lot 23B</td>
+                    <td>Transfer Accepted</td>
+                    <td>John Lee</td>
+                    <td>Seal verified, batch moved to secure staging.</td>
+                    <td><span class="status-pill status-transferred">Transferred</span></td>
+                </tr>
+                <tr>
+                    <td>Apr 13, 2026 • 10:05</td>
+                    <td>Dock 3</td>
+                    <td>Gate A4</td>
+                    <td>Inbound Received</td>
+                    <td>Priya Shah</td>
+                    <td>Received shipment on schedule.</td>
+                    <td><span class="status-pill status-received">Received</span></td>
+                </tr>
+                <tr>
+                    <td>Apr 13, 2026 • 08:42</td>
+                    <td>Customs Hold</td>
+                    <td>Dock 3</td>
+                    <td>Release Approved</td>
+                    <td>Emma Park</td>
+                    <td>Audit completed, paperwork approved.</td>
+                    <td><span class="status-pill status-audited">Audited</span></td>
+                </tr>
+                <tr>
+                    <td>Apr 12, 2026 • 16:08</td>
+                    <td>Lot 12C</td>
+                    <td>Dock 3</td>
+                    <td>Transfer Scheduled</td>
+                    <td>Marcus Lane</td>
+                    <td>Batch staged for afternoon move.</td>
+                    <td><span class="status-pill status-transferred">Transferred</span></td>
+                </tr>
+                <tr>
+                    <td>Apr 12, 2026 • 14:20</td>
+                    <td>Inbound Gate</td>
+                    <td>Lot 12C</td>
+                    <td>Shipment Logged</td>
+                    <td>Amina Yusuf</td>
+                    <td>Inventory matched manifest.</td>
+                    <td><span class="status-pill status-received">Received</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+<footer class="footer">VBMSV Sol. • Custody event tracking</footer>
+<script>
+    function exportCsv() {
+        const table = document.getElementById('custodyTable');
+        const rows = Array.from(table.querySelectorAll('tr'));
+        const csv = rows.map(row => {
+            return Array.from(row.querySelectorAll('th, td')).map(cell => '"' + cell.innerText.replace(/"/g, '""') + '"').join(',');
+        }).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'custody-event-log.csv';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
+    function exportExcel() {
+        const table = document.getElementById('custodyTable');
+        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>${table.outerHTML}</body></html>`;
+        const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'custody-event-log.xls';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+</script>
+</body>
+</html>
