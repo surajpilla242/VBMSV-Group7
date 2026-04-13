@@ -1,0 +1,307 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Info | VBMSV Sol.</title>
+    <link rel="stylesheet" href="base.css">
+    <style>
+        .vendor-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .vendor-card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+        }
+
+        .vendor-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            gap: 12px;
+        }
+
+        .vendor-title h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .vendor-title .vendor-code {
+            color: #7b1e1e;
+            font-weight: 700;
+        }
+
+        .stack-cards {
+            display: grid;
+            gap: 18px;
+        }
+
+        .stack-card {
+            padding: 18px;
+            border-radius: 16px;
+            border: 1px solid #e6e6e6;
+            background: #fcfcfd;
+        }
+
+        .stack-card h2 {
+            margin-bottom: 12px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .stack-card p,
+        .stack-card .status {
+            font-size: 15px;
+            color: #4b4b4b;
+            line-height: 1.6;
+        }
+
+        .stack-card .status {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            background: #eef7f5;
+            color: #1f6f61;
+        }
+
+        .batch-list {
+            display: grid;
+            gap: 18px;
+        }
+
+        .batch-list h2 {
+            margin-bottom: 18px;
+            font-size: 22px;
+            color: #222;
+        }
+
+        .batch-card {
+            background: #fbfbfb;
+            border: 1px solid #ececec;
+            border-radius: 16px;
+            padding: 18px;
+        }
+
+        .batch-card h3 {
+            margin-bottom: 10px;
+            font-size: 17px;
+            color: #333;
+        }
+
+        .batch-card p {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .batch-rows {
+            margin-top: 12px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .batch-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: white;
+            border: 1px solid #e7e7e7;
+            align-items: center;
+        }
+
+        .batch-row strong {
+            color: #222;
+            font-size: 15px;
+        }
+
+        .batch-row span {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .batch-row .batch-status {
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: #fff4e8;
+            color: #8b4a1f;
+            font-weight: 700;
+        }
+
+        @media (max-width: 980px) {
+            .vendor-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .vendor-title {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .batch-row {
+                grid-template-columns: 1fr;
+                text-align: left;
+            }
+
+            .batch-row .batch-status {
+                justify-self: start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="logo">
+        <span>V</span><span>B</span><span>M</span><span>S</span><span>V</span>
+        <span class="solutions">Sol.</span>
+    </div>
+    <div class="header-right">
+        <input type="text" class="search-bar" placeholder="🔍 Search...">
+        <div class="header-icons">
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <button class="icon-btn" title="Settings">⚙️</button>
+            <div class="user-avatar">
+                VN
+                <div class="user-dropdown">
+                    <div><strong>Vivian Nguyen</strong></div>
+                    <div>ID: VD-031</div>
+                    <div>Role: Vendor Manager</div>
+                    <div>Logout</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<nav class="nav-tabs">
+    <div class="nav-tab active">Vendor Info</div>
+    <div class="nav-tab">Contacts</div>
+    <div class="nav-tab">Compliance</div>
+</nav>
+
+<main class="main-content">
+    <div class="vendor-grid">
+        <div class="stack-cards">
+            <section class="vendor-card card">
+                <div class="vendor-title">
+                    <div>
+                        <h1>Vendor Contact</h1>
+                        <div class="vendor-code">DHS Logistics</div>
+                    </div>
+                </div>
+                <div class="stack-card">
+                    <h2>Primary Name</h2>
+                    <p>David Ho</p>
+                </div>
+                <div class="stack-card">
+                    <h2>Phone</h2>
+                    <p>+1 (555) 482-9001</p>
+                </div>
+                <div class="stack-card">
+                    <h2>Email</h2>
+                    <p>dh@dhslogistics.com</p>
+                </div>
+            </section>
+
+            <section class="vendor-card card">
+                <h2>FDA Registration</h2>
+                <p><strong>FDA #</strong> 3121548729</p>
+                <p style="margin-top: 10px; color:#555;">Registered as a certified cold chain transport partner for perishable shipments.</p>
+            </section>
+
+            <section class="vendor-card card">
+                <h2>Compliance Status</h2>
+                <p class="status">Good Standing</p>
+                <p style="margin-top: 12px; color:#555;">No open compliance issues. Last audit passed on Mar 28, 2026.</p>
+            </section>
+        </div>
+
+        <section class="vendor-card card batch-list">
+            <h2>List of Batches</h2>
+            <p style="color:#555; margin-bottom: 16px;">Active shipment batches assigned to this vendor, including status and next handler.</p>
+            <div class="batch-card">
+                <h3>Batch 0942</h3>
+                <p>Pharmaceutical supplies scheduled for dock arrival.</p>
+                <div class="batch-rows">
+                    <div class="batch-row">
+                        <div>
+                            <strong>Arrival</strong>
+                            <span>Apr 14, 2026 • 08:30</span>
+                        </div>
+                        <span class="batch-status">On Track</span>
+                    </div>
+                    <div class="batch-row">
+                        <div>
+                            <strong>Dock</strong>
+                            <span>Gate A4</span>
+                        </div>
+                        <span class="batch-status">Scheduled</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="batch-card">
+                <h3>Batch 0975</h3>
+                <p>Cold-chain food products in transit to the unloading zone.</p>
+                <div class="batch-rows">
+                    <div class="batch-row">
+                        <div>
+                            <strong>Arrival</strong>
+                            <span>Apr 15, 2026 • 12:15</span>
+                        </div>
+                        <span class="batch-status">Pending</span>
+                    </div>
+                    <div class="batch-row">
+                        <div>
+                            <strong>Dock</strong>
+                            <span>Gate B1</span>
+                        </div>
+                        <span class="batch-status">Awaiting</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="batch-card">
+                <h3>Batch 1018</h3>
+                <p>Electronics shipment under compliance review prior to acceptance.</p>
+                <div class="batch-rows">
+                    <div class="batch-row">
+                        <div>
+                            <strong>Arrival</strong>
+                            <span>Apr 17, 2026 • 09:00</span>
+                        </div>
+                        <span class="batch-status">Review</span>
+                    </div>
+                    <div class="batch-row">
+                        <div>
+                            <strong>Dock</strong>
+                            <span>Gate C3</span>
+                        </div>
+                        <span class="batch-status">Hold</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<footer class="footer">
+    VBMSV Sol. • Vendor information overview
+</footer>
+
+</body>
+</html>
