@@ -305,7 +305,7 @@
     .shipment-table {
         width: 100%;
         border-collapse: collapse;
-        min-width: 860px;
+        min-width: 1040px;
     }
 
     .shipment-table th {
@@ -499,11 +499,11 @@
                 </select>
             </div>
             <div class="filter-group">
-                <label for="startDate">Start Date</label>
+                <label for="startDate" id="startDateLabel">Earliest Departure</label>
                 <input type="date" id="startDate">
             </div>
             <div class="filter-group">
-                <label for="endDate">End Date</label>
+                <label for="endDate" id="endDateLabel">Latest Departure</label>
                 <input type="date" id="endDate">
             </div>
             <div class="filter-actions">
@@ -519,7 +519,8 @@
                         <th>Shipment #</th>
                         <th>Status</th>
                         <th id="originDestHeader">Destination</th>
-                        <th id="timeHeader">Departure Time</th>
+                        <th>Departure Time</th>
+                        <th>Arrival Time</th>
                         <th>Truck ID</th>
                         <th>Lot Count</th>
                         <th>Open Alerts</th>
@@ -550,7 +551,8 @@
                 shipmentNumber: 'OUT-40127',
                 status: 'Scheduled',
                 location: 'Phoenix Distribution Hub',
-                time: '2026-04-10T09:30',
+                departureTime: '2026-04-10T09:30',
+                arrivalTime: '2026-04-10T14:15',
                 truckId: 'TRK-8821',
                 lotCount: 18,
                 openAlerts: 2
@@ -559,7 +561,8 @@
                 shipmentNumber: 'OUT-40119',
                 status: 'In Transit',
                 location: 'San Diego Clinic Network',
-                time: '2026-04-10T07:15',
+                departureTime: '2026-04-10T07:15',
+                arrivalTime: '2026-04-10T12:40',
                 truckId: 'TRK-7714',
                 lotCount: 12,
                 openAlerts: 0
@@ -568,7 +571,8 @@
                 shipmentNumber: 'OUT-40103',
                 status: 'Delivered',
                 location: 'Las Vegas Medical Center',
-                time: '2026-04-09T18:40',
+                departureTime: '2026-04-09T18:40',
+                arrivalTime: '2026-04-09T23:10',
                 truckId: 'TRK-6630',
                 lotCount: 9,
                 openAlerts: 1
@@ -577,7 +581,8 @@
                 shipmentNumber: 'OUT-40098',
                 status: 'Delayed',
                 location: 'Tucson Partner Warehouse',
-                time: '2026-04-09T14:20',
+                departureTime: '2026-04-09T14:20',
+                arrivalTime: '2026-04-09T20:30',
                 truckId: 'TRK-6527',
                 lotCount: 15,
                 openAlerts: 4
@@ -588,7 +593,8 @@
                 shipmentNumber: 'IN-87214',
                 status: 'Scheduled',
                 location: 'Fresno Consolidation Site',
-                time: '2026-04-10T11:00',
+                departureTime: '2026-04-10T05:45',
+                arrivalTime: '2026-04-10T11:00',
                 truckId: 'TRK-4592',
                 lotCount: 21,
                 openAlerts: 3
@@ -597,7 +603,8 @@
                 shipmentNumber: 'IN-87201',
                 status: 'Arrived',
                 location: 'Sacramento Cold Chain Node',
-                time: '2026-04-10T06:20',
+                departureTime: '2026-04-10T01:50',
+                arrivalTime: '2026-04-10T06:20',
                 truckId: 'TRK-3320',
                 lotCount: 14,
                 openAlerts: 0
@@ -606,7 +613,8 @@
                 shipmentNumber: 'IN-87188',
                 status: 'In Transit',
                 location: 'Reno Supply Facility',
-                time: '2026-04-09T22:55',
+                departureTime: '2026-04-09T17:35',
+                arrivalTime: '2026-04-09T22:55',
                 truckId: 'TRK-2844',
                 lotCount: 16,
                 openAlerts: 1
@@ -615,7 +623,8 @@
                 shipmentNumber: 'IN-87180',
                 status: 'Delivered',
                 location: 'Boise Transfer Site',
-                time: '2026-04-09T18:10',
+                departureTime: '2026-04-09T12:30',
+                arrivalTime: '2026-04-09T18:10',
                 truckId: 'TRK-2402',
                 lotCount: 10,
                 openAlerts: 0
@@ -631,9 +640,10 @@
     const statusFilter = document.getElementById('statusFilter');
     const startDate = document.getElementById('startDate');
     const endDate = document.getElementById('endDate');
+    const startDateLabel = document.getElementById('startDateLabel');
+    const endDateLabel = document.getElementById('endDateLabel');
     const tableTitle = document.getElementById('tableTitle');
     const originDestHeader = document.getElementById('originDestHeader');
-    const timeHeader = document.getElementById('timeHeader');
 
     function formatDateTime(dateString) {
         const date = new Date(dateString);
@@ -650,12 +660,27 @@
         return status.toLowerCase().replace(/\s+/g, '-');
     }
 
+    function updateFilterLabels() {
+        if (activeTab === 'outbound') {
+            startDateLabel.textContent = 'Earliest Departure';
+            endDateLabel.textContent = 'Latest Departure';
+        } else {
+            startDateLabel.textContent = 'Earliest Arrival';
+            endDateLabel.textContent = 'Latest Arrival';
+        }
+    }
+
     function getFilteredShipments() {
         return shipmentData[activeTab].filter(item => {
             const matchesStatus = statusFilter.value === 'all' || item.status === statusFilter.value;
-            const itemDate = item.time.slice(0, 10);
-            const matchesStart = !startDate.value || itemDate >= startDate.value;
-            const matchesEnd = !endDate.value || itemDate <= endDate.value;
+
+            const filterDate = activeTab === 'inbound'
+                ? item.arrivalTime.slice(0, 10)
+                : item.departureTime.slice(0, 10);
+
+            const matchesStart = !startDate.value || filterDate >= startDate.value;
+            const matchesEnd = !endDate.value || filterDate <= endDate.value;
+
             return matchesStatus && matchesStart && matchesEnd;
         });
     }
@@ -690,12 +715,12 @@
         const filtered = getFilteredShipments();
         tableTitle.textContent = activeTab === 'outbound' ? 'Outbound Shipments' : 'Inbound Shipments';
         originDestHeader.textContent = activeTab === 'outbound' ? 'Destination' : 'Origin';
-        timeHeader.textContent = activeTab === 'outbound' ? 'Departure Time' : 'Arrival Time';
+        updateFilterLabels();
 
         if (!filtered.length) {
             tableBody.innerHTML = `
                 <tr>
-                    <td colspan="7">
+                    <td colspan="8">
                         <div class="empty-state">No shipments match the selected filters.</div>
                     </td>
                 </tr>
@@ -708,7 +733,8 @@
                 <td>${item.shipmentNumber}</td>
                 <td><span class="status ${statusClass(item.status)}">${item.status}</span></td>
                 <td>${item.location}</td>
-                <td>${formatDateTime(item.time)}</td>
+                <td>${formatDateTime(item.departureTime)}</td>
+                <td>${formatDateTime(item.arrivalTime)}</td>
                 <td>${item.truckId}</td>
                 <td>${item.lotCount}</td>
                 <td><span class="alerts-pill">${item.openAlerts}</span></td>
