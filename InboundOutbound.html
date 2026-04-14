@@ -1,1 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shipments - VBMSV Solutions</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
+    body {
+        font-family: Arial, sans-serif;
+        background: #eee;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        color: #333;
+    }
+
+    .header {
+        background: white;
+        padding: 15px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 4px solid #7b1e1e;
+        gap: 20px;
+    }
+
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .logo span:nth-child(1) { color: #000080; }
+    .logo span:nth-child(2) { color: #3B1344; }
+    .logo span:nth-child(3) { color: #2f4f2f; }
+    .logo span:nth-child(4) { color: #8B4000; }
+    .logo span:nth-child(5) { color: #367588; }
+
+    .solutions {
+        color: #7b1e1e;
+        margin-left: 8px;
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex: 1;
+        justify-content: flex-end;
+    }
+
+    .search-bar {
+        padding: 10px 20px;
+        border: 2px solid #333;
+        border-radius: 25px;
+        width: 320px;
+        font-size: 14px;
+        background: white;
+    }
+
+    .header-icons {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .icon-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 20px;
+        color: #666;
+    }
+
+    .icon-btn:hover {
+        color: #333;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        background: #7b1e1e;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .user-dropdown {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        display: none;
+        min-width: 180px;
+        z-index: 100;
+    }
+
+    .user-avatar:hover .user-dropdown {
+        display: block;
+    }
+
+    .user-dropdown div {
+        padding: 12px 16px;
+        cursor: pointer;
+        color: #333;
+        font-weight: normal;
+    }
+
+    .user-dropdown div:hover {
+        background: #f5f5f5;
+    }
+
+    .user-dropdown div:last-child {
+        border-top: 1px solid #eee;
+        color: #7b1e1e;
+    }
+
+    .nav-tabs {
+        background: white;
+        padding: 0 30px;
+        display: flex;
+        gap: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .nav-tab {
+        padding: 15px 30px;
+        cursor: pointer;
+        border-radius: 25px 25px 0 0;
+        font-weight: 500;
+        transition: all 0.2s;
+        user-select: none;
+    }
+
+    .nav-tab.active {
+        background: linear-gradient(135deg, #ff69b4, #7b1e1e);
+        color: white;
+    }
+
+    .main-content {
+        flex: 1;
+        padding: 30px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .page-header h1 {
+        font-size: 28px;
+        color: #333;
+    }
+
+    .page-subtext {
+        color: #666;
+        margin-top: 6px;
+        font-size: 14px;
+    }
+
+    .tab-toggle {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .toggle-btn {
+        padding: 10px 18px;
+        border: 2px solid #7b1e1e;
+        background: white;
+        color: #7b1e1e;
+        border-radius: 24px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .toggle-btn.active,
+    .toggle-btn:hover {
+        background: #7b1e1e;
+        color: white;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 22px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .stat-card h3 {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .stat-card .value {
+        font-size: 30px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .section-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .section-card h2 {
+        margin-bottom: 18px;
+        color: #333;
+    }
+
+    .filters-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr 1fr auto;
+        gap: 12px;
+        margin-bottom: 18px;
+        align-items: end;
+    }
+
+    .filter-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 13px;
+        color: #666;
+        font-weight: 600;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        background: white;
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: 1px solid #7b1e1e;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .btn-primary {
+        background: #7b1e1e;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #5f1616;
+    }
+
+    .btn-secondary {
+        background: white;
+        color: #7b1e1e;
+    }
+
+    .btn-secondary:hover {
+        background: #faf1f1;
+    }
+
+    .table-wrap {
+        overflow-x: auto;
+    }
+
+    .shipment-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 860px;
+    }
+
+    .shipment-table th {
+        text-align: left;
+        padding: 12px 15px;
+        background: #f8f8f8;
+        border-bottom: 2px solid #ddd;
+        font-weight: 600;
+        color: #333;
+        white-space: nowrap;
+    }
+
+    .shipment-table td {
+        padding: 14px 15px;
+        border-bottom: 1px solid #eee;
+        vertical-align: middle;
+    }
+
+    .shipment-table tbody tr {
+        transition: background 0.2s;
+    }
+
+    .shipment-table tbody tr:hover {
+        background: #e6e6e6;
+    }
+
+    .status {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .status.scheduled { background: #cce5ff; color: #004085; }
+    .status.in-transit { background: #fff3cd; color: #856404; }
+    .status.arrived { background: #d4edda; color: #155724; }
+    .status.delivered { background: #d4edda; color: #155724; }
+    .status.delayed { background: #f8d7da; color: #721c24; }
+
+    .alerts-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        height: 28px;
+        border-radius: 14px;
+        background: #7b1e1e;
+        color: white;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 0 9px;
+    }
+
+    .empty-state {
+        padding: 26px;
+        text-align: center;
+        color: #777;
+        border: 1px dashed #ccc;
+        border-radius: 12px;
+        background: #fcfcfc;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .pagination button,
+    .pagination .page-num {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        background: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .pagination .page-num.active {
+        background: #7b1e1e;
+        color: white;
+        border-color: #7b1e1e;
+    }
+
+    .footer {
+        background: #7b1e1e;
+        color: white;
+        padding: 15px;
+        text-align: center;
+    }
+
+    @media (max-width: 1180px) {
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .filters-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 720px) {
+        .header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .header-right {
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .search-bar {
+            width: 100%;
+        }
+
+        .header-icons {
+            justify-content: space-between;
+        }
+
+        .stats-grid,
+        .filters-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+    }
+</style>
+</head>
+<body>
+<header class="header">
+    <div class="logo">
+        <span>V</span><span>B</span><span>M</span><span>S</span><span>V</span>
+        <span class="solutions">Sol.</span>
+    </div>
+    <div class="header-right">
+        <input type="text" class="search-bar" placeholder="🔍 Search shipments, trucks, locations...">
+        <div class="header-icons">
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <button class="icon-btn" title="Settings">⚙️</button>
+            <div class="user-avatar">
+                VN
+                <div class="user-dropdown">
+                    <div><strong>Vivian Nguyen</strong></div>
+                    <div>ID: WH-204</div>
+                    <div>Role: Warehouse Employee</div>
+                    <div>Logout</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<nav class="nav-tabs">
+    <div class="nav-tab active">Shipments</div>
+</nav>
+
+<main class="main-content">
+    <div class="page-header">
+        <div>
+            <h1>Shipments</h1>
+            <div class="page-subtext">Monitor inbound and outbound movements.</div>
+        </div>
+        <div class="tab-toggle">
+            <button class="toggle-btn active" data-tab="outbound">Outbound</button>
+            <button class="toggle-btn" data-tab="inbound">Inbound</button>
+        </div>
+    </div>
+
+    <section class="stats-grid" id="statsGrid"></section>
+
+    <section class="section-card">
+        <h2 id="tableTitle">Outbound Shipments</h2>
+
+        <div class="filters-grid">
+            <div class="filter-group">
+                <label for="statusFilter">Status</label>
+                <select id="statusFilter">
+                    <option value="all">All Statuses</option>
+                    <option value="Scheduled">Scheduled</option>
+                    <option value="In Transit">In Transit</option>
+                    <option value="Arrived">Arrived</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Delayed">Delayed</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate">
+            </div>
+            <div class="filter-group">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate">
+            </div>
+            <div class="filter-actions">
+                <button class="btn btn-primary" id="applyFilters">Apply</button>
+                <button class="btn btn-secondary" id="clearFilters">Clear</button>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="shipment-table">
+                <thead>
+                    <tr>
+                        <th>Shipment #</th>
+                        <th>Status</th>
+                        <th id="originDestHeader">Destination</th>
+                        <th id="timeHeader">Departure Time</th>
+                        <th>Truck ID</th>
+                        <th>Lot Count</th>
+                        <th>Open Alerts</th>
+                    </tr>
+                </thead>
+                <tbody id="shipmentTableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button>&lt;</button>
+            <span class="page-num active">1</span>
+            <span class="page-num">2</span>
+            <span class="page-num">3</span>
+            <button>&gt;</button>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    © 2026 VBMSV Solutions
+</footer>
+
+<script>
+    const shipmentData = {
+        outbound: [
+            {
+                shipmentNumber: 'OUT-40127',
+                status: 'Scheduled',
+                location: 'Phoenix Distribution Hub',
+                time: '2026-04-10T09:30',
+                truckId: 'TRK-8821',
+                lotCount: 18,
+                openAlerts: 2
+            },
+            {
+                shipmentNumber: 'OUT-40119',
+                status: 'In Transit',
+                location: 'San Diego Clinic Network',
+                time: '2026-04-10T07:15',
+                truckId: 'TRK-7714',
+                lotCount: 12,
+                openAlerts: 0
+            },
+            {
+                shipmentNumber: 'OUT-40103',
+                status: 'Delivered',
+                location: 'Las Vegas Medical Center',
+                time: '2026-04-09T18:40',
+                truckId: 'TRK-6630',
+                lotCount: 9,
+                openAlerts: 1
+            },
+            {
+                shipmentNumber: 'OUT-40098',
+                status: 'Delayed',
+                location: 'Tucson Partner Warehouse',
+                time: '2026-04-09T14:20',
+                truckId: 'TRK-6527',
+                lotCount: 15,
+                openAlerts: 4
+            }
+        ],
+        inbound: [
+            {
+                shipmentNumber: 'IN-87214',
+                status: 'Scheduled',
+                location: 'Fresno Consolidation Site',
+                time: '2026-04-10T11:00',
+                truckId: 'TRK-4592',
+                lotCount: 21,
+                openAlerts: 3
+            },
+            {
+                shipmentNumber: 'IN-87201',
+                status: 'Arrived',
+                location: 'Sacramento Cold Chain Node',
+                time: '2026-04-10T06:20',
+                truckId: 'TRK-3320',
+                lotCount: 14,
+                openAlerts: 0
+            },
+            {
+                shipmentNumber: 'IN-87188',
+                status: 'In Transit',
+                location: 'Reno Supply Facility',
+                time: '2026-04-09T22:55',
+                truckId: 'TRK-2844',
+                lotCount: 16,
+                openAlerts: 1
+            },
+            {
+                shipmentNumber: 'IN-87180',
+                status: 'Delivered',
+                location: 'Boise Transfer Site',
+                time: '2026-04-09T18:10',
+                truckId: 'TRK-2402',
+                lotCount: 10,
+                openAlerts: 0
+            }
+        ]
+    };
+
+    let activeTab = 'outbound';
+
+    const tabButtons = document.querySelectorAll('.toggle-btn');
+    const tableBody = document.getElementById('shipmentTableBody');
+    const statsGrid = document.getElementById('statsGrid');
+    const statusFilter = document.getElementById('statusFilter');
+    const startDate = document.getElementById('startDate');
+    const endDate = document.getElementById('endDate');
+    const tableTitle = document.getElementById('tableTitle');
+    const originDestHeader = document.getElementById('originDestHeader');
+    const timeHeader = document.getElementById('timeHeader');
+
+    function formatDateTime(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleString([], {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    function statusClass(status) {
+        return status.toLowerCase().replace(/\s+/g, '-');
+    }
+
+    function getFilteredShipments() {
+        return shipmentData[activeTab].filter(item => {
+            const matchesStatus = statusFilter.value === 'all' || item.status === statusFilter.value;
+            const itemDate = item.time.slice(0, 10);
+            const matchesStart = !startDate.value || itemDate >= startDate.value;
+            const matchesEnd = !endDate.value || itemDate <= endDate.value;
+            return matchesStatus && matchesStart && matchesEnd;
+        });
+    }
+
+    function renderStats() {
+        const rows = shipmentData[activeTab];
+        const scheduled = rows.filter(r => r.status === 'Scheduled').length;
+        const inTransit = rows.filter(r => r.status === 'In Transit').length;
+        const openAlerts = rows.reduce((sum, row) => sum + row.openAlerts, 0);
+
+        statsGrid.innerHTML = `
+            <div class="stat-card">
+                <h3>${activeTab === 'outbound' ? 'Outbound Shipments' : 'Inbound Shipments'}</h3>
+                <div class="value">${rows.length}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Scheduled</h3>
+                <div class="value">${scheduled}</div>
+            </div>
+            <div class="stat-card">
+                <h3>In Transit</h3>
+                <div class="value">${inTransit}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Open Alerts</h3>
+                <div class="value">${openAlerts}</div>
+            </div>
+        `;
+    }
+
+    function renderTable() {
+        const filtered = getFilteredShipments();
+        tableTitle.textContent = activeTab === 'outbound' ? 'Outbound Shipments' : 'Inbound Shipments';
+        originDestHeader.textContent = activeTab === 'outbound' ? 'Destination' : 'Origin';
+        timeHeader.textContent = activeTab === 'outbound' ? 'Departure Time' : 'Arrival Time';
+
+        if (!filtered.length) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="7">
+                        <div class="empty-state">No shipments match the selected filters.</div>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tableBody.innerHTML = filtered.map(item => `
+            <tr>
+                <td>${item.shipmentNumber}</td>
+                <td><span class="status ${statusClass(item.status)}">${item.status}</span></td>
+                <td>${item.location}</td>
+                <td>${formatDateTime(item.time)}</td>
+                <td>${item.truckId}</td>
+                <td>${item.lotCount}</td>
+                <td><span class="alerts-pill">${item.openAlerts}</span></td>
+            </tr>
+        `).join('');
+    }
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            activeTab = button.dataset.tab;
+            renderStats();
+            renderTable();
+        });
+    });
+
+    document.getElementById('applyFilters').addEventListener('click', () => {
+        renderTable();
+    });
+
+    document.getElementById('clearFilters').addEventListener('click', () => {
+        statusFilter.value = 'all';
+        startDate.value = '';
+        endDate.value = '';
+        renderTable();
+    });
+
+    renderStats();
+    renderTable();
+</script>
+</body>
+</html>
