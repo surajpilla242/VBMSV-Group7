@@ -10,6 +10,13 @@
         font-family: Arial, sans-serif;
         background: #eee;
         text-align: center;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .page-content {
+        flex: 1;
     }
 
     /* Header */
@@ -125,10 +132,19 @@
     button:hover {
         background: #f2f2f2;
     }
+
+    .footer {
+        background: #7b1e1e;
+        color: white;
+        padding: 15px;
+        text-align: center;
+    }
 </style>
 </head>
 
 <body>
+
+<div class="page-content">
 
 <div class="header">
     <div class="logo">
@@ -175,6 +191,12 @@
         <button>Login</button>
     </div>
 </div>
+
+</div>
+
+<footer class="footer">
+    © 2026 VBMSV Solutions
+</footer>
 
 </body>
 </html>
