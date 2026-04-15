@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Warehouse Dashboard - VBMSV Solutions</title>
-
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
         font-family: Arial, sans-serif;
@@ -28,28 +23,15 @@
         border-bottom: 4px solid #7b1e1e;
     }
 
-    .logo {
-        font-size: 24px;
-        font-weight: bold;
-    }
-
+    .logo { font-size: 24px; font-weight: bold; }
     .logo span:nth-child(1) { color: #000080; }
     .logo span:nth-child(2) { color: #3B1344; }
     .logo span:nth-child(3) { color: #2f4f2f; }
     .logo span:nth-child(4) { color: #8B4000; }
     .logo span:nth-child(5) { color: #367588; }
+    .solutions { color: #7b1e1e; margin-left: 8px; }
 
-    .solutions {
-        color: #7b1e1e;
-        margin-left: 8px;
-    }
-
-    .header-right {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    }
-
+    .header-right { display: flex; align-items: center; gap: 20px; }
     .search-bar {
         padding: 10px 20px;
         border: 2px solid #333;
@@ -57,125 +39,52 @@
         width: 320px;
         font-size: 14px;
     }
-
-    .header-icons {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
+    .header-icons { display: flex; align-items: center; gap: 15px; }
     .icon-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 20px;
-        color: #666;
+        background: none; border: none; cursor: pointer;
+        font-size: 20px; color: #666;
     }
-
-    .icon-btn:hover {
-        color: #333;
-    }
+    .icon-btn:hover { color: #333; }
 
     .user-avatar {
-        width: 40px;
-        height: 40px;
-        background: #7b1e1e;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        position: relative;
+        width: 40px; height: 40px; background: #7b1e1e;
+        border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        color: white; font-weight: bold; cursor: pointer; position: relative;
     }
-
     .user-dropdown {
-        position: absolute;
-        top: 50px;
-        right: 0;
-        background: white;
-        border: 1px solid #ddd;
-        border-radius: 8px;
+        position: absolute; top: 50px; right: 0; background: white;
+        border: 1px solid #ddd; border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        display: none;
-        min-width: 180px;
-        z-index: 100;
+        display: none; min-width: 180px; z-index: 100;
     }
-
-    .user-avatar:hover .user-dropdown {
-        display: block;
-    }
-
+    .user-avatar:hover .user-dropdown { display: block; }
     .user-dropdown div {
-        padding: 12px 16px;
-        cursor: pointer;
-        color: #333;
-        font-weight: normal;
+        padding: 12px 16px; cursor: pointer; color: #333; font-weight: normal;
     }
-
-    .user-dropdown div:hover {
-        background: #f5f5f5;
-    }
-
+    .user-dropdown div:hover { background: #f5f5f5; }
     .user-dropdown div:last-child {
-        border-top: 1px solid #eee;
-        color: #7b1e1e;
+        border-top: 1px solid #eee; color: #7b1e1e;
     }
 
     .nav-tabs {
-        background: white;
-        padding: 0 30px;
-        display: flex;
-        gap: 10px;
+        background: white; padding: 0 30px; display: flex; gap: 10px;
         border-bottom: 1px solid #ddd;
     }
-
     .nav-tab {
-        padding: 15px 30px;
-        cursor: pointer;
-        border-radius: 25px 25px 0 0;
-        font-weight: 500;
-        transition: all 0.2s;
-        user-select: none;
+        padding: 15px 30px; cursor: pointer;
+        border-radius: 25px 25px 0 0; font-weight: 500;
+        transition: all 0.2s; user-select: none;
     }
-
+    .nav-tab a {
+        color: inherit;
+        text-decoration: none;
+    }
     .nav-tab.active {
         background: linear-gradient(135deg, #ff69b4, #7b1e1e);
         color: white;
     }
 
-    .main-content {
-        flex: 1;
-        padding: 30px;
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-        margin-bottom: 30px;
-    }
-
-    .stat-card {
-        background: white;
-        border-radius: 12px;
-        padding: 25px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .stat-card h3 {
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 10px;
-        text-transform: uppercase;
-    }
-
-    .stat-card .value {
-        font-size: 32px;
-        font-weight: bold;
-        color: #333;
-    }
+    .main-content { flex: 1; padding: 30px; }
 
     .grid-split {
         display: grid;
@@ -189,41 +98,17 @@
         padding: 25px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-
-    .section-card h2 {
-        margin-bottom: 20px;
-        color: #333;
+    .section-card h2 { margin-bottom: 16px; color: #333; }
+    .section-card h3 {
+        font-size: 15px; color: #555; margin: 20px 0 12px;
+        text-transform: uppercase; letter-spacing: 0.03em;
     }
-
-    .filter-row {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin-bottom: 20px;
-    }
-
-    .filter-btn {
-        padding: 8px 16px;
-        border: 2px solid #7b1e1e;
-        background: white;
-        color: #7b1e1e;
-        border-radius: 20px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: all 0.2s;
-    }
-
-    .filter-btn:hover,
-    .filter-btn.active {
-        background: #7b1e1e;
-        color: white;
-    }
+    .section-card h3:first-of-type { margin-top: 0; }
 
     .shipment-table {
         width: 100%;
         border-collapse: collapse;
     }
-
     .shipment-table th {
         text-align: left;
         padding: 12px 15px;
@@ -232,14 +117,31 @@
         font-weight: 600;
         color: #333;
     }
-
     .shipment-table td {
         padding: 15px;
         border-bottom: 1px solid #eee;
     }
 
-    .shipment-table tr:hover {
-        background: #fafafa;
+    .zone-table tbody tr {
+        cursor: pointer;
+        transition: background 0.15s ease;
+    }
+    .zone-table tbody tr:hover { background: #fafafa; }
+
+    /* Open alert: highly visible */
+    .zone-table tbody tr.row-alert-open {
+        background: linear-gradient(90deg, #ffe5e5 0%, #fff5f5 100%);
+        border-left: 5px solid #c0392b;
+        box-shadow: inset 0 0 0 1px rgba(192, 57, 43, 0.25);
+    }
+    .zone-table tbody tr.row-alert-open:hover {
+        background: linear-gradient(90deg, #ffd6d6 0%, #ffefef 100%);
+    }
+
+    .zone-table tbody tr.row-selected {
+        outline: 2px solid #7b1e1e;
+        outline-offset: -2px;
+        background: #f9f4f5 !important;
     }
 
     .status {
@@ -249,22 +151,68 @@
         font-weight: 500;
         display: inline-block;
     }
+    .status.alert-open { background: #f8d7da; color: #721c24; }
+    .status.alert-none { color: #666; font-weight: 500; }
 
-    .status.delivered { background: #d4edda; color: #155724; }
-    .status.in-transit { background: #fff3cd; color: #856404; }
-    .status.pending { background: #cce5ff; color: #004085; }
-    .status.delayed { background: #f8d7da; color: #721c24; }
+    /* Lots expiry highlighting (read-only) */
+    .expiry-warn {
+        background: #fff8e1 !important;
+    }
+    .expiry-warn td { border-color: #ffe082; }
+    .expiry-critical {
+        background: #ffebee !important;
+    }
+    .expiry-critical td { border-color: #ef9a9a; }
 
-    .chart-placeholder {
-        height: 100%;
-        min-height: 360px;
+    .muted { color: #777; font-size: 13px; }
+
+    .detail-panel {
+        display: none;
+        margin-top: 8px;
+    }
+    .detail-panel.visible { display: block; }
+
+    .chart-wrap {
+        width: 100%;
+        overflow-x: auto;
+        border: 1px solid #e0e0e0;
         border-radius: 12px;
-        background: linear-gradient(135deg, #f6f7fb, #ffffff);
-        display: grid;
-        place-items: center;
-        color: #888;
-        font-size: 16px;
-        border: 1px dashed #ccc;
+        background: #fafafa;
+        padding: 12px;
+    }
+    .temp-chart {
+        display: block;
+        width: 100%;
+        min-width: 560px;
+        height: 300px;
+    }
+    .chart-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 10px;
+        font-size: 13px;
+        color: #555;
+    }
+    .chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .swatch {
+        width: 14px; height: 14px; border-radius: 3px;
+        display: inline-block;
+    }
+
+    .resolution-select {
+        padding: 8px 10px;
+        border: 2px solid #7b1e1e;
+        border-radius: 8px;
+        font-size: 13px;
+        background: white;
+        color: #333;
+        cursor: pointer;
+        min-width: 140px;
+    }
+    .resolution-select:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(123, 30, 30, 0.25);
     }
 
     .pagination {
@@ -274,7 +222,6 @@
         gap: 10px;
         margin-top: 20px;
     }
-
     .pagination button,
     .pagination .page-num {
         padding: 8px 12px;
@@ -283,7 +230,6 @@
         cursor: pointer;
         border-radius: 5px;
     }
-
     .pagination .page-num.active {
         background: #7b1e1e;
         color: white;
@@ -297,35 +243,19 @@
         text-align: center;
     }
 
-    @media (max-width: 980px) {
-        .grid-split {
-            grid-template-columns: 1fr;
-        }
-
-        .stats-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
+    .empty-hint {
+        padding: 24px;
+        text-align: center;
+        color: #888;
+        border: 1px dashed #ccc;
+        border-radius: 12px;
+        background: #f9f9f9;
     }
 
     @media (max-width: 640px) {
-        .header {
-            flex-direction: column;
-            gap: 15px;
-            align-items: flex-start;
-        }
-
-        .header-right {
-            width: 100%;
-            justify-content: space-between;
-        }
-
-        .search-bar {
-            width: 100%;
-        }
-
-        .stats-grid {
-            grid-template-columns: 1fr;
-        }
+        .header { flex-direction: column; gap: 15px; align-items: flex-start; }
+        .header-right { width: 100%; justify-content: space-between; }
+        .search-bar { width: 100%; }
     }
 </style>
 </head>
@@ -355,102 +285,420 @@
 </header>
 
 <nav class="nav-tabs">
-    <div class="nav-tab active">Dashboard</div>
+    <div class="nav-tab"><a href="WarehouseDash.html">Dashboard</a></div>
+    <div class="nav-tab active">Zone Detail</div>
 </nav>
 
 <main class="main-content">
     <div class="grid-split">
         <div class="section-card">
-            <div class="section-header">
-                <h2>Warehouse Detail</h2>
-            </div>
-           
-            <table class="shipment-table">
+            <h2>Warehouse zones</h2>
+            <p class="muted" style="margin-bottom:16px;">Select a zone to view stored lots, temperature history, and excursion records. Rows with an open alert are highlighted.</p>
+            <table class="shipment-table zone-table" id="zoneTable">
                 <thead>
                     <tr>
                         <th>Zone</th>
                         <th>Type</th>
-                        <th>Temp Range(°C)</th>
+                        <th>Temp range (°C)</th>
                         <th>Capacity</th>
-                        <th>In Use</th>
-                        <th>Utilization %</th>
+                        <th>In use</th>
+                        <th>Utilization</th>
                         <th>Alert</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr data-status="active">
-                        <td>1</td>
-                        <td>Refrigerated</td>
-                        <td>2-8</td>
-                        <td>1200</td>
-                        <td>816</td>
-                        <td>68%</td>
-                        <td>—</td>
-                    </tr>
-                    <tr data-status="delayed">
-                        <td>2</td>
-                        <td>Freezer</td>
-                        <td>-25-15</td>
-                        <td>600</td>
-                        <td>540</td>
-                        <td>90%</td>
-                        <td><span class="status delayed">Open</span></td>
-                    </tr>
-                    <tr data-status="active">
-                        <td>3</td>
-                        <td>Ambient</td>
-                        <td>15-25</td>
-                        <td>2,000</td>
-                        <td>400</td>
-                        <td>20%</td>
-                        <td>—</td>
-                    </tr>
-                </tbody>
+                <tbody id="zoneTableBody"></tbody>
             </table>
             <div class="pagination">
-                <button>&lt;</button>
+                <button type="button">&lt;</button>
                 <span class="page-num active">1</span>
                 <span class="page-num">2</span>
-                <span class="page-num">3</span>
-                <button>&gt;</button>
+                <button type="button">&gt;</button>
             </div>
         </div>
 
-        
+        <div class="section-card" id="placeholderCard">
+            <div class="empty-hint" id="zonePlaceholder">
+                Select a zone row above to load lots, the 7-day temperature chart, and breach history.
+            </div>
+        </div>
+
+        <div class="section-card detail-panel" id="zoneDetailPanel">
+            <h2 id="detailTitle">Zone detail</h2>
+
+            <h3>Lots currently stored (read-only)</h3>
+            <table class="shipment-table" id="lotsTable">
+                <thead>
+                    <tr>
+                        <th>Vendor</th>
+                        <th>Batch</th>
+                        <th>Lot number</th>
+                        <th>Volume</th>
+                        <th>Expiry date</th>
+                        <th>Days until expiry</th>
+                    </tr>
+                </thead>
+                <tbody id="lotsTableBody"></tbody>
+            </table>
+
+            <h3>7-day temperature chart (read-only)</h3>
+            <p class="muted" style="margin-bottom:10px;">Line chart of sensor readings with allowed min/max reference lines. Documented excursion windows are shaded.</p>
+            <div class="chart-wrap">
+                <svg class="temp-chart" id="tempChart" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet" aria-label="Seven-day zone temperature chart"></svg>
+            </div>
+            <div class="chart-legend" id="chartLegend"></div>
+
+            <h3>Temperature breach history</h3>
+            <p class="muted" style="margin-bottom:10px;">Excursion events for this zone. Staff may update resolution status only.</p>
+            <table class="shipment-table" id="breachTable">
+                <thead>
+                    <tr>
+                        <th>Start time</th>
+                        <th>End time</th>
+                        <th>Max deviation (°C)</th>
+                        <th>Resolution status</th>
+                    </tr>
+                </thead>
+                <tbody id="breachTableBody"></tbody>
+            </table>
+        </div>
     </div>
 </main>
 
-<footer class="footer">
-    © 2026 VBMSV Solutions
-</footer>
+<footer class="footer">© 2026 VBMSV Solutions</footer>
 
 <script>
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const taskRows = document.querySelectorAll('.shipment-table tbody tr');
+(function () {
+    var TODAY = new Date('2026-04-13T12:00:00');
 
-    filterButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const filter = btn.getAttribute('data-filter');
-            filterButtons.forEach(button => button.classList.remove('active'));
-            btn.classList.add('active');
+    function daysUntilExpiry(isoDate) {
+        var d = new Date(isoDate + 'T12:00:00');
+        return Math.ceil((d - TODAY) / (1000 * 60 * 60 * 24));
+    }
 
-            taskRows.forEach(row => {
-                const status = row.getAttribute('data-status');
-                if (filter === 'all') {
-                    row.style.display = '';
-                } else if (filter === 'pending') {
-                    row.style.display = status === 'pending' ? '' : 'none';
-                } else if (filter === 'transit') {
-                    row.style.display = status === 'active' ? '' : 'none';
-                } else if (filter === 'delivered') {
-                    row.style.display = status === 'delivered' ? '' : 'none';
-                } else if (filter === 'delayed') {
-                    row.style.display = status === 'delayed' ? '' : 'none';
-                }
-            });
+    function expiryRowClass(days) {
+        if (days <= 7) return 'expiry-critical';
+        if (days <= 30) return 'expiry-warn';
+        return '';
+    }
+
+    var ZONES = {
+        z1: {
+            id: 'z1',
+            label: 'Zone 1',
+            type: 'Refrigerated',
+            tempMin: 2,
+            tempMax: 8,
+            capacity: 1200,
+            inUse: 816,
+            alertOpen: false
+        },
+        z2: {
+            id: 'z2',
+            label: 'Zone 2',
+            type: 'Freezer',
+            tempMin: -25,
+            tempMax: -15,
+            capacity: 600,
+            inUse: 540,
+            alertOpen: true
+        },
+        z3: {
+            id: 'z3',
+            label: 'Zone 3',
+            type: 'Ambient',
+            tempMin: 15,
+            tempMax: 25,
+            capacity: 2000,
+            inUse: 400,
+            alertOpen: false
+        }
+    };
+
+    var LOTS_BY_ZONE = {
+        z1: [
+            { vendor: 'Acme Pharma', batch: 'B-2401', lot: 'L-8821', volume: '420 L', expiry: '2026-09-01' },
+            { vendor: 'Acme Pharma', batch: 'B-2401', lot: 'L-8822', volume: '180 L', expiry: '2026-04-22' },
+            { vendor: 'North Labs', batch: 'NL-55', lot: 'L-1003', volume: '96 L', expiry: '2026-04-18' },
+            { vendor: 'North Labs', batch: 'NL-56', lot: 'L-1004', volume: '120 L', expiry: '2026-04-10' }
+        ],
+        z2: [
+            { vendor: 'Cryo Supply Co.', batch: 'C-901', lot: 'FZ-001', volume: '200 L', expiry: '2027-01-15' },
+            { vendor: 'Cryo Supply Co.', batch: 'C-902', lot: 'FZ-002', volume: '340 L', expiry: '2026-04-25' }
+        ],
+        z3: [
+            { vendor: 'Generic Goods', batch: 'GG-77', lot: 'A-500', volume: '1000 kg', expiry: '2026-12-01' }
+        ]
+    };
+
+    var BREACHES_BY_ZONE = {
+        z1: [
+            { start: '2026-04-10T14:22:00', end: '2026-04-10T16:05:00', maxDev: 2.4, resolution: 'Resolved' },
+            { start: '2026-04-08T03:10:00', end: '2026-04-08T03:45:00', maxDev: 1.1, resolution: 'Open' }
+        ],
+        z2: [
+            { start: '2026-04-12T08:00:00', end: '2026-04-12T11:30:00', maxDev: 6.2, resolution: 'Under Review' },
+            { start: '2026-04-11T01:15:00', end: '2026-04-11T02:00:00', maxDev: 3.0, resolution: 'Open' },
+            { start: '2026-04-06T18:40:00', end: '2026-04-06T19:20:00', maxDev: 1.8, resolution: 'Resolved' }
+        ],
+        z3: []
+    };
+
+    /* Synthetic readings: one point every 4 hours for 7 days = 42 points */
+    function buildReadings(zone) {
+        var msDay = 24 * 60 * 60 * 1000;
+        var end = TODAY.getTime();
+        var start = end - 7 * msDay;
+        var step = 4 * 60 * 60 * 1000;
+        var mid = (zone.tempMin + zone.tempMax) / 2;
+        var amp = (zone.tempMax - zone.tempMin) * 0.35;
+        var readings = [];
+        var seed = zone.id.charCodeAt(1) * 997;
+        function rnd() {
+            seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+            return (seed / 0x7fffffff) - 0.5;
+        }
+        for (var t = start; t <= end; t += step) {
+            var wave = Math.sin((t - start) / msDay * 0.9) * amp * 0.4;
+            var noise = rnd() * amp * 0.15;
+            var v = mid + wave + noise;
+            readings.push({ t: t, v: Math.round(v * 10) / 10 });
+        }
+        /* Inject visible excursions for demo */
+        if (zone.id === 'z1') {
+            bumpRange(readings, '2026-04-10T14:00:00', '2026-04-10T17:00:00', zone.tempMax + 2.2);
+        }
+        if (zone.id === 'z2') {
+            bumpRange(readings, '2026-04-12T08:00:00', '2026-04-12T12:00:00', zone.tempMax + 5);
+            bumpRange(readings, '2026-04-11T01:00:00', '2026-04-11T02:30:00', zone.tempMax + 3);
+        }
+        readings.sort(function (a, b) { return a.t - b.t; });
+        return readings;
+    }
+
+    function bumpRange(readings, isoStart, isoEnd, value) {
+        var a = new Date(isoStart).getTime();
+        var b = new Date(isoEnd).getTime();
+        readings.forEach(function (r) {
+            if (r.t >= a && r.t <= b) r.v = value + (Math.random() - 0.5) * 0.3;
         });
-    });
-</script>
+    }
 
+    var EXCURSION_WINDOWS = {
+        z1: [
+            { start: '2026-04-10T14:00:00', end: '2026-04-10T17:00:00' }
+        ],
+        z2: [
+            { start: '2026-04-12T08:00:00', end: '2026-04-12T12:00:00' },
+            { start: '2026-04-11T01:00:00', end: '2026-04-11T02:30:00' }
+        ],
+        z3: []
+    };
+
+    var readingsCache = {};
+
+    function getReadings(zone) {
+        if (!readingsCache[zone.id]) readingsCache[zone.id] = buildReadings(zone);
+        return readingsCache[zone.id];
+    }
+
+    function formatDT(iso) {
+        var d = new Date(iso);
+        return d.toLocaleString(undefined, {
+            month: 'short', day: 'numeric', year: 'numeric',
+            hour: '2-digit', minute: '2-digit'
+        });
+    }
+
+    function renderZones() {
+        var tbody = document.getElementById('zoneTableBody');
+        tbody.innerHTML = '';
+        Object.keys(ZONES).forEach(function (key) {
+            var z = ZONES[key];
+            var tr = document.createElement('tr');
+            tr.dataset.zoneId = z.id;
+            if (z.alertOpen) tr.classList.add('row-alert-open');
+            var util = Math.round((z.inUse / z.capacity) * 100);
+            tr.innerHTML =
+                '<td>' + z.label + '</td>' +
+                '<td>' + z.type + '</td>' +
+                '<td>' + z.tempMin + ' – ' + z.tempMax + '</td>' +
+                '<td>' + z.capacity.toLocaleString() + '</td>' +
+                '<td>' + z.inUse.toLocaleString() + '</td>' +
+                '<td>' + util + '%</td>' +
+                '<td>' + (z.alertOpen
+                    ? '<span class="status alert-open">Open</span>'
+                    : '<span class="status alert-none">—</span>') + '</td>';
+            tr.addEventListener('click', function () { selectZone(z.id); });
+            tbody.appendChild(tr);
+        });
+    }
+
+    function selectZone(zoneId) {
+        var z = ZONES[zoneId];
+        if (!z) return;
+
+        document.querySelectorAll('.zone-table tbody tr').forEach(function (tr) {
+            tr.classList.toggle('row-selected', tr.dataset.zoneId === zoneId);
+        });
+
+        document.getElementById('placeholderCard').style.display = 'none';
+        document.getElementById('zoneDetailPanel').classList.add('visible');
+
+        document.getElementById('detailTitle').textContent = z.label + ' — ' + z.type;
+
+        var lots = LOTS_BY_ZONE[zoneId] || [];
+        var lotsBody = document.getElementById('lotsTableBody');
+        lotsBody.innerHTML = '';
+        lots.forEach(function (lot) {
+            var days = daysUntilExpiry(lot.expiry);
+            var tr = document.createElement('tr');
+            tr.className = expiryRowClass(days);
+            tr.innerHTML =
+                '<td>' + lot.vendor + '</td>' +
+                '<td>' + lot.batch + '</td>' +
+                '<td>' + lot.lot + '</td>' +
+                '<td>' + lot.volume + '</td>' +
+                '<td>' + lot.expiry + '</td>' +
+                '<td>' + (days < 0 ? 'Expired (' + Math.abs(days) + 'd ago)' : days + ' days') + '</td>';
+            lotsBody.appendChild(tr);
+        });
+
+        renderChart(z);
+        renderBreaches(zoneId);
+    }
+
+    function renderChart(zone) {
+        var svg = document.getElementById('tempChart');
+        var readings = getReadings(zone);
+        var windows = EXCURSION_WINDOWS[zone.id] || [];
+        var tMin = zone.tempMin;
+        var tMax = zone.tempMax;
+
+        var padL = 56, padR = 24, padT = 20, padB = 40;
+        var W = 800, H = 300;
+        var chartW = W - padL - padR;
+        var chartH = H - padT - padB;
+
+        var t0 = readings[0].t;
+        var t1 = readings[readings.length - 1].t;
+
+        var vals = readings.map(function (r) { return r.v; });
+        var vmin = Math.min(tMin, Math.min.apply(null, vals)) - 2;
+        var vmax = Math.max(tMax, Math.max.apply(null, vals)) + 2;
+
+        function xScale(t) {
+            return padL + ((t - t0) / (t1 - t0)) * chartW;
+        }
+        function yScale(v) {
+            return padT + (1 - (v - vmin) / (vmax - vmin)) * chartH;
+        }
+
+        var parts = [];
+
+        parts.push('<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="#fafafa"/>');
+
+        /* Allowed band subtle fill */
+        parts.push('<rect x="' + padL + '" y="' + yScale(tMax) + '" width="' + chartW + '" height="' + (yScale(tMin) - yScale(tMax)) + '" fill="rgba(46, 125, 50, 0.06)"/>');
+
+        /* Excursion shading */
+        windows.forEach(function (w) {
+            var ws = new Date(w.start).getTime();
+            var we = new Date(w.end).getTime();
+            var x1 = xScale(ws);
+            var x2 = xScale(we);
+            parts.push('<rect x="' + x1 + '" y="' + padT + '" width="' + Math.max(2, x2 - x1) + '" height="' + chartH + '" fill="rgba(192, 57, 43, 0.22)"/>');
+        });
+
+        /* Grid lines */
+        for (var g = 0; g <= 4; g++) {
+            var gy = padT + (chartH * g) / 4;
+            parts.push('<line x1="' + padL + '" y1="' + gy + '" x2="' + (padL + chartW) + '" y2="' + gy + '" stroke="#e0e0e0" stroke-width="1"/>');
+        }
+
+        /* Min / max reference */
+        parts.push('<line x1="' + padL + '" y1="' + yScale(tMin) + '" x2="' + (padL + chartW) + '" y2="' + yScale(tMin) + '" stroke="#2e7d32" stroke-width="2" stroke-dasharray="8 5"/>');
+        parts.push('<line x1="' + padL + '" y1="' + yScale(tMax) + '" x2="' + (padL + chartW) + '" y2="' + yScale(tMax) + '" stroke="#c62828" stroke-width="2" stroke-dasharray="8 5"/>');
+
+        /* Axis box */
+        parts.push('<rect x="' + padL + '" y="' + padT + '" width="' + chartW + '" height="' + chartH + '" fill="none" stroke="#bbb" stroke-width="1"/>');
+
+        /* Line path */
+        var d = '';
+        readings.forEach(function (r, i) {
+            var x = xScale(r.t);
+            var y = yScale(r.v);
+            d += (i === 0 ? 'M' : 'L') + x + ' ' + y + ' ';
+        });
+        parts.push('<path d="' + d.trim() + '" fill="none" stroke="#1565c0" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>');
+
+        /* Points (sparse) */
+        for (var p = 0; p < readings.length; p += 3) {
+            var r = readings[p];
+            parts.push('<circle cx="' + xScale(r.t) + '" cy="' + yScale(r.v) + '" r="2.5" fill="#1565c0"/>');
+        }
+
+        /* Y labels */
+        parts.push('<text x="' + (padL - 8) + '" y="' + (yScale(tMin) + 4) + '" text-anchor="end" font-size="11" fill="#2e7d32">Min ' + tMin + '°C</text>');
+        parts.push('<text x="' + (padL - 8) + '" y="' + (yScale(tMax) + 4) + '" text-anchor="end" font-size="11" fill="#c62828">Max ' + tMax + '°C</text>');
+
+        /* X tick labels (start, mid, end) */
+        var midT = (t0 + t1) / 2;
+        parts.push('<text x="' + padL + '" y="' + (H - 12) + '" font-size="11" fill="#555">' + new Date(t0).toLocaleDateString() + '</text>');
+        parts.push('<text x="' + (padL + chartW / 2) + '" y="' + (H - 12) + '" text-anchor="middle" font-size="11" fill="#555">' + new Date(midT).toLocaleDateString() + '</text>');
+        parts.push('<text x="' + (padL + chartW) + '" y="' + (H - 12) + '" text-anchor="end" font-size="11" fill="#555">' + new Date(t1).toLocaleDateString() + '</text>');
+
+        parts.push('<text x="' + (padL + chartW / 2) + '" y="' + 14 + '" text-anchor="middle" font-size="12" font-weight="600" fill="#333">Past 7 days — zone sensor (°C)</text>');
+
+        svg.innerHTML = parts.join('');
+
+        document.getElementById('chartLegend').innerHTML =
+            '<span><span class="swatch" style="background:rgba(46,125,50,0.35)"></span>Allowed band</span>' +
+            '<span><span class="swatch" style="background:rgba(192,57,43,0.35)"></span>Documented excursion window</span>' +
+            '<span><span class="swatch" style="background:#1565c0"></span>Sensor reading</span>' +
+            '<span><span class="swatch" style="border:2px dashed #2e7d32;background:transparent;height:10px"></span>Min limit</span>' +
+            '<span><span class="swatch" style="border:2px dashed #c62828;background:transparent;height:10px"></span>Max limit</span>';
+    }
+
+    var RESOLUTION_OPTIONS = ['Open', 'Under Review', 'Resolved'];
+
+    function renderBreaches(zoneId) {
+        var rows = BREACHES_BY_ZONE[zoneId] || [];
+        var tbody = document.getElementById('breachTableBody');
+        tbody.innerHTML = '';
+        if (rows.length === 0) {
+            var tr0 = document.createElement('tr');
+            tr0.innerHTML = '<td colspan="4" class="muted">No temperature excursions recorded for this zone in the available history.</td>';
+            tbody.appendChild(tr0);
+            return;
+        }
+        rows.forEach(function (b, idx) {
+            var tr = document.createElement('tr');
+            var sel = document.createElement('select');
+            sel.className = 'resolution-select';
+            sel.setAttribute('aria-label', 'Resolution status for excursion starting ' + b.start);
+            RESOLUTION_OPTIONS.forEach(function (opt) {
+                var o = document.createElement('option');
+                o.value = opt;
+                o.textContent = opt;
+                if (opt === b.resolution) o.selected = true;
+                sel.appendChild(o);
+            });
+            sel.addEventListener('change', function () {
+                BREACHES_BY_ZONE[zoneId][idx].resolution = sel.value;
+            });
+            tr.innerHTML =
+                '<td>' + formatDT(b.start) + '</td>' +
+                '<td>' + formatDT(b.end) + '</td>' +
+                '<td>' + b.maxDev + '</td>';
+            var td = document.createElement('td');
+            td.appendChild(sel);
+            tr.appendChild(td);
+            tbody.appendChild(tr);
+        });
+    }
+
+    renderZones();
+})();
+</script>
 </body>
 </html>

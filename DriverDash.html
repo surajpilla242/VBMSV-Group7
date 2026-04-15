@@ -396,9 +396,9 @@
         <h2>Shipment History</h2>
 
         <div class="filter-row">
-            <button class="filter-btn active">All</button>
-            <button class="filter-btn">Departed</button>
-            <button class="filter-btn">Arrived</button>
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="departed">Departed</button>
+            <button class="filter-btn" data-filter="arrived">Arrived</button>
         </div>
 
         <table class="shipment-table">
@@ -478,8 +478,41 @@
 
 <!-- Footer -->
 <footer class="footer">
-    © 2024 VBMSV Solutions
+    © 2026 VBMSV Solutions
 </footer>
+
+<script>
+    // Get all filter buttons and table rows
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const tableRows = document.querySelectorAll('.shipment-table tbody tr');
+
+    // Add click event to each filter button
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+
+            // Update active button
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            // Filter rows
+            tableRows.forEach(row => {
+                const departedCell = row.cells[3].textContent.trim(); // Departed column
+                const arrivedCell = row.cells[4].textContent.trim();  // Arrived column
+
+                if (filter === 'all') {
+                    row.style.display = '';
+                } else if (filter === 'departed') {
+                    // Show if Departed is not "—"
+                    row.style.display = departedCell !== '—' ? '' : 'none';
+                } else if (filter === 'arrived') {
+                    // Show if Arrived is not "—"
+                    row.style.display = arrivedCell !== '—' ? '' : 'none';
+                }
+            });
+        });
+    });
+</script>
 
 </body>
 </html>
