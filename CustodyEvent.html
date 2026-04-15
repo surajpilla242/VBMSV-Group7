@@ -265,30 +265,165 @@
         .status-transferred { background: #fff4e8; color: #8b4a1f; }
         .status-audited { background: #eef2ff; color: #3b319f; }
 
-        @media (max-width: 860px) {
-            .page-header {
-                flex-direction: column;
-                align-items: stretch;
-            }
+        /* ── Filters ── */
+        .filters-card {
+            background: white;
+            border-radius: 16px;
+            padding: 22px 28px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
 
-            .action-group {
-                justify-content: flex-start;
-            }
+        .filters-card h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .filters-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            padding: 9px 13px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            background: #fafafa;
+            transition: border-color 0.2s;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            border-color: #7b1e1e;
+            background: white;
+        }
+
+        .btn-clear {
+            padding: 9px 18px;
+            background: #f3f3f3;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #555;
+            align-self: flex-end;
+        }
+
+        .btn-clear:hover { background: #e8e8e8; }
+
+        /* ── Table ── */
+        .log-card {
+            background: white;
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.05);
+        }
+
+        .log-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .log-card-header h2 {
+            font-size: 20px;
+            color: #222;
+            margin: 0;
+        }
+
+        .record-count {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .log-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .log-table th,
+        .log-table td {
+            padding: 13px 14px;
+            border-bottom: 1px solid #eef0f2;
+            font-size: 13px;
+            color: #444;
+            text-align: left;
+        }
+
+        .log-table th {
+            font-weight: 700;
+            background: #fafafa;
+            color: #333;
+            letter-spacing: 0.3px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .log-table tbody tr:hover { background: #fff5f8; }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .dir-in  { background: #eef8f3; color: #1f6f4f; }
+        .dir-out { background: #fff4e8; color: #8b4a1f; }
+        .dir-internal { background: #eef2ff; color: #3b319f; }
+
+        .cond-good    { background: #eef8f3; color: #1f6f4f; }
+        .cond-damaged { background: #ffeaea; color: #9b1c1c; }
+        .cond-review  { background: #fff4e8; color: #8b4a1f; }
+
+        .employee-cell strong { display: block; color: #222; }
+        .employee-cell span   { font-size: 12px; color: #888; }
+
+        .no-results {
+            text-align: center;
+            padding: 48px;
+            color: #aaa;
+            font-size: 15px;
+        }
+
+        @media (max-width: 860px) {
+            .page-header { flex-direction: column; align-items: stretch; }
+            .action-group { justify-content: flex-start; }
         }
 
         @media (max-width: 640px) {
-            .log-table th,
-            .log-table td {
-                padding: 12px 10px;
-                font-size: 13px;
-            }
-
-            .export-btn {
-                width: 100%;
-            }
+            .log-table th, .log-table td { padding: 10px 8px; font-size: 12px; }
+            .export-btn { width: 100%; }
         }
-    </style>
-</head>
+    </style></head>
 <body>
 <header class="header">
     <div class="logo">
@@ -322,114 +457,222 @@
     <div class="page-header">
         <h1>Custody Event Log</h1>
         <div class="action-group">
-            <div class="export-actions">
-                <button class="export-btn" onclick="exportCsv()">Export CSV</button>
-                <button class="export-btn" onclick="exportExcel()">Export Excel</button>
-            </div>
+            <button class="export-btn" onclick="exportCsv()">⬇ Export CSV</button>
+            <button class="export-btn" onclick="exportExcel()">⬇ Export Excel (.xlsx)</button>
         </div>
     </div>
-    <div class="action-group" style="margin-bottom: 24px;">
-        <span class="filter-chip active">All Events</span>
-        <span class="filter-chip">Received</span>
-        <span class="filter-chip">Transferred</span>
-        <span class="filter-chip">Audited</span>
+
+    <!-- Filters -->
+    <div class="filters-card">
+        <h3>Filter Events</h3>
+        <div class="filters-row">
+            <div class="filter-group">
+                <label>Date From</label>
+                <input type="date" id="filterDateFrom" onchange="applyFilters()">
+            </div>
+            <div class="filter-group">
+                <label>Date To</label>
+                <input type="date" id="filterDateTo" onchange="applyFilters()">
+            </div>
+            <div class="filter-group">
+                <label>Employee</label>
+                <select id="filterEmployee" onchange="applyFilters()">
+                    <option value="">All Employees</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Condition</label>
+                <select id="filterCondition" onchange="applyFilters()">
+                    <option value="">All Conditions</option>
+                    <option value="Good">Good</option>
+                    <option value="Damaged">Damaged</option>
+                    <option value="Under Review">Under Review</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Direction</label>
+                <select id="filterDirection" onchange="applyFilters()">
+                    <option value="">All Directions</option>
+                    <option value="Receiving In">Receiving In</option>
+                    <option value="Loading Out">Loading Out</option>
+                    <option value="Internal Transfer">Internal Transfer</option>
+                </select>
+            </div>
+            <button class="btn-clear" onclick="clearFilters()">Clear</button>
+        </div>
     </div>
-    <section class="log-card card">
-        <h2>Recent Custody Events</h2>
-        <table class="log-table" id="custodyTable">
-            <thead>
-                <tr>
-                    <th>Timestamp</th>
-                    <th>From Location</th>
-                    <th>To Location</th>
-                    <th>Event</th>
-                    <th>Operator</th>
-                    <th>Notes</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Apr 13, 2026 • 11:24</td>
-                    <td>Gate A4</td>
-                    <td>Lot 23B</td>
-                    <td>Transfer Accepted</td>
-                    <td>John Lee</td>
-                    <td>Seal verified, batch moved to secure staging.</td>
-                    <td><span class="status-pill status-transferred">Transferred</span></td>
-                </tr>
-                <tr>
-                    <td>Apr 13, 2026 • 10:05</td>
-                    <td>Dock 3</td>
-                    <td>Gate A4</td>
-                    <td>Inbound Received</td>
-                    <td>Priya Shah</td>
-                    <td>Received shipment on schedule.</td>
-                    <td><span class="status-pill status-received">Received</span></td>
-                </tr>
-                <tr>
-                    <td>Apr 13, 2026 • 08:42</td>
-                    <td>Customs Hold</td>
-                    <td>Dock 3</td>
-                    <td>Release Approved</td>
-                    <td>Emma Park</td>
-                    <td>Audit completed, paperwork approved.</td>
-                    <td><span class="status-pill status-audited">Audited</span></td>
-                </tr>
-                <tr>
-                    <td>Apr 12, 2026 • 16:08</td>
-                    <td>Lot 12C</td>
-                    <td>Dock 3</td>
-                    <td>Transfer Scheduled</td>
-                    <td>Marcus Lane</td>
-                    <td>Batch staged for afternoon move.</td>
-                    <td><span class="status-pill status-transferred">Transferred</span></td>
-                </tr>
-                <tr>
-                    <td>Apr 12, 2026 • 14:20</td>
-                    <td>Inbound Gate</td>
-                    <td>Lot 12C</td>
-                    <td>Shipment Logged</td>
-                    <td>Amina Yusuf</td>
-                    <td>Inventory matched manifest.</td>
-                    <td><span class="status-pill status-received">Received</span></td>
-                </tr>
-            </tbody>
-        </table>
+
+    <!-- Table -->
+    <section class="log-card">
+        <div class="log-card-header">
+            <h2>Audit Trail</h2>
+            <span class="record-count" id="recordCount"></span>
+        </div>
+        <div style="overflow-x:auto;">
+            <table class="log-table" id="custodyTable">
+                <thead>
+                    <tr>
+                        <th>Event Time</th>
+                        <th>Lot</th>
+                        <th>Employee</th>
+                        <th>From Location</th>
+                        <th>To Location</th>
+                        <th>Direction</th>
+                        <th>Condition Confirmed</th>
+                    </tr>
+                </thead>
+                <tbody id="custodyBody"></tbody>
+            </table>
+            <div class="no-results" id="noResults" style="display:none;">No events match your filters.</div>
+        </div>
     </section>
 </main>
 <footer class="footer">© 2026 VBMSV Solutions</footer>
-<script>
-    function exportCsv() {
-        const table = document.getElementById('custodyTable');
-        const rows = Array.from(table.querySelectorAll('tr'));
-        const csv = rows.map(row => {
-            return Array.from(row.querySelectorAll('th, td')).map(cell => '"' + cell.innerText.replace(/"/g, '""') + '"').join(',');
-        }).join('\n');
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'custody-event-log.csv';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    }
 
-    function exportExcel() {
-        const table = document.getElementById('custodyTable');
-        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>${table.outerHTML}</body></html>`;
-        const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'custody-event-log.xls';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    }
+<script>
+const events = [
+    { datetime: '2026-04-15T14:32', lot: 'LOT-001', employee: 'John Lee', role: 'Receiving Supervisor', from: 'Dock 1', to: 'Zone A3', direction: 'Receiving In', condition: 'Good' },
+    { datetime: '2026-04-15T13:10', lot: 'LOT-031', employee: 'Priya Shah', role: 'Dock Handler', from: 'Gate A4', to: 'Truck TRK-311', direction: 'Loading Out', condition: 'Good' },
+    { datetime: '2026-04-15T11:45', lot: 'LOT-051', employee: 'Emma Park', role: 'Compliance Officer', from: 'Customs Hold', to: 'Dock 3', direction: 'Internal Transfer', condition: 'Under Review' },
+    { datetime: '2026-04-15T10:08', lot: 'LOT-021', employee: 'Marcus Lane', role: 'Warehouse Associate', from: 'Zone C3', to: 'Zone C3 (Hold)', direction: 'Internal Transfer', condition: 'Under Review' },
+    { datetime: '2026-04-15T08:55', lot: 'LOT-071', employee: 'Amina Yusuf', role: 'Receiving Supervisor', from: 'Dock 2', to: 'Zone E2', direction: 'Receiving In', condition: 'Good' },
+    { datetime: '2026-04-14T16:30', lot: 'LOT-002', employee: 'John Lee', role: 'Receiving Supervisor', from: 'Zone A3', to: 'Truck TRK-204', direction: 'Loading Out', condition: 'Good' },
+    { datetime: '2026-04-14T15:00', lot: 'LOT-072', employee: 'Carlos Vega', role: 'Dock Handler', from: 'Zone E2', to: 'Truck TRK-512', direction: 'Loading Out', condition: 'Good' },
+    { datetime: '2026-04-14T13:22', lot: 'LOT-032', employee: 'Priya Shah', role: 'Dock Handler', from: 'Dock 4', to: 'Zone D1', direction: 'Receiving In', condition: 'Good' },
+    { datetime: '2026-04-14T11:05', lot: 'LOT-061', employee: 'Emma Park', role: 'Compliance Officer', from: 'Dock 1', to: 'Zone A1', direction: 'Receiving In', condition: 'Good' },
+    { datetime: '2026-04-14T09:40', lot: 'LOT-011', employee: 'Marcus Lane', role: 'Warehouse Associate', from: 'Dock 3', to: 'Zone B1', direction: 'Receiving In', condition: 'Good' },
+    { datetime: '2026-04-13T17:15', lot: 'LOT-053', employee: 'Carlos Vega', role: 'Dock Handler', from: 'Zone B2', to: 'Truck TRK-408', direction: 'Loading Out', condition: 'Good' },
+    { datetime: '2026-04-13T15:50', lot: 'LOT-033', employee: 'Amina Yusuf', role: 'Receiving Supervisor', from: 'Zone D1', to: 'Truck TRK-311', direction: 'Loading Out', condition: 'Good' },
+    { datetime: '2026-04-13T14:20', lot: 'LOT-081', employee: 'John Lee', role: 'Receiving Supervisor', from: 'Truck TRK-512', to: 'Delivered', direction: 'Loading Out', condition: 'Good' },
+    { datetime: '2026-04-13T11:24', lot: 'LOT-003', employee: 'Priya Shah', role: 'Dock Handler', from: 'Zone A3', to: 'Delivered', direction: 'Loading Out', condition: 'Good' },
+    { datetime: '2026-04-13T10:05', lot: 'LOT-022', employee: 'Emma Park', role: 'Compliance Officer', from: 'Dock 3', to: 'Zone C3', direction: 'Receiving In', condition: 'Damaged' },
+    { datetime: '2026-04-13T08:42', lot: 'LOT-082', employee: 'Marcus Lane', role: 'Warehouse Associate', from: 'Truck TRK-512', to: 'Delivered', direction: 'Loading Out', condition: 'Good' },
+    { datetime: '2026-04-12T16:08', lot: 'LOT-012', employee: 'Carlos Vega', role: 'Dock Handler', from: 'Zone B1', to: 'Zone B1', direction: 'Internal Transfer', condition: 'Good' },
+    { datetime: '2026-04-12T14:20', lot: 'LOT-034', employee: 'Amina Yusuf', role: 'Receiving Supervisor', from: 'Dock 4', to: 'Zone D1', direction: 'Receiving In', condition: 'Good' },
+    { datetime: '2026-04-12T09:15', lot: 'LOT-041', employee: 'John Lee', role: 'Receiving Supervisor', from: 'Dock 2', to: 'Zone D2', direction: 'Receiving In', condition: 'Good' },
+    { datetime: '2026-04-11T15:30', lot: 'LOT-052', employee: 'Priya Shah', role: 'Dock Handler', from: 'Zone B2', to: 'Delivered', direction: 'Loading Out', condition: 'Good' },
+    { datetime: '2026-04-11T13:00', lot: 'LOT-051', employee: 'Emma Park', role: 'Compliance Officer', from: 'Customs Hold', to: 'Zone B2', direction: 'Internal Transfer', condition: 'Under Review' },
+    { datetime: '2026-04-11T10:45', lot: 'LOT-062', employee: 'Marcus Lane', role: 'Warehouse Associate', from: 'Dock 1', to: 'Zone A1', direction: 'Receiving In', condition: 'Damaged' },
+    { datetime: '2026-04-10T16:00', lot: 'LOT-073', employee: 'Carlos Vega', role: 'Dock Handler', from: 'Dock 5', to: 'Zone E2', direction: 'Receiving In', condition: 'Good' },
+    { datetime: '2026-04-10T11:20', lot: 'LOT-031', employee: 'Amina Yusuf', role: 'Receiving Supervisor', from: 'Dock 4', to: 'Zone D1', direction: 'Receiving In', condition: 'Good' },
+];
+
+function fmtDatetime(dt) {
+    const d = new Date(dt);
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const hh = String(d.getHours()).padStart(2,'0');
+    const mm = String(d.getMinutes()).padStart(2,'0');
+    return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} • ${hh}:${mm}`;
+}
+
+function dirClass(dir) {
+    if (dir === 'Receiving In') return 'dir-in';
+    if (dir === 'Loading Out') return 'dir-out';
+    return 'dir-internal';
+}
+
+function condClass(c) {
+    if (c === 'Good') return 'cond-good';
+    if (c === 'Damaged') return 'cond-damaged';
+    return 'cond-review';
+}
+
+function populateEmployeeFilter() {
+    const sel = document.getElementById('filterEmployee');
+    const names = [...new Set(events.map(e => e.employee))].sort();
+    names.forEach(n => {
+        const opt = document.createElement('option');
+        opt.value = n; opt.textContent = n;
+        sel.appendChild(opt);
+    });
+}
+
+function getFilteredEvents() {
+    const dateFrom = document.getElementById('filterDateFrom').value;
+    const dateTo   = document.getElementById('filterDateTo').value;
+    const emp      = document.getElementById('filterEmployee').value;
+    const cond     = document.getElementById('filterCondition').value;
+    const dir      = document.getElementById('filterDirection').value;
+
+    return events.filter(e => {
+        const eDate = e.datetime.slice(0, 10);
+        if (dateFrom && eDate < dateFrom) return false;
+        if (dateTo   && eDate > dateTo)   return false;
+        if (emp  && e.employee  !== emp)  return false;
+        if (cond && e.condition !== cond) return false;
+        if (dir  && e.direction !== dir)  return false;
+        return true;
+    });
+}
+
+function renderTable(data) {
+    const tbody = document.getElementById('custodyBody');
+    const noResults = document.getElementById('noResults');
+    const count = document.getElementById('recordCount');
+    tbody.innerHTML = '';
+    count.textContent = `${data.length} record${data.length !== 1 ? 's' : ''}`;
+
+    if (data.length === 0) { noResults.style.display = 'block'; return; }
+    noResults.style.display = 'none';
+
+    data.forEach(e => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${fmtDatetime(e.datetime)}</td>
+            <td><strong>${e.lot}</strong></td>
+            <td class="employee-cell"><strong>${e.employee}</strong><span>${e.role}</span></td>
+            <td>${e.from}</td>
+            <td>${e.to}</td>
+            <td><span class="status-pill ${dirClass(e.direction)}">${e.direction}</span></td>
+            <td><span class="status-pill ${condClass(e.condition)}">${e.condition}</span></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function applyFilters() { renderTable(getFilteredEvents()); }
+
+function clearFilters() {
+    document.getElementById('filterDateFrom').value = '';
+    document.getElementById('filterDateTo').value = '';
+    document.getElementById('filterEmployee').value = '';
+    document.getElementById('filterCondition').value = '';
+    document.getElementById('filterDirection').value = '';
+    renderTable(events);
+}
+
+function exportCsv() {
+    const data = getFilteredEvents();
+    const headers = ['Event Time','Lot','Employee','Role','From Location','To Location','Direction','Condition Confirmed'];
+    const rows = data.map(e => [
+        fmtDatetime(e.datetime), e.lot, e.employee, e.role, e.from, e.to, e.direction, e.condition
+    ]);
+    const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'custody-event-log.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function exportExcel() {
+    const data = getFilteredEvents();
+    const headers = ['Event Time','Lot','Employee','Role','From Location','To Location','Direction','Condition Confirmed'];
+    const rows = data.map(e => [
+        fmtDatetime(e.datetime), e.lot, e.employee, e.role, e.from, e.to, e.direction, e.condition
+    ]);
+    let xml = `<?xml version="1.0"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Worksheet ss:Name="Custody Events"><Table>`;
+    [headers, ...rows].forEach(row => {
+        xml += '<Row>' + row.map(v => `<Cell><Data ss:Type="String">${String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</Data></Cell>`).join('') + '</Row>';
+    });
+    xml += '</Table></Worksheet></Workbook>';
+    const blob = new Blob([xml], { type: 'application/vnd.ms-excel' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'custody-event-log.xlsx';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+populateEmployeeFilter();
+renderTable(events);
 </script>
 </body>
 </html>
