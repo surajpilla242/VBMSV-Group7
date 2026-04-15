@@ -335,6 +335,10 @@
         background: #e6e6e6;
     }
 
+    .shipment-table tbody tr.clickable-row {
+        cursor: pointer;
+    }
+
     .status {
         padding: 6px 12px;
         border-radius: 20px;
@@ -469,10 +473,10 @@
 </header>
 
 <nav class="nav-tabs">
-    <a class="nav-tab" href="WarehouseDash.html">Dashboard</a>
+    <a class="nav-tab" href="WarehouseDash (1).html">Dashboard</a>
     <a class="nav-tab active" href="InboundOutbound.html">In/Outbound</a>
-    <a class="nav-tab" href="VendorInfo.html">Vendors &amp; Batches</a>
-    <a class="nav-tab" href="CustodyEvent.html">Custody Events</a>
+    <a class="nav-tab" href="vendor_info_nav_fixed.html">Vendors and Batches</a>
+    <a class="nav-tab" href="CustodyEvent.html">Custody Event</a>
 </nav>
 
 <main class="main-content">
@@ -717,6 +721,10 @@
         `;
     }
 
+    function openShipmentDetails(shipmentNumber) {
+        window.location.href = `WarehouseShipmentDetails.html?id=${encodeURIComponent(shipmentNumber)}`;
+    }
+
     function renderTable() {
         const filtered = getFilteredShipments();
         tableTitle.textContent = activeTab === 'outbound' ? 'Outbound Shipments' : 'Inbound Shipments';
@@ -735,7 +743,7 @@
         }
 
         tableBody.innerHTML = filtered.map(item => `
-            <tr>
+            <tr class="clickable-row" data-shipment-id="${item.shipmentNumber}">
                 <td>${item.shipmentNumber}</td>
                 <td><span class="status ${statusClass(item.status)}">${item.status}</span></td>
                 <td>${item.location}</td>
@@ -746,6 +754,12 @@
                 <td><span class="alerts-pill">${item.openAlerts}</span></td>
             </tr>
         `).join('');
+
+        tableBody.querySelectorAll('.clickable-row').forEach(row => {
+            row.addEventListener('click', () => {
+                openShipmentDetails(row.dataset.shipmentId);
+            });
+        });
     }
 
     tabButtons.forEach(button => {
