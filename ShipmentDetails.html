@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -348,38 +347,45 @@
         /* Temperature Chart */
         .temp-chart {
             width: 100%;
-            height: 250px;
+            min-height: 260px;
             background: linear-gradient(135deg, rgba(123, 30, 30, 0.1), rgba(255, 105, 180, 0.1));
             border-radius: 8px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            padding: 20px;
-            gap: 10px;
-        }
-
-        .temp-bar {
-            width: 100%;
-            background: linear-gradient(to top, #7b1e1e, #ff69b4);
-            border-radius: 5px;
+            padding: 24px 20px 20px;
             position: relative;
-            transition: all 0.3s;
+            overflow: hidden;
         }
 
-        .temp-bar:hover {
-            opacity: 0.8;
+        .temp-chart svg {
+            width: 100%;
+            height: 220px;
         }
 
-        .temp-bar::after {
-            content: attr(data-temp);
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 12px;
-            font-weight: 600;
-            color: #333;
-            white-space: nowrap;
+        .temp-chart polyline {
+            fill: none;
+            stroke: #7b1e1e;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .temp-chart circle {
+            fill: #fff;
+            stroke: #7b1e1e;
+            stroke-width: 4;
+        }
+
+        .temp-chart .temp-axis {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-top: 14px;
+            color: #555;
+            font-size: 13px;
+        }
+
+        .temp-chart .temp-axis span {
+            text-align: center;
+            display: block;
         }
 
         /* Load Monitor Table */
@@ -493,7 +499,7 @@
 
 <!-- Main Content -->
 <main class="main-content">
-    <button class="back-button" onclick="history.back()">← Back to Dashboard</button>
+    <button class="back-button" onclick="location.href='DriverDash.html'">← Back to Dashboard</button>
 
     <!-- Shipment Header -->
     <div class="shipment-header">
@@ -556,13 +562,25 @@
         <div class="temp-chart-section">
             <h2>Temperature Monitor</h2>
             <div class="temp-chart">
-                <div class="temp-bar" style="height: 65%; background: linear-gradient(to top, #7b1e1e, #ff69b4);" data-temp="18°C"></div>
-                <div class="temp-bar" style="height: 72%; background: linear-gradient(to top, #7b1e1e, #ff69b4);" data-temp="19°C"></div>
-                <div class="temp-bar" style="height: 58%; background: linear-gradient(to top, #7b1e1e, #ff69b4);" data-temp="17°C"></div>
-                <div class="temp-bar" style="height: 68%; background: linear-gradient(to top, #7b1e1e, #ff69b4);" data-temp="19°C"></div>
-                <div class="temp-bar" style="height: 75%; background: linear-gradient(to top, #7b1e1e, #ff69b4);" data-temp="20°C"></div>
-                <div class="temp-bar" style="height: 62%; background: linear-gradient(to top, #7b1e1e, #ff69b4);" data-temp="18°C"></div>
-                <div class="temp-bar" style="height: 70%; background: linear-gradient(to top, #7b1e1e, #ff69b4);" data-temp="19°C"></div>
+                <svg viewBox="0 0 700 220" preserveAspectRatio="none" aria-label="Temperature line chart">
+                    <polyline points="50,170 150,150 250,190 350,160 450,140 550,170 650,155" />
+                    <circle cx="50" cy="170" r="8"></circle>
+                    <circle cx="150" cy="150" r="8"></circle>
+                    <circle cx="250" cy="190" r="8"></circle>
+                    <circle cx="350" cy="160" r="8"></circle>
+                    <circle cx="450" cy="140" r="8"></circle>
+                    <circle cx="550" cy="170" r="8"></circle>
+                    <circle cx="650" cy="155" r="8"></circle>
+                </svg>
+                <div class="temp-axis">
+                    <span>Jan 14</span>
+                    <span>Jan 15</span>
+                    <span>Jan 16</span>
+                    <span>Jan 17</span>
+                    <span>Jan 18</span>
+                    <span>Jan 19</span>
+                    <span>Jan 20</span>
+                </div>
             </div>
         </div>
     </div>
