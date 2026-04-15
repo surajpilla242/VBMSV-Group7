@@ -74,10 +74,7 @@
         padding: 15px 30px; cursor: pointer;
         border-radius: 25px 25px 0 0; font-weight: 500;
         transition: all 0.2s; user-select: none;
-    }
-    .nav-tab a {
-        color: inherit;
-        text-decoration: none;
+        color: black;
     }
     .nav-tab.active {
         background: linear-gradient(135deg, #ff69b4, #7b1e1e);
@@ -285,8 +282,10 @@
 </header>
 
 <nav class="nav-tabs">
-    <div class="nav-tab"><a href="WarehouseDash.html">Dashboard</a></div>
-    <div class="nav-tab active">Zone Detail</div>
+    <a class="nav-tab active" href="WarehouseDash.html" style="text-decoration:none;">Dashboard</a>
+    <a class="nav-tab" href="InboundOutbound.html" style="text-decoration:none;">In/Outbound</a>
+    <a class="nav-tab" href="VendorInfo.html" style="text-decoration:none;">Vendors &amp; Batches</a>
+    <a class="nav-tab" href="CustodyEvent.html" style="text-decoration:none;">Custody Events</a>
 </nav>
 
 <main class="main-content">
