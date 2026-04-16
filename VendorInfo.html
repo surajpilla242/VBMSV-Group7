@@ -610,6 +610,16 @@
         }
 
         .modal-batch-row span { color: #555; font-size: 13px; }
+        /* ── Global Search Dropdown ── */
+        .search-wrapper { position: relative; }
+        .search-results { position: absolute; top: calc(100% + 6px); left: 0; background: white; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); display: none; z-index: 200; max-height: 320px; overflow-y: auto; min-width: 340px; }
+        .search-results.open { display: block; }
+        .search-result-item { padding: 10px 16px; cursor: pointer; border-bottom: 1px solid #f0f0f0; }
+        .search-result-item:last-child { border-bottom: none; }
+        .search-result-item:hover { background: #fdf5f5; }
+        .search-result-label { font-weight: 600; color: #333; font-size: 14px; }
+        .search-result-sub { font-size: 12px; color: #888; margin-top: 2px; }
+        .search-no-results { padding: 12px 16px; color: #888; font-size: 14px; text-align: center; }
     </style>
 </head>
 <body>
@@ -974,6 +984,18 @@ document.getElementById('vendorModal').addEventListener('click', function(e) {
 
 renderTable(batches);
 
+// Auto-filter when arriving from global search (?q=BCH-xxxx or ?q=Vendor+Name)
+(function () {
+    var q = new URLSearchParams(window.location.search).get('q');
+    if (!q) return;
+    if (/^BCH-/i.test(q)) {
+        document.getElementById('filterBatch').value = q;
+    } else {
+        document.getElementById('filterVendor').value = q;
+    }
+    applyFilters();
+}());
+
     // Profile dropdown toggle
     const userAvatar = document.querySelector('.user-avatar');
     userAvatar.addEventListener('click', function(e) {
@@ -985,5 +1007,6 @@ renderTable(batches);
     });
 </script>
 
+<script src="search.js"></script>
 </body>
 </html>
