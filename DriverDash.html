@@ -89,6 +89,7 @@
         font-weight: bold;
         cursor: pointer;
         position: relative;
+        flex-shrink: 0;
     }
 
     .user-dropdown {
@@ -104,7 +105,7 @@
         z-index: 100;
     }
 
-    .user-avatar:hover .user-dropdown {
+    .user-avatar.open .user-dropdown {
         display: block;
     }
 
@@ -356,7 +357,7 @@
                     <div><strong>Vivian Nguyen</strong></div>
                     <div>ID: EMP-001</div>
                     <div>Type: Administrator</div>
-                    <div>Logout</div>
+                    <div onclick="location.href='Login_page.html'">Logout</div>
                 </div>
             </div>
         </div>
@@ -511,6 +512,16 @@
                 }
             });
         });
+    });
+
+    // Profile dropdown toggle
+    const userAvatar = document.querySelector('.user-avatar');
+    userAvatar.addEventListener('click', function(e) {
+        e.stopPropagation();
+        this.classList.toggle('open');
+    });
+    document.addEventListener('click', function() {
+        userAvatar.classList.remove('open');
     });
 </script>
 

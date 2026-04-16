@@ -85,8 +85,9 @@
             justify-content: center;
             color: white;
             font-weight: bold;
-            position: relative;
             cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
         }
 
         .user-dropdown {
@@ -95,24 +96,31 @@
             right: 0;
             background: white;
             border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             display: none;
-            padding: 12px;
             min-width: 180px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            z-index: 100;
         }
 
-        .user-avatar:hover .user-dropdown {
+        .user-avatar.open .user-dropdown {
             display: block;
         }
 
         .user-dropdown div {
-            margin-bottom: 8px;
-            color: #444;
-            font-size: 13px;
+            padding: 12px 16px;
+            cursor: pointer;
+            color: #333;
+            font-weight: normal;
+        }
+
+        .user-dropdown div:hover {
+            background: #f5f5f5;
         }
 
         .user-dropdown div:last-child {
-            margin-bottom: 0;
+            border-top: 1px solid #eee;
+            color: #7b1e1e;
         }
 
         .nav-tabs {
@@ -622,7 +630,7 @@
                     <div><strong>Vivian Nguyen</strong></div>
                     <div>ID: VD-031</div>
                     <div>Role: Vendor Manager</div>
-                    <div>Logout</div>
+                    <div onclick="location.href='Login_page.html'">Logout</div>
                 </div>
             </div>
         </div>
@@ -965,6 +973,16 @@ document.getElementById('vendorModal').addEventListener('click', function(e) {
 });
 
 renderTable(batches);
+
+    // Profile dropdown toggle
+    const userAvatar = document.querySelector('.user-avatar');
+    userAvatar.addEventListener('click', function(e) {
+        e.stopPropagation();
+        this.classList.toggle('open');
+    });
+    document.addEventListener('click', function() {
+        userAvatar.classList.remove('open');
+    });
 </script>
 
 </body>
