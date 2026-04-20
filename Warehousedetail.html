@@ -529,10 +529,44 @@
         });
     }
 
+    var ZONES_PER_PAGE = 2;
+    var zoneCurrentPage = 1;
+
+    function renderZonePagination(totalPages) {
+        var pag = document.querySelector('.pagination');
+        pag.innerHTML = '';
+        var prevBtn = document.createElement('button');
+        prevBtn.type = 'button';
+        prevBtn.textContent = '<';
+        prevBtn.disabled = zoneCurrentPage === 1;
+        prevBtn.addEventListener('click', function () { zoneCurrentPage--; renderZones(); });
+        pag.appendChild(prevBtn);
+        for (var p = 1; p <= totalPages; p++) {
+            (function (page) {
+                var span = document.createElement('span');
+                span.className = 'page-num' + (page === zoneCurrentPage ? ' active' : '');
+                span.textContent = page;
+                span.addEventListener('click', function () { zoneCurrentPage = page; renderZones(); });
+                pag.appendChild(span);
+            }(p));
+        }
+        var nextBtn = document.createElement('button');
+        nextBtn.type = 'button';
+        nextBtn.textContent = '>';
+        nextBtn.disabled = zoneCurrentPage === totalPages;
+        nextBtn.addEventListener('click', function () { zoneCurrentPage++; renderZones(); });
+        pag.appendChild(nextBtn);
+    }
+
     function renderZones() {
+        var allKeys = Object.keys(ZONES);
+        var totalPages = Math.max(1, Math.ceil(allKeys.length / ZONES_PER_PAGE));
+        if (zoneCurrentPage > totalPages) zoneCurrentPage = totalPages;
+        var start = (zoneCurrentPage - 1) * ZONES_PER_PAGE;
+        var pageKeys = allKeys.slice(start, start + ZONES_PER_PAGE);
         var tbody = document.getElementById('zoneTableBody');
         tbody.innerHTML = '';
-        Object.keys(ZONES).forEach(function (key) {
+        pageKeys.forEach(function (key) {
             var z = ZONES[key];
             var tr = document.createElement('tr');
             tr.dataset.zoneId = z.id;
@@ -551,6 +585,7 @@
             tr.addEventListener('click', function () { selectZone(z.id); });
             tbody.appendChild(tr);
         });
+        renderZonePagination(totalPages);
     }
 
     function selectZone(zoneId) {

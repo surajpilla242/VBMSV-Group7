@@ -1094,6 +1094,31 @@
         panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
+    let ioCurrentPage = 1;
+    const IO_ROWS_PER_PAGE = 5;
+
+    function renderIoPagination(totalPages) {
+        const pag = document.querySelector('.pagination');
+        pag.innerHTML = '';
+        const prevBtn = document.createElement('button');
+        prevBtn.textContent = '<';
+        prevBtn.disabled = ioCurrentPage === 1;
+        prevBtn.addEventListener('click', () => { ioCurrentPage--; renderTable(); });
+        pag.appendChild(prevBtn);
+        for (let i = 1; i <= totalPages; i++) {
+            const span = document.createElement('span');
+            span.className = 'page-num' + (i === ioCurrentPage ? ' active' : '');
+            span.textContent = i;
+            span.addEventListener('click', () => { ioCurrentPage = i; renderTable(); });
+            pag.appendChild(span);
+        }
+        const nextBtn = document.createElement('button');
+        nextBtn.textContent = '>';
+        nextBtn.disabled = ioCurrentPage === totalPages;
+        nextBtn.addEventListener('click', () => { ioCurrentPage++; renderTable(); });
+        pag.appendChild(nextBtn);
+    }
+
     function renderTable() {
         const filtered = getFilteredShipments();
         tableTitle.textContent = activeTab === 'outbound' ? 'Outbound Shipments' : 'Inbound Shipments';
@@ -1108,10 +1133,16 @@
                     </td>
                 </tr>
             `;
+            renderIoPagination(1);
             return;
         }
 
-        tableBody.innerHTML = filtered.map(item => `
+        const totalPages = Math.max(1, Math.ceil(filtered.length / IO_ROWS_PER_PAGE));
+        if (ioCurrentPage > totalPages) ioCurrentPage = totalPages;
+        const start = (ioCurrentPage - 1) * IO_ROWS_PER_PAGE;
+        const pageItems = filtered.slice(start, start + IO_ROWS_PER_PAGE);
+
+        tableBody.innerHTML = pageItems.map(item => `
             <tr class="clickable-row${item.openAlerts > 0 ? ' has-alerts' : ''}" data-shipment-id="${item.shipmentNumber}">
                 <td>${item.shipmentNumber}</td>
                 <td><span class="status ${statusClass(item.status)}">${item.status}</span></td>
@@ -1129,6 +1160,8 @@
                 openDetailPanel(row.dataset.shipmentId);
             });
         });
+
+        renderIoPagination(totalPages);
     }
 
     tabButtons.forEach(button => {
@@ -1136,12 +1169,14 @@
             tabButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
             activeTab = button.dataset.tab;
+            ioCurrentPage = 1;
             renderStats();
             renderTable();
         });
     });
 
     document.getElementById('applyFilters').addEventListener('click', () => {
+        ioCurrentPage = 1;
         renderTable();
     });
 
@@ -1149,6 +1184,7 @@
         statusFilter.value = 'all';
         startDate.value = '';
         endDate.value = '';
+        ioCurrentPage = 1;
         renderTable();
     });
 

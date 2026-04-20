@@ -669,11 +669,11 @@
             </div>
             <div class="filter-group">
                 <label>Expiry From</label>
-                <input type="date" id="filterExpFrom" oninput="applyFilters()">
+                <input type="date" id="filterExpFrom" oninput="applyFilters()" onchange="applyFilters()">
             </div>
             <div class="filter-group">
                 <label>Expiry To</label>
-                <input type="date" id="filterExpTo" oninput="applyFilters()">
+                <input type="date" id="filterExpTo" oninput="applyFilters()" onchange="applyFilters()">
             </div>
             <button class="btn-clear" onclick="clearFilters()">Clear</button>
         </div>

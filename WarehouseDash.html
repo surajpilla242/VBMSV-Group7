@@ -599,26 +599,56 @@
 
 <script>
     const filterButtons = document.querySelectorAll('.filter-btn');
-    const taskRows = document.querySelectorAll('.shipment-table tbody tr');
+    let allTaskRows = Array.from(document.querySelectorAll('.shipment-table tbody tr'));
+    const WH_ROWS_PER_PAGE = 5;
+    let whCurrentPage = 1;
+    let whCurrentFilter = 'all';
+
+    function getWhFilteredRows() {
+        return allTaskRows.filter(row =>
+            whCurrentFilter === 'all' || row.getAttribute('data-status') === whCurrentFilter
+        );
+    }
+
+    function renderWhPagination(totalPages) {
+        const pag = document.querySelector('.pagination');
+        pag.innerHTML = '';
+        const prevBtn = document.createElement('button');
+        prevBtn.textContent = '<';
+        prevBtn.disabled = whCurrentPage === 1;
+        prevBtn.addEventListener('click', () => { whCurrentPage--; renderWhPage(); });
+        pag.appendChild(prevBtn);
+        for (let i = 1; i <= totalPages; i++) {
+            const span = document.createElement('span');
+            span.className = 'page-num' + (i === whCurrentPage ? ' active' : '');
+            span.textContent = i;
+            span.addEventListener('click', () => { whCurrentPage = i; renderWhPage(); });
+            pag.appendChild(span);
+        }
+        const nextBtn = document.createElement('button');
+        nextBtn.textContent = '>';
+        nextBtn.disabled = whCurrentPage === totalPages;
+        nextBtn.addEventListener('click', () => { whCurrentPage++; renderWhPage(); });
+        pag.appendChild(nextBtn);
+    }
+
+    function renderWhPage() {
+        const filtered = getWhFilteredRows();
+        const totalPages = Math.max(1, Math.ceil(filtered.length / WH_ROWS_PER_PAGE));
+        if (whCurrentPage > totalPages) whCurrentPage = totalPages;
+        const start = (whCurrentPage - 1) * WH_ROWS_PER_PAGE;
+        allTaskRows.forEach(r => r.style.display = 'none');
+        filtered.slice(start, start + WH_ROWS_PER_PAGE).forEach(r => r.style.display = '');
+        renderWhPagination(totalPages);
+    }
 
     filterButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-            const filter = btn.getAttribute('data-filter');
+            whCurrentFilter = btn.getAttribute('data-filter');
             filterButtons.forEach(button => button.classList.remove('active'));
             btn.classList.add('active');
-
-            taskRows.forEach(row => {
-                const status = row.getAttribute('data-status');
-                if (filter === 'all') {
-                    row.style.display = '';
-                } else if (filter === 'operational') {
-                    row.style.display = status === 'operational' ? '' : 'none';
-                } else if (filter === 'monitoring') {
-                    row.style.display = status === 'monitoring' ? '' : 'none';
-                } else if (filter === 'maintenance') {
-                    row.style.display = status === 'maintenance' ? '' : 'none';
-                }
-            });
+            whCurrentPage = 1;
+            renderWhPage();
         });
     });
 
@@ -660,18 +690,20 @@
         chartLegend.classList.remove('hidden');
     };
 
-    taskRows.forEach(row => {
+    allTaskRows.forEach(row => {
         const tempAlerts = Number(row.getAttribute('data-temp-alerts'));
         if (tempAlerts > 0) {
             row.classList.add('temp-alert');
         }
 
         row.addEventListener('click', () => {
-            taskRows.forEach(r => r.classList.remove('selected'));
+            allTaskRows.forEach(r => r.classList.remove('selected'));
             row.classList.add('selected');
             updateChart(row);
         });
     });
+
+    renderWhPage();
 
     const warehouseLinks = document.querySelectorAll('.warehouse-link');
     warehouseLinks.forEach(link => {

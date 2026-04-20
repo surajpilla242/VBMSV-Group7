@@ -211,10 +211,24 @@
 
     .shipment-table th.sortable {
         cursor: pointer;
+        user-select: none;
     }
 
     .shipment-table th.sortable:hover {
         background: #f0f0f0;
+    }
+
+    .shipment-table th.sortable .sort-icon {
+        display: inline-block;
+        margin-left: 5px;
+        font-size: 11px;
+        color: #aaa;
+        transition: color 0.15s;
+    }
+
+    .shipment-table th.sortable.sort-asc .sort-icon,
+    .shipment-table th.sortable.sort-desc .sort-icon {
+        color: #7b1e1e;
     }
 
     .shipment-table td {
@@ -415,8 +429,10 @@
 
         <div class="filter-row">
             <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="departed">Departed</button>
-            <button class="filter-btn" data-filter="arrived">Arrived</button>
+            <button class="filter-btn" data-filter="delivered">Delivered</button>
+            <button class="filter-btn" data-filter="in-transit">In Transit</button>
+            <button class="filter-btn" data-filter="pending">Pending</button>
+            <button class="filter-btn" data-filter="delayed">Delayed</button>
         </div>
 
         <table class="shipment-table">
@@ -425,9 +441,9 @@
                     <th>Shipment ID</th>
                     <th>Origin</th>
                     <th>Destination</th>
-                    <th class="sortable">Departed ▼</th>
-                    <th class="sortable">Arrived ▼</th>
-                    <th class="sortable">Status ▼</th>
+                    <th class="sortable" data-col="3">Departed <span class="sort-icon">⇅</span></th>
+                    <th class="sortable" data-col="4">Arrived <span class="sort-icon">⇅</span></th>
+                    <th>Status</th>
                     <th>Temp</th>
                 </tr>
             </thead>
@@ -585,34 +601,126 @@
 </footer>
 
 <script>
-    // Get all filter buttons and table rows
+    // ── Filter + Pagination ──
     const filterBtns = document.querySelectorAll('.filter-btn');
-    const tableRows = document.querySelectorAll('.shipment-table tbody tr');
+    let allRows = Array.from(document.querySelectorAll('.shipment-table tbody tr'));
+    const ROWS_PER_PAGE = 5;
+    let currentPage = 1;
+    let currentFilter = 'all';
 
-    // Add click event to each filter button
+    function getFilteredRows() {
+        return allRows.filter(row => {
+            if (currentFilter === 'all') return true;
+            const statusCell = row.cells[5] ? row.cells[5].textContent.trim().toLowerCase() : '';
+            return statusCell.replace(/\s+/g, '-') === currentFilter;
+        });
+    }
+
+    function renderPagination(totalPages) {
+        const pag = document.querySelector('.pagination');
+        pag.innerHTML = '';
+        const prevBtn = document.createElement('button');
+        prevBtn.textContent = '<';
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.addEventListener('click', () => { currentPage--; renderPage(); });
+        pag.appendChild(prevBtn);
+        for (let i = 1; i <= totalPages; i++) {
+            const span = document.createElement('span');
+            span.className = 'page-num' + (i === currentPage ? ' active' : '');
+            span.textContent = i;
+            span.addEventListener('click', () => { currentPage = i; renderPage(); });
+            pag.appendChild(span);
+        }
+        const nextBtn = document.createElement('button');
+        nextBtn.textContent = '>';
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.addEventListener('click', () => { currentPage++; renderPage(); });
+        pag.appendChild(nextBtn);
+    }
+
+    function renderPage() {
+        const filtered = getFilteredRows();
+        const totalPages = Math.max(1, Math.ceil(filtered.length / ROWS_PER_PAGE));
+        if (currentPage > totalPages) currentPage = totalPages;
+        const start = (currentPage - 1) * ROWS_PER_PAGE;
+        allRows.forEach(r => r.style.display = 'none');
+        filtered.slice(start, start + ROWS_PER_PAGE).forEach(r => r.style.display = '');
+        renderPagination(totalPages);
+    }
+
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            const filter = this.getAttribute('data-filter');
-
-            // Update active button
+            currentFilter = this.getAttribute('data-filter');
             filterBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
+            currentPage = 1;
+            renderPage();
+        });
+    });
 
-            // Filter rows
-            tableRows.forEach(row => {
-                const departedCell = row.cells[3].textContent.trim(); // Departed column
-                const arrivedCell = row.cells[4].textContent.trim();  // Arrived column
+    renderPage();
 
-                if (filter === 'all') {
-                    row.style.display = '';
-                } else if (filter === 'departed') {
-                    // Show if Departed is not "—"
-                    row.style.display = departedCell !== '—' ? '' : 'none';
-                } else if (filter === 'arrived') {
-                    // Show if Arrived is not "—"
-                    row.style.display = arrivedCell !== '—' ? '' : 'none';
+    // ── Column sorting ──
+    const sortableHeaders = document.querySelectorAll('.shipment-table th.sortable');
+    let currentSortCol = null;
+    let currentSortDir = 'asc';
+
+    function parseDate(str) {
+        if (!str || str.trim() === '—') return null;
+        const d = new Date(str.trim());
+        return isNaN(d.getTime()) ? null : d;
+    }
+
+    const statusOrder = { 'delivered': 0, 'in transit': 1, 'in-transit': 1, 'pending': 2, 'delayed': 3 };
+
+    sortableHeaders.forEach(th => {
+        th.addEventListener('click', function () {
+            const colIdx = parseInt(this.getAttribute('data-col'));
+            if (currentSortCol === colIdx) {
+                currentSortDir = currentSortDir === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortCol = colIdx;
+                currentSortDir = 'asc';
+            }
+
+            // Update header indicators
+            sortableHeaders.forEach(h => {
+                h.classList.remove('sort-asc', 'sort-desc');
+                h.querySelector('.sort-icon').textContent = '⇅';
+            });
+            this.classList.add(currentSortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+            this.querySelector('.sort-icon').textContent = currentSortDir === 'asc' ? '▲' : '▼';
+
+            const tbody = document.querySelector('.shipment-table tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            const dir = currentSortDir === 'asc' ? 1 : -1;
+
+            rows.sort((a, b) => {
+                const aText = a.cells[colIdx] ? a.cells[colIdx].textContent.trim() : '';
+                const bText = b.cells[colIdx] ? b.cells[colIdx].textContent.trim() : '';
+
+                if (colIdx === 3 || colIdx === 4) {
+                    // Date columns — nulls (—) sort last regardless of direction
+                    const aDate = parseDate(aText);
+                    const bDate = parseDate(bText);
+                    if (!aDate && !bDate) return 0;
+                    if (!aDate) return 1;
+                    if (!bDate) return -1;
+                    return (aDate - bDate) * dir;
+                } else {
+                    // Status column — use defined order
+                    const aKey = aText.toLowerCase();
+                    const bKey = bText.toLowerCase();
+                    const aOrd = statusOrder[aKey] ?? 99;
+                    const bOrd = statusOrder[bKey] ?? 99;
+                    return (aOrd - bOrd) * dir;
                 }
             });
+
+            rows.forEach(r => tbody.appendChild(r));
+            allRows = Array.from(tbody.querySelectorAll('tr'));
+            currentPage = 1;
+            renderPage();
         });
     });
 
