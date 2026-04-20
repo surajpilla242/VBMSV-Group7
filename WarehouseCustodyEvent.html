@@ -494,9 +494,7 @@
             </div>
             <div class="filter-group">
                 <label>Employee</label>
-                <select id="filterEmployee" onchange="applyFilters()">
-                    <option value="">All Employees</option>
-                </select>
+                <input type="text" id="filterEmployee" placeholder="Search employee…" oninput="applyFilters()">
             </div>
             <div class="filter-group">
                 <label>Condition</label>
@@ -595,15 +593,7 @@ function condClass(c) {
     return 'cond-review';
 }
 
-function populateEmployeeFilter() {
-    const sel = document.getElementById('filterEmployee');
-    const names = [...new Set(events.map(e => e.employee))].sort();
-    names.forEach(n => {
-        const opt = document.createElement('option');
-        opt.value = n; opt.textContent = n;
-        sel.appendChild(opt);
-    });
-}
+
 
 function getFilteredEvents() {
     const dateFrom = document.getElementById('filterDateFrom').value;
@@ -617,7 +607,7 @@ function getFilteredEvents() {
         const eDate = e.datetime.slice(0, 10);
         if (dateFrom && eDate < dateFrom) return false;
         if (dateTo   && eDate > dateTo)   return false;
-        if (emp  && e.employee  !== emp)  return false;
+        if (emp  && !e.employee.toLowerCase().includes(emp.toLowerCase())) return false;
         if (cond && e.condition !== cond) return false;
         if (dir  && e.direction !== dir)  return false;
         if (urlQ) {
@@ -694,7 +684,6 @@ function exportExcel() {
     document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 
-populateEmployeeFilter();
 renderTable(events);
 
     // Profile dropdown toggle
