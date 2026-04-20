@@ -685,6 +685,15 @@ const batches = [
     }
 ];
 
+// Shipments assigned to the current driver
+const driverShipmentIds = new Set(['SHP-2024-001','SHP-2024-002','SHP-2024-003','SHP-2024-004','SHP-2024-005','SHP-2024-006']);
+
+// Only batches that contain at least one of the driver's shipments,
+// with lot lists trimmed to only the driver's shipments
+const driverBatches = batches
+    .map(b => ({ ...b, lots: b.lots.filter(l => driverShipmentIds.has(l.id)) }))
+    .filter(b => b.lots.length > 0);
+
 function formatDate(d) {
     const [y, m, day] = d.split('-');
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -762,7 +771,7 @@ function applyFilters() {
     const expFrom = document.getElementById('filterExpFrom').value;
     const expTo = document.getElementById('filterExpTo').value;
 
-    const filtered = batches.filter(b => {
+    const filtered = driverBatches.filter(b => {
         const v = vendors[b.vendorId];
         if (vendor && !v.name.toLowerCase().includes(vendor)) return false;
         if (batch && !b.batchNum.toLowerCase().includes(batch)) return false;
@@ -779,7 +788,7 @@ function clearFilters() {
     document.getElementById('filterBatch').value = '';
     document.getElementById('filterExpFrom').value = '';
     document.getElementById('filterExpTo').value = '';
-    renderTable(batches);
+    renderTable(driverBatches);
 }
 
 function openVendorModal(vendorId, e) {
@@ -794,7 +803,7 @@ function openVendorModal(vendorId, e) {
     document.getElementById('modalCompliance').innerHTML =
         `<span class="compliance-badge ${v.complianceClass}">${v.compliance}</span>`;
 
-    const vendorBatches = batches.filter(b => b.vendorId === vendorId);
+    const vendorBatches = driverBatches.filter(b => b.vendorId === vendorId);
     const listEl = document.getElementById('modalBatchList');
     listEl.innerHTML = vendorBatches.map(b =>
         `<div class="modal-batch-row">
@@ -816,7 +825,7 @@ document.getElementById('vendorModal').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
 });
 
-renderTable(batches);
+renderTable(driverBatches);
 
 // Auto-filter when arriving from global search (?q=BCH-xxxx or ?q=Vendor+Name)
 (function () {
