@@ -139,6 +139,7 @@
             font-weight: 500;
             transition: all 0.2s;
             user-select: none;
+            color: black;
         }
 
         .nav-tab:hover {
@@ -177,27 +178,67 @@
         .shipment-header {
             background: white;
             border-radius: 12px;
-            padding: 25px;
+            padding: 28px 30px;
             margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .shp-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
         }
 
-        .shipment-title {
-            flex: 1;
-        }
-
-        .shipment-title h1 {
-            font-size: 28px;
+        .shp-top h1 {
+            font-size: 26px;
+            font-weight: 700;
             color: #333;
-            margin-bottom: 5px;
         }
 
-        .shipment-title p {
+        .shp-body {
+            display: grid;
+            grid-template-columns: 1fr 36px 1fr 1fr 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .shp-field-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .shp-field-primary {
+            font-size: 15px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 3px;
+        }
+
+        .shp-field-secondary {
+            font-size: 13px;
             color: #666;
-            font-size: 14px;
+        }
+
+        .shp-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 22px;
+            font-size: 22px;
+            color: #7b1e1e;
+            font-weight: bold;
+        }
+
+        @media (max-width: 900px) {
+            .shp-body { grid-template-columns: 1fr; }
+            .shp-arrow { display: none; }
         }
 
         .status {
@@ -226,41 +267,6 @@
         .status.delayed {
             background: #f8d7da;
             color: #721c24;
-        }
-
-        /* Details Grid */
-        .details-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .detail-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .detail-card h3 {
-            font-size: 12px;
-            color: #999;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .detail-card p {
-            font-size: 16px;
-            color: #333;
-            font-weight: 500;
-        }
-
-        .detail-card .label {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
         }
 
         /* Timeline Section */
@@ -345,51 +351,110 @@
             margin-top: 5px;
         }
 
+        .seal-badge {
+            display: inline-block;
+            margin-top: 7px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .seal-intact {
+            background: #eef7f5;
+            color: #1f6f61;
+        }
+
+        .seal-damaged {
+            background: #ffeaea;
+            color: #9b1c1c;
+        }
+
+        /* Editable seal condition select (driver handoff steps only) */
+        .seal-select {
+            appearance: none;
+            -webkit-appearance: none;
+            display: inline-block;
+            margin-top: 7px;
+            padding: 3px 26px 3px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1.5px solid transparent;
+            cursor: pointer;
+            outline: none;
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 10px 6px;
+            transition: box-shadow 0.15s;
+        }
+
+        .seal-select:hover,
+        .seal-select:focus {
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.12);
+        }
+
+        .seal-select.intact {
+            background-color: #eef7f5;
+            color: #1f6f61;
+            border-color: #a8d5cb;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%231f6f61' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        }
+
+        .seal-select.damaged {
+            background-color: #ffeaea;
+            color: #9b1c1c;
+            border-color: #f5aaaa;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239b1c1c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        }
+
         /* Temperature Chart */
-        .temp-chart {
+        .temp-chart-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .temp-chart-section h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 16px;
+        }
+
+        .temp-chart-wrap {
             width: 100%;
-            min-height: 260px;
-            background: linear-gradient(135deg, rgba(123, 30, 30, 0.1), rgba(255, 105, 180, 0.1));
-            border-radius: 8px;
-            padding: 24px 20px 20px;
-            position: relative;
-            overflow: hidden;
+            overflow-x: auto;
         }
 
-        .temp-chart svg {
+        .temp-chart-wrap svg {
             width: 100%;
-            height: 220px;
-        }
-
-        .temp-chart polyline {
-            fill: none;
-            stroke: #7b1e1e;
-            stroke-width: 4;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .temp-chart circle {
-            fill: #fff;
-            stroke: #7b1e1e;
-            stroke-width: 4;
-        }
-
-        .temp-chart .temp-axis {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-            margin-top: 14px;
-            color: #555;
-            font-size: 13px;
-        }
-
-        .temp-chart .temp-axis span {
-            text-align: center;
+            height: 260px;
             display: block;
         }
 
-        /* Load Monitor Table */
+        .temp-legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .temp-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .temp-legend-swatch {
+            width: 28px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        /* Lot Manifest Table */
         .load-monitor-section {
             background: white;
             border-radius: 12px;
@@ -434,25 +499,6 @@
             color: #333;
         }
 
-        .weight-bar {
-            width: 100%;
-            height: 20px;
-            background: #f0f0f0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .weight-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #7b1e1e, #ff69b4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
         /* Footer */
         .footer {
             background: #7b1e1e;
@@ -483,7 +529,7 @@
     </div>
 
     <div class="header-right">
-        <input type="text" class="search-bar" placeholder="🔍 Search...">
+        <input type="text" class="search-bar" data-scope="driver" placeholder="🔍 Search...">
 
         <div class="header-icons">
             <button class="icon-btn" title="Notifications">🔔</button>
@@ -506,6 +552,7 @@
 <nav class="nav-tabs">
     <a class="nav-tab" href="DriverDash.html" style="text-decoration:none;">Dashboard</a>
     <a class="nav-tab" href="MyVehicle.html" style="text-decoration:none;">My Vehicle</a>
+    <a class="nav-tab" href="VendorInfo.html" style="text-decoration:none;">Vendors &amp; Batches</a>
 </nav>
 
 <!-- Main Content -->
@@ -514,34 +561,30 @@
 
     <!-- Shipment Header -->
     <div class="shipment-header">
-        <div class="shipment-title">
+        <div class="shp-top">
             <h1 id="shipmentId">SHP-2024-001</h1>
-            <p id="shipmentRoute">Los Angeles, CA → New York, NY</p>
+            <span class="status" id="shipmentStatus">In Transit</span>
         </div>
-        <span class="status" id="shipmentStatus">In Transit</span>
-    </div>
-
-    <!-- Details Grid -->
-    <div class="details-grid">
-        <div class="detail-card">
-            <h3>Origin</h3>
-            <p id="originCity">Los Angeles, CA</p>
-            <div class="label" id="originDate">Jan 15, 2024</div>
-        </div>
-        <div class="detail-card">
-            <h3>Depart</h3>
-            <p id="departDate">Jan 15, 2024</p>
-            <div class="label">10:00 AM</div>
-        </div>
-        <div class="detail-card">
-            <h3>Destination</h3>
-            <p id="destCity">New York, NY</p>
-            <div class="label">Eastern Time</div>
-        </div>
-        <div class="detail-card">
-            <h3>Arrival</h3>
-            <p id="arrivalDate">Jan 20, 2024</p>
-            <div class="label">EST 2:00 PM</div>
+        <div class="shp-body">
+            <div>
+                <div class="shp-field-label">Origin</div>
+                <div class="shp-field-primary" id="originName">—</div>
+                <div class="shp-field-secondary" id="originAddr">—</div>
+            </div>
+            <div class="shp-arrow">→</div>
+            <div>
+                <div class="shp-field-label">Destination</div>
+                <div class="shp-field-primary" id="destName">—</div>
+                <div class="shp-field-secondary" id="destAddr">—</div>
+            </div>
+            <div>
+                <div class="shp-field-label">Departure</div>
+                <div class="shp-field-primary" id="departureTime">—</div>
+            </div>
+            <div>
+                <div class="shp-field-label">Arrival</div>
+                <div class="shp-field-primary" id="arrivalTime"></div>
+            </div>
         </div>
     </div>
 
@@ -550,111 +593,38 @@
         <!-- Timeline Section -->
         <div class="timeline-section">
             <h2>Timeline</h2>
-            <div class="timeline">
-                <div class="timeline-item completed">
-                    <h4>Picked Up</h4>
-                    <div class="time">Jan 15, 2024 - 10:00 AM</div>
-                    <div class="location">Los Angeles, CA</div>
-                </div>
-                <div class="timeline-item completed">
-                    <h4>In Transit (Real Time)</h4>
-                    <div class="time">Currently in Motion</div>
-                    <div class="location">Texas - Route 23</div>
-                </div>
-                <div class="timeline-item pending">
-                    <h4>Delivery</h4>
-                    <div class="time">Jan 20, 2024 - EST 2:00 PM</div>
-                    <div class="location">New York, NY</div>
-                </div>
-            </div>
+            <div class="timeline" id="timeline"></div>
         </div>
 
         <!-- Temperature Chart Section -->
         <div class="temp-chart-section">
             <h2>Temperature Monitor</h2>
-            <div class="temp-chart">
-                <svg viewBox="0 0 700 220" preserveAspectRatio="none" aria-label="Temperature line chart">
-                    <polyline points="50,170 150,150 250,190 350,160 450,140 550,170 650,155" />
-                    <circle cx="50" cy="170" r="8"></circle>
-                    <circle cx="150" cy="150" r="8"></circle>
-                    <circle cx="250" cy="190" r="8"></circle>
-                    <circle cx="350" cy="160" r="8"></circle>
-                    <circle cx="450" cy="140" r="8"></circle>
-                    <circle cx="550" cy="170" r="8"></circle>
-                    <circle cx="650" cy="155" r="8"></circle>
-                </svg>
-                <div class="temp-axis">
-                    <span>Jan 14</span>
-                    <span>Jan 15</span>
-                    <span>Jan 16</span>
-                    <span>Jan 17</span>
-                    <span>Jan 18</span>
-                    <span>Jan 19</span>
-                    <span>Jan 20</span>
-                </div>
+            <div class="temp-chart-wrap">
+                <svg id="tempSvg" viewBox="0 0 760 260" preserveAspectRatio="none" aria-label="Temperature line chart"></svg>
+            </div>
+            <div class="temp-legend">
+                <div class="temp-legend-item"><div class="temp-legend-swatch" style="background:#2a9d6f"></div>In-range reading</div>
+                <div class="temp-legend-item"><div class="temp-legend-swatch" style="background:#e63946"></div>Out-of-range reading</div>
+                <div class="temp-legend-item"><div class="temp-legend-swatch" style="background:#e6394633;height:12px;width:28px;border-radius:2px"></div>Excursion window</div>
+                <div class="temp-legend-item"><div class="temp-legend-swatch" style="background:#1a5c8b;border-top:2px dashed #1a5c8b;height:0"></div>Min / Max limit</div>
             </div>
         </div>
     </div>
 
-    <!-- Load Monitor Table -->
+    <!-- Lot Manifest Table -->
     <div class="load-monitor-section">
-        <h2>Load Monitor</h2>
+        <h2>Lot Manifest</h2>
         <table class="monitor-table">
             <thead>
                 <tr>
-                    <th>Item ID</th>
-                    <th>Description</th>
-                    <th>Weight (kg)</th>
-                    <th>Quantity</th>
-                    <th>Status</th>
+                    <th>Vendor Name</th>
+                    <th>Batch #</th>
+                    <th>Lot #</th>
+                    <th>Quantity Loaded</th>
+                    <th>Expiry Date</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td class="item-name">ITEM-001</td>
-                    <td>Electronics Package</td>
-                    <td>
-                        <div class="weight-bar">
-                            <div class="weight-fill" style="width: 75%;">75%</div>
-                        </div>
-                    </td>
-                    <td>12 units</td>
-                    <td><span class="status in-transit">Secure</span></td>
-                </tr>
-                <tr>
-                    <td class="item-name">ITEM-002</td>
-                    <td>Fragile Goods</td>
-                    <td>
-                        <div class="weight-bar">
-                            <div class="weight-fill" style="width: 60%;">60%</div>
-                        </div>
-                    </td>
-                    <td>8 units</td>
-                    <td><span class="status delivered">Stable</span></td>
-                </tr>
-                <tr>
-                    <td class="item-name">ITEM-003</td>
-                    <td>Raw Materials</td>
-                    <td>
-                        <div class="weight-bar">
-                            <div class="weight-fill" style="width: 85%;">85%</div>
-                        </div>
-                    </td>
-                    <td>24 units</td>
-                    <td><span class="status in-transit">Secure</span></td>
-                </tr>
-                <tr>
-                    <td class="item-name">ITEM-004</td>
-                    <td>Packaging Materials</td>
-                    <td>
-                        <div class="weight-bar">
-                            <div class="weight-fill" style="width: 45%;">45%</div>
-                        </div>
-                    </td>
-                    <td>15 units</td>
-                    <td><span class="status delivered">Optimized</span></td>
-                </tr>
-            </tbody>
+            <tbody id="manifestBody"></tbody>
         </table>
     </div>
 </main>
@@ -669,48 +639,344 @@
     const urlParams = new URLSearchParams(window.location.search);
     const shipmentId = urlParams.get('id');
 
+    // Lot manifest data per shipment
+    const manifestData = {
+        'SHP-2024-001': [
+            { vendor: 'DHS Logistics',     batch: 'BCH-0942', lot: 'LOT-002', qty: '80 units',  expiry: 'Jul 10, 2026' },
+            { vendor: 'Arctic Bio Supply', batch: 'BCH-2201', lot: 'LOT-032', qty: '120 vials', expiry: 'Jun 20, 2026' },
+            { vendor: 'FreshChain Co.',    batch: 'BCH-4415', lot: 'LOT-081', qty: '200 kg',    expiry: 'Jun 8, 2026'  }
+        ],
+        'SHP-2024-002': [
+            { vendor: 'MedTech Pharma',    batch: 'BCH-3301', lot: 'LOT-053', qty: '150 tablets', expiry: 'May 1, 2026'  },
+            { vendor: 'FreshChain Co.',    batch: 'BCH-4401', lot: 'LOT-072', qty: '300 kg',      expiry: 'May 15, 2026' }
+        ],
+        'SHP-2024-003': [
+            { vendor: 'DHS Logistics',     batch: 'BCH-0975', lot: 'LOT-011', qty: '90 units',  expiry: 'Aug 5, 2026'  },
+            { vendor: 'Arctic Bio Supply', batch: 'BCH-2215', lot: 'LOT-041', qty: '150 vials', expiry: 'Sep 15, 2026' }
+        ],
+        'SHP-2024-004': [
+            { vendor: 'DHS Logistics',     batch: 'BCH-1018', lot: 'LOT-021', qty: '250 units',   expiry: 'Mar 1, 2027'  },
+            { vendor: 'MedTech Pharma',    batch: 'BCH-3318', lot: 'LOT-061', qty: '100 bottles', expiry: 'Nov 20, 2026' }
+        ],
+        'SHP-2024-005': [
+            { vendor: 'FreshChain Co.',    batch: 'BCH-4401', lot: 'LOT-073', qty: '450 kg',    expiry: 'May 15, 2026' },
+            { vendor: 'Arctic Bio Supply', batch: 'BCH-2201', lot: 'LOT-034', qty: '80 vials',  expiry: 'Jun 20, 2026' }
+        ],
+        'SHP-2024-006': [
+            { vendor: 'DHS Logistics',     batch: 'BCH-0942', lot: 'LOT-003', qty: '60 units',   expiry: 'Jul 10, 2026' },
+            { vendor: 'MedTech Pharma',    batch: 'BCH-3301', lot: 'LOT-051', qty: '200 tablets', expiry: 'May 1, 2026'  },
+            { vendor: 'FreshChain Co.',    batch: 'BCH-4415', lot: 'LOT-082', qty: '250 kg',      expiry: 'Jun 8, 2026'  }
+        ]
+    };
+
+    function renderManifest(id) {
+        const tbody = document.getElementById('manifestBody');
+        const rows = manifestData[id];
+        if (!rows) return;
+        tbody.innerHTML = rows.map(r =>
+            `<tr>
+                <td class="item-name">${r.vendor}</td>
+                <td>${r.batch}</td>
+                <td>${r.lot}</td>
+                <td>${r.qty}</td>
+                <td>${r.expiry}</td>
+            </tr>`
+        ).join('');
+    }
+
+    // Temperature chart data per shipment
+    // tempMin / tempMax = required storage range for products on board
+    // readings: { label, temp } — temps outside [tempMin,tempMax] are drawn red
+    // excursions: [{from, to}] index ranges (inclusive) that are shaded
+    const tempChartData = {
+        'SHP-2024-001': {
+            tempMin: 2, tempMax: 8,
+            readings: [
+                { label: 'Jan 15', temp: 4.2 },
+                { label: 'Jan 16', temp: 5.1 },
+                { label: 'Jan 17', temp: 6.3 },
+                { label: 'Jan 18', temp: 5.8 },
+                { label: 'Jan 19', temp: 4.9 },
+                { label: 'Jan 20', temp: 5.5 }
+            ],
+            excursions: []
+        },
+        'SHP-2024-002': {
+            tempMin: 0, tempMax: 4,
+            readings: [
+                { label: 'Jan 18', temp: 2.1 },
+                { label: 'Jan 19', temp: 3.4 },
+                { label: 'Jan 20', temp: 5.9 },
+                { label: 'Jan 21', temp: 6.7 },
+                { label: 'Jan 22', temp: 3.2 }
+            ],
+            excursions: [{ from: 2, to: 3 }]
+        },
+        'SHP-2024-003': {
+            tempMin: 15, tempMax: 25,
+            readings: [
+                { label: 'Jan 16', temp: 18.0 },
+                { label: 'Jan 17', temp: 22.5 },
+                { label: 'Jan 18', temp: 28.1 },
+                { label: 'Jan 19', temp: 29.4 },
+                { label: 'Jan 20', temp: 24.0 },
+                { label: 'Jan 21', temp: 21.3 }
+            ],
+            excursions: [{ from: 2, to: 3 }]
+        },
+        'SHP-2024-004': {
+            tempMin: 2, tempMax: 8,
+            readings: [
+                { label: 'Jan 19', temp: 5.0 },
+                { label: 'Jan 20', temp: 5.5 },
+                { label: 'Jan 21', temp: 6.1 },
+                { label: 'Jan 22', temp: 7.0 }
+            ],
+            excursions: []
+        },
+        'SHP-2024-005': {
+            tempMin: 0, tempMax: 4,
+            readings: [],
+            excursions: []
+        },
+        'SHP-2024-006': {
+            tempMin: 2, tempMax: 8,
+            readings: [
+                { label: 'Jan 17', temp: 3.8 },
+                { label: 'Jan 18', temp: 4.2 },
+                { label: 'Jan 19', temp: 4.9 },
+                { label: 'Jan 20', temp: 5.1 },
+                { label: 'Jan 21', temp: 4.7 },
+                { label: 'Jan 22', temp: 4.3 }
+            ],
+            excursions: []
+        }
+    };
+
+    function renderTempChart(id) {
+        const svg = document.getElementById('tempSvg');
+        if (!svg) return;
+        const d = tempChartData[id];
+        if (!d || d.readings.length === 0) {
+            svg.innerHTML = '<text x="380" y="130" text-anchor="middle" font-size="14" fill="#aaa">No temperature data available</text>';
+            return;
+        }
+
+        const W = 760, H = 260;
+        const padL = 48, padR = 20, padT = 20, padB = 36;
+        const chartW = W - padL - padR;
+        const chartH = H - padT - padB;
+
+        const allTemps = d.readings.map(r => r.temp).concat([d.tempMin, d.tempMax]);
+        const rawMin = Math.min(...allTemps);
+        const rawMax = Math.max(...allTemps);
+        const margin = (rawMax - rawMin) * 0.2 || 2;
+        const yMin = rawMin - margin;
+        const yMax = rawMax + margin;
+
+        const n = d.readings.length;
+        const xStep = chartW / (n - 1 || 1);
+
+        function xPos(i)  { return padL + i * xStep; }
+        function yPos(t)  { return padT + chartH - ((t - yMin) / (yMax - yMin)) * chartH; }
+        function yRef(t)  { return Math.min(Math.max(yPos(t), padT), padT + chartH); }
+
+        let html = '';
+
+        // Safe range band
+        const yTop  = yRef(d.tempMax);
+        const yBot  = yRef(d.tempMin);
+        html += `<rect x="${padL}" y="${yTop}" width="${chartW}" height="${yBot - yTop}" fill="rgba(42,157,111,0.08)"/>`;
+
+        // Excursion shading
+        d.excursions.forEach(ex => {
+            const x1 = xPos(ex.from);
+            const x2 = xPos(ex.to);
+            html += `<rect x="${x1}" y="${padT}" width="${x2 - x1}" height="${chartH}" fill="rgba(230,57,70,0.12)"/>`;
+        });
+
+        // Grid lines (y-axis ticks)
+        const ticks = 5;
+        for (let i = 0; i <= ticks; i++) {
+            const t = yMin + (yMax - yMin) * (i / ticks);
+            const y = yPos(t);
+            html += `<line x1="${padL}" y1="${y}" x2="${padL + chartW}" y2="${y}" stroke="#eee" stroke-width="1"/>`;
+            html += `<text x="${padL - 6}" y="${y + 4}" text-anchor="end" font-size="10" fill="#999">${t.toFixed(1)}</text>`;
+        }
+
+        // Reference lines (min / max)
+        const refY_max = yRef(d.tempMax);
+        const refY_min = yRef(d.tempMin);
+        html += `<line x1="${padL}" y1="${refY_max}" x2="${padL + chartW}" y2="${refY_max}" stroke="#1a5c8b" stroke-width="1.5" stroke-dasharray="6,4"/>`;
+        html += `<text x="${padL + chartW + 4}" y="${refY_max + 4}" font-size="10" fill="#1a5c8b">${d.tempMax}°C max</text>`;
+        html += `<line x1="${padL}" y1="${refY_min}" x2="${padL + chartW}" y2="${refY_min}" stroke="#1a5c8b" stroke-width="1.5" stroke-dasharray="6,4"/>`;
+        html += `<text x="${padL + chartW + 4}" y="${refY_min + 4}" font-size="10" fill="#1a5c8b">${d.tempMin}°C min</text>`;
+
+        // Line segments (green in-range, red out-of-range)
+        for (let i = 0; i < n - 1; i++) {
+            const t1 = d.readings[i].temp, t2 = d.readings[i + 1].temp;
+            const outOfRange = t1 < d.tempMin || t1 > d.tempMax || t2 < d.tempMin || t2 > d.tempMax;
+            const color = outOfRange ? '#e63946' : '#2a9d6f';
+            html += `<line x1="${xPos(i)}" y1="${yPos(t1)}" x2="${xPos(i+1)}" y2="${yPos(t2)}" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>`;
+        }
+
+        // Dots
+        d.readings.forEach((r, i) => {
+            const outOfRange = r.temp < d.tempMin || r.temp > d.tempMax;
+            const color = outOfRange ? '#e63946' : '#2a9d6f';
+            html += `<circle cx="${xPos(i)}" cy="${yPos(r.temp)}" r="5" fill="white" stroke="${color}" stroke-width="2.5"/>`;
+            // Tooltip label on hover via title
+            html += `<circle cx="${xPos(i)}" cy="${yPos(r.temp)}" r="8" fill="transparent"><title>${r.label}: ${r.temp}°C</title></circle>`;
+        });
+
+        // X-axis labels
+        d.readings.forEach((r, i) => {
+            html += `<text x="${xPos(i)}" y="${H - 6}" text-anchor="middle" font-size="10" fill="#666">${r.label}</text>`;
+        });
+
+        // Axes
+        html += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + chartH}" stroke="#ccc" stroke-width="1"/>`;
+        html += `<line x1="${padL}" y1="${padT + chartH}" x2="${padL + chartW}" y2="${padT + chartH}" stroke="#ccc" stroke-width="1"/>`;
+
+        svg.innerHTML = html;
+    }
+
+    // Timeline data per shipment
+    const timelineData = {
+        'SHP-2024-001': [
+            { label: 'Picked Up',        time: 'Jan 15, 2024 · 10:00 AM', location: 'Los Angeles, CA',   done: true,  seal: 'intact',  driverHandoff: true },
+            { label: 'In Transit',       time: 'Jan 17, 2024 · 2:00 PM',  location: 'Albuquerque, NM',  done: true,  seal: 'intact' },
+            { label: 'Checkpoint Scan',  time: 'Jan 18, 2024 · 9:30 AM',  location: 'Oklahoma City, OK', done: true,  seal: 'intact' },
+            { label: 'Delivered',        time: 'Jan 20, 2024 · 2:00 PM',  location: 'New York, NY',      done: true,  seal: 'intact',  driverHandoff: true }
+        ],
+        'SHP-2024-002': [
+            { label: 'Picked Up',        time: 'Jan 18, 2024 · 8:30 AM',  location: 'Chicago, IL',       done: true,  seal: 'intact',  driverHandoff: true },
+            { label: 'In Transit',       time: 'Currently in Motion',      location: 'Nashville, TN',    done: true,  seal: 'intact' },
+            { label: 'Delivery',         time: 'Est. Jan 23, 2024',        location: 'Miami, FL',         done: false, seal: null,      driverHandoff: true }
+        ],
+        'SHP-2024-003': [
+            { label: 'Picked Up',        time: 'Jan 16, 2024 · 7:00 AM',  location: 'Seattle, WA',       done: true,  seal: 'intact',  driverHandoff: true },
+            { label: 'Checkpoint Scan',  time: 'Jan 17, 2024 · 11:00 AM', location: 'Portland, OR',      done: true,  seal: 'damaged' },
+            { label: 'In Transit',       time: 'Jan 19, 2024 · 4:00 PM',  location: 'Sacramento, CA',   done: true,  seal: 'damaged' },
+            { label: 'Delivered',        time: 'Jan 21, 2024 · 3:30 PM',  location: 'Dallas, TX',        done: true,  seal: 'damaged', driverHandoff: true }
+        ],
+        'SHP-2024-004': [
+            { label: 'Picked Up',        time: 'Jan 19, 2024 · 9:15 AM',  location: 'Boston, MA',        done: true,  seal: 'intact',  driverHandoff: true },
+            { label: 'In Transit',       time: 'Jan 20, 2024 · 3:00 PM',  location: 'Philadelphia, PA',  done: true,  seal: 'intact' },
+            { label: 'Delayed — Hold',   time: 'Jan 21, 2024 · 8:00 AM',  location: 'Charlotte, NC',     done: true,  seal: 'intact' },
+            { label: 'Delivery',         time: 'Est. Jan 26, 2024',        location: 'Phoenix, AZ',       done: false, seal: null,      driverHandoff: true }
+        ],
+        'SHP-2024-005': [
+            { label: 'Picked Up',        time: 'Pending',                  location: 'Denver, CO',        done: false, seal: null,      driverHandoff: true },
+            { label: 'In Transit',       time: 'Pending',                  location: 'En Route',          done: false, seal: null },
+            { label: 'Delivery',         time: 'Pending',                  location: 'Atlanta, GA',       done: false, seal: null,      driverHandoff: true }
+        ],
+        'SHP-2024-006': [
+            { label: 'Picked Up',        time: 'Jan 17, 2024 · 11:00 AM', location: 'San Francisco, CA', done: true,  seal: 'intact',  driverHandoff: true },
+            { label: 'Checkpoint Scan',  time: 'Jan 18, 2024 · 6:00 PM',  location: 'Los Angeles, CA',   done: true,  seal: 'intact' },
+            { label: 'In Transit',       time: 'Jan 20, 2024 · 1:00 PM',  location: 'El Paso, TX',       done: true,  seal: 'intact' },
+            { label: 'Delivered',        time: 'Jan 22, 2024 · 4:45 PM',  location: 'Houston, TX',       done: true,  seal: 'intact',  driverHandoff: true }
+        ]
+    };
+
+    function renderTimeline(id) {
+        const container = document.getElementById('timeline');
+        const steps = timelineData[id];
+        if (!steps) return;
+        container.innerHTML = steps.map((step, index) => {
+            let sealHtml = '';
+            if (step.driverHandoff && step.done && step.seal) {
+                // Editable dropdown — only for driver's own completed handoff events
+                sealHtml = `<select class="seal-select ${step.seal}"
+                    title="Update condition confirmation"
+                    onchange="updateSealCondition('${id}', ${index}, this.value)">
+                    <option value="intact"  ${step.seal === 'intact'  ? 'selected' : ''}>&#10004; Seal Intact</option>
+                    <option value="damaged" ${step.seal === 'damaged' ? 'selected' : ''}>&#10006; Packaging Damaged</option>
+                </select>`;
+            } else if (step.seal) {
+                sealHtml = `<div class="seal-badge seal-${step.seal}">${step.seal === 'intact' ? '✔ Seal Intact' : '✖ Packaging Damaged'}</div>`;
+            }
+            return `<div class="timeline-item ${step.done ? 'completed' : 'pending'}">
+                <h4>${step.label}</h4>
+                <div class="time">${step.time}</div>
+                <div class="location">${step.location}</div>
+                ${sealHtml}
+            </div>`;
+        }).join('');
+    }
+
+    function updateSealCondition(id, index, value) {
+        if (!timelineData[id] || !timelineData[id][index]) return;
+        timelineData[id][index].seal = value;
+        // Re-apply class on the changed select so colour updates immediately
+        const selects = document.querySelectorAll('#timeline .seal-select');
+        const steps = timelineData[id];
+        let selectIdx = 0;
+        for (let i = 0; i < steps.length; i++) {
+            if (steps[i].driverHandoff && steps[i].done && steps[i].seal) {
+                if (i === index) {
+                    selects[selectIdx].className = 'seal-select ' + value;
+                    break;
+                }
+                selectIdx++;
+            }
+        }
+    }
+
     // Sample shipment data
     const shipmentData = {
         'SHP-2024-001': {
-            origin: 'Los Angeles, CA',
-            destination: 'New York, NY',
-            departed: 'Jan 15, 2024',
-            arrived: 'Jan 20, 2024',
+            originName:    'Los Angeles Dispatch Hub',
+            originAddr:    '3200 E 26th St, Los Angeles, CA 90023',
+            destName:      'New York Receiving Center',
+            destAddr:      '55 Water St, New York, NY 10041',
+            departureTime: 'Jan 15, 2024 · 10:00 AM',
+            arrivalTime:   'Jan 20, 2024 · 2:00 PM',
             status: 'delivered'
         },
         'SHP-2024-002': {
-            origin: 'Chicago, IL',
-            destination: 'Miami, FL',
-            departed: 'Jan 18, 2024',
-            arrived: 'Pending',
+            originName:    'Chicago Central Depot',
+            originAddr:    '4600 W Roosevelt Rd, Chicago, IL 60644',
+            destName:      'Miami Distribution Point',
+            destAddr:      '100 NW 37th Ave, Miami, FL 33125',
+            departureTime: 'Jan 18, 2024 · 8:30 AM',
+            arrivalTime:   '',
             status: 'in-transit'
         },
         'SHP-2024-003': {
-            origin: 'Seattle, WA',
-            destination: 'Dallas, TX',
-            departed: 'Jan 16, 2024',
-            arrived: 'Jan 21, 2024',
+            originName:    'Seattle Freight Terminal',
+            originAddr:    '2401 Utah Ave S, Seattle, WA 98134',
+            destName:      'Dallas Logistics Center',
+            destAddr:      '9400 Reeder Rd, Dallas, TX 75220',
+            departureTime: 'Jan 16, 2024 · 7:00 AM',
+            arrivalTime:   'Jan 21, 2024 · 3:30 PM',
             status: 'delivered'
         },
         'SHP-2024-004': {
-            origin: 'Boston, MA',
-            destination: 'Phoenix, AZ',
-            departed: 'Jan 19, 2024',
-            arrived: 'Pending',
+            originName:    'Boston Transfer Station',
+            originAddr:    '100 Conley St, Boston, MA 02127',
+            destName:      'Phoenix Receiving Yard',
+            destAddr:      '4150 E Washington St, Phoenix, AZ 85034',
+            departureTime: 'Jan 19, 2024 · 9:15 AM',
+            arrivalTime:   '',
             status: 'delayed'
         },
         'SHP-2024-005': {
-            origin: 'Denver, CO',
-            destination: 'Atlanta, GA',
-            departed: 'Pending',
-            arrived: 'Pending',
+            originName:    'Denver Staging Facility',
+            originAddr:    '5000 N Pecos St, Denver, CO 80221',
+            destName:      'Atlanta Supply Hub',
+            destAddr:      '675 Ponce De Leon Ave NE, Atlanta, GA 30308',
+            departureTime: '',
+            arrivalTime:   '',
             status: 'pending'
         },
         'SHP-2024-006': {
-            origin: 'San Francisco, CA',
-            destination: 'Houston, TX',
-            departed: 'Jan 17, 2024',
-            arrived: 'Jan 22, 2024',
+            originName:    'San Francisco Cargo Port',
+            originAddr:    '1 Ferry Building, San Francisco, CA 94111',
+            destName:      'Houston Industrial Terminal',
+            destAddr:      '8900 Kempwood Dr, Houston, TX 77080',
+            departureTime: 'Jan 17, 2024 · 11:00 AM',
+            arrivalTime:   'Jan 22, 2024 · 4:45 PM',
             status: 'delivered'
         }
     };
@@ -718,18 +984,23 @@
     // Load shipment data
     if (shipmentId && shipmentData[shipmentId]) {
         const data = shipmentData[shipmentId];
-        
+
         document.getElementById('shipmentId').textContent = shipmentId;
-        document.getElementById('shipmentRoute').textContent = `${data.origin} → ${data.destination}`;
-        document.getElementById('originCity').textContent = data.origin;
-        document.getElementById('departDate').textContent = data.departed;
-        document.getElementById('destCity').textContent = data.destination;
-        document.getElementById('arrivalDate').textContent = data.arrived;
-        
+        document.getElementById('originName').textContent = data.originName;
+        document.getElementById('originAddr').textContent = data.originAddr;
+        document.getElementById('destName').textContent   = data.destName;
+        document.getElementById('destAddr').textContent   = data.destAddr;
+        document.getElementById('departureTime').textContent = data.departureTime || '—';
+        document.getElementById('arrivalTime').textContent  = data.arrivalTime   || '';
+
         // Update status badge
         const statusEl = document.getElementById('shipmentStatus');
         statusEl.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1).replace(/-/g, ' ');
         statusEl.className = 'status ' + data.status;
+
+        renderTimeline(shipmentId);
+        renderManifest(shipmentId);
+        renderTempChart(shipmentId);
     }
 
     // Profile dropdown toggle

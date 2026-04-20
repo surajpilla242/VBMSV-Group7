@@ -212,6 +212,17 @@
         box-shadow: 0 0 0 2px rgba(123, 30, 30, 0.25);
     }
 
+    /* Breach row status highlights */
+    .breach-open {
+        background: #fff5f5;
+    }
+    .breach-open td { border-color: #f5b8b8; }
+
+    .breach-review {
+        background: #fffbf0;
+    }
+    .breach-review td { border-color: #ffe0a0; }
+
     .pagination {
         display: flex;
         justify-content: center;
@@ -293,9 +304,9 @@
 
 <nav class="nav-tabs">
     <a class="nav-tab active" href="WarehouseDash.html" style="text-decoration:none;">Dashboard</a>
-    <a class="nav-tab" href="InboundOutbound.html" style="text-decoration:none;">In/Outbound</a>
-    <a class="nav-tab" href="VendorInfo.html" style="text-decoration:none;">Vendors &amp; Batches</a>
-    <a class="nav-tab" href="CustodyEvent.html" style="text-decoration:none;">Custody Events</a>
+    <a class="nav-tab" href="WarehouseInboundOutbound.html" style="text-decoration:none;">In/Outbound</a>
+    <a class="nav-tab" href="WarehouseVendorInfo.html" style="text-decoration:none;">Vendors &amp; Batches</a>
+    <a class="nav-tab" href="WarehouseCustodyEvent.html" style="text-decoration:none;">Custody Events</a>
 </nav>
 
 <main class="main-content">
@@ -631,19 +642,20 @@
         /* Axis box */
         parts.push('<rect x="' + padL + '" y="' + padT + '" width="' + chartW + '" height="' + chartH + '" fill="none" stroke="#bbb" stroke-width="1"/>');
 
-        /* Line path */
-        var d = '';
-        readings.forEach(function (r, i) {
-            var x = xScale(r.t);
-            var y = yScale(r.v);
-            d += (i === 0 ? 'M' : 'L') + x + ' ' + y + ' ';
-        });
-        parts.push('<path d="' + d.trim() + '" fill="none" stroke="#1565c0" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>');
+        /* Colored line segments: blue in-range, red out-of-range */
+        for (var li = 1; li < readings.length; li++) {
+            var rA = readings[li - 1], rB = readings[li];
+            var oor = rA.v < tMin || rA.v > tMax || rB.v < tMin || rB.v > tMax;
+            parts.push('<line x1="' + xScale(rA.t) + '" y1="' + yScale(rA.v) +
+                '" x2="' + xScale(rB.t) + '" y2="' + yScale(rB.v) +
+                '" stroke="' + (oor ? '#c0392b' : '#1565c0') + '" stroke-width="2.5" stroke-linecap="round"/>');
+        }
 
         /* Points (sparse) */
         for (var p = 0; p < readings.length; p += 3) {
-            var r = readings[p];
-            parts.push('<circle cx="' + xScale(r.t) + '" cy="' + yScale(r.v) + '" r="2.5" fill="#1565c0"/>');
+            var rp = readings[p];
+            var oor2 = rp.v < tMin || rp.v > tMax;
+            parts.push('<circle cx="' + xScale(rp.t) + '" cy="' + yScale(rp.v) + '" r="2.5" fill="' + (oor2 ? '#c0392b' : '#1565c0') + '"/>');
         }
 
         /* Y labels */
@@ -663,12 +675,35 @@
         document.getElementById('chartLegend').innerHTML =
             '<span><span class="swatch" style="background:rgba(46,125,50,0.35)"></span>Allowed band</span>' +
             '<span><span class="swatch" style="background:rgba(192,57,43,0.35)"></span>Documented excursion window</span>' +
-            '<span><span class="swatch" style="background:#1565c0"></span>Sensor reading</span>' +
+            '<span><span class="swatch" style="background:#1565c0"></span>In-range reading</span>' +
+            '<span><span class="swatch" style="background:#c0392b"></span>Out-of-range reading</span>' +
             '<span><span class="swatch" style="border:2px dashed #2e7d32;background:transparent;height:10px"></span>Min limit</span>' +
             '<span><span class="swatch" style="border:2px dashed #c62828;background:transparent;height:10px"></span>Max limit</span>';
     }
 
     var RESOLUTION_OPTIONS = ['Open', 'Under Review', 'Resolved'];
+
+    function breachRowClass(resolution) {
+        if (resolution === 'Open') return 'breach-open';
+        if (resolution === 'Under Review') return 'breach-review';
+        return '';
+    }
+
+    function applySelectStyle(sel, value) {
+        if (value === 'Open') {
+            sel.style.borderColor = '#c0392b';
+            sel.style.background = '#fff5f5';
+            sel.style.color = '#7b1e1e';
+        } else if (value === 'Under Review') {
+            sel.style.borderColor = '#e67e22';
+            sel.style.background = '#fff8f0';
+            sel.style.color = '#7d4000';
+        } else {
+            sel.style.borderColor = '#2e7d32';
+            sel.style.background = '#f0fff4';
+            sel.style.color = '#1b5e20';
+        }
+    }
 
     function renderBreaches(zoneId) {
         var rows = BREACHES_BY_ZONE[zoneId] || [];
@@ -682,9 +717,11 @@
         }
         rows.forEach(function (b, idx) {
             var tr = document.createElement('tr');
+            tr.className = breachRowClass(b.resolution);
             var sel = document.createElement('select');
             sel.className = 'resolution-select';
             sel.setAttribute('aria-label', 'Resolution status for excursion starting ' + b.start);
+            applySelectStyle(sel, b.resolution);
             RESOLUTION_OPTIONS.forEach(function (opt) {
                 var o = document.createElement('option');
                 o.value = opt;
@@ -694,6 +731,8 @@
             });
             sel.addEventListener('change', function () {
                 BREACHES_BY_ZONE[zoneId][idx].resolution = sel.value;
+                applySelectStyle(sel, sel.value);
+                tr.className = breachRowClass(sel.value);
             });
             tr.innerHTML =
                 '<td>' + formatDT(b.start) + '</td>' +

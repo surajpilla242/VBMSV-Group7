@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>In/Outbound - VBMSV Solutions</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #eee;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        color: #333;
+    }
+
+    .header {
+        background: white;
+        padding: 15px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 4px solid #7b1e1e;
+        gap: 20px;
+    }
+
+    .logo {
+        font-size: 24px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .logo span:nth-child(1) { color: #000080; }
+    .logo span:nth-child(2) { color: #3B1344; }
+    .logo span:nth-child(3) { color: #2f4f2f; }
+    .logo span:nth-child(4) { color: #8B4000; }
+    .logo span:nth-child(5) { color: #367588; }
+
+    .solutions {
+        color: #7b1e1e;
+        margin-left: 8px;
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex: 1;
+        justify-content: flex-end;
+    }
+
+    .search-bar {
+        padding: 10px 20px;
+        border: 2px solid #333;
+        border-radius: 25px;
+        width: 320px;
+        font-size: 14px;
+        background: white;
+    }
+
+    .header-icons {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .icon-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 20px;
+        color: #666;
+    }
+
+    .icon-btn:hover {
+        color: #333;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        background: #7b1e1e;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .user-dropdown {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        display: none;
+        min-width: 180px;
+        z-index: 100;
+    }
+
+    .user-avatar.open .user-dropdown {
+        display: block;
+    }
+
+    .user-dropdown div {
+        padding: 12px 16px;
+        cursor: pointer;
+        color: #333;
+        font-weight: normal;
+    }
+
+    .user-dropdown div:hover {
+        background: #f5f5f5;
+    }
+
+    .user-dropdown div:last-child {
+        border-top: 1px solid #eee;
+        color: #7b1e1e;
+    }
+
+    .nav-tabs {
+        background: white;
+        padding: 0 30px;
+        display: flex;
+        gap: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .nav-tab {
+        padding: 15px 30px;
+        cursor: pointer;
+        border-radius: 25px 25px 0 0;
+        font-weight: 500;
+        transition: all 0.2s;
+        user-select: none;
+        text-decoration: none;
+        color: inherit;
+        display: inline-block;
+    }
+
+    .nav-tab.active {
+        background: linear-gradient(135deg, #ff69b4, #7b1e1e);
+        color: white;
+    }
+
+    .main-content {
+        flex: 1;
+        padding: 30px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .page-header h1 {
+        font-size: 28px;
+        color: #333;
+    }
+
+    .page-subtext {
+        color: #666;
+        margin-top: 6px;
+        font-size: 14px;
+    }
+
+    .tab-toggle {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .toggle-btn {
+        padding: 10px 18px;
+        border: 2px solid #7b1e1e;
+        background: white;
+        color: #7b1e1e;
+        border-radius: 24px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .toggle-btn.active,
+    .toggle-btn:hover {
+        background: #7b1e1e;
+        color: white;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 12px;
+        padding: 22px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .stat-card h3 {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .stat-card .value {
+        font-size: 30px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .section-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .section-card h2 {
+        margin-bottom: 18px;
+        color: #333;
+    }
+
+    .filters-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr 1fr auto;
+        gap: 12px;
+        margin-bottom: 18px;
+        align-items: end;
+    }
+
+    .filter-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 13px;
+        color: #666;
+        font-weight: 600;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        background: white;
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: 1px solid #7b1e1e;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .btn-primary {
+        background: #7b1e1e;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #5f1616;
+    }
+
+    .btn-secondary {
+        background: white;
+        color: #7b1e1e;
+    }
+
+    .btn-secondary:hover {
+        background: #faf1f1;
+    }
+
+    .table-wrap {
+        overflow-x: auto;
+    }
+
+    .shipment-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 1040px;
+    }
+
+    .shipment-table th {
+        text-align: left;
+        padding: 12px 15px;
+        background: #f8f8f8;
+        border-bottom: 2px solid #ddd;
+        font-weight: 600;
+        color: #333;
+        white-space: nowrap;
+    }
+
+    .shipment-table td {
+        padding: 14px 15px;
+        border-bottom: 1px solid #eee;
+        vertical-align: middle;
+    }
+
+    .shipment-table tbody tr {
+        transition: background 0.2s;
+    }
+
+    .shipment-table tbody tr:hover {
+        background: #e6e6e6;
+    }
+
+    .shipment-table tbody tr.clickable-row {
+        cursor: pointer;
+    }
+
+    .status {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .status.scheduled { background: #cce5ff; color: #004085; }
+    .status.in-transit { background: #fff3cd; color: #856404; }
+    .status.arrived { background: #d4edda; color: #155724; }
+    .status.delivered { background: #d4edda; color: #155724; }
+    .status.delayed { background: #f8d7da; color: #721c24; }
+
+    .alerts-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        height: 28px;
+        border-radius: 14px;
+        background: #7b1e1e;
+        color: white;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 0 9px;
+    }
+
+    .empty-state {
+        padding: 26px;
+        text-align: center;
+        color: #777;
+        border: 1px dashed #ccc;
+        border-radius: 12px;
+        background: #fcfcfc;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .pagination button,
+    .pagination .page-num {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        background: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .pagination .page-num.active {
+        background: #7b1e1e;
+        color: white;
+        border-color: #7b1e1e;
+    }
+
+    .footer {
+        background: #7b1e1e;
+        color: white;
+        padding: 15px;
+        text-align: center;
+    }
+
+    /* Alert row highlight */
+    .shipment-table tbody tr.has-alerts {
+        background: #fff5f5;
+        border-left: 4px solid #c0392b;
+    }
+    .shipment-table tbody tr.has-alerts:hover { background: #ffe8e8; }
+    .shipment-table tbody tr.row-selected {
+        outline: 2px solid #7b1e1e;
+        outline-offset: -2px;
+        background: #f9f4f5 !important;
+    }
+
+    /* Inline detail panel */
+    .detail-panel {
+        display: none;
+        margin-top: 20px;
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .detail-panel.visible { display: block; }
+
+    .detail-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+        padding-bottom: 14px;
+        border-bottom: 2px solid #eee;
+    }
+    .detail-header h2 { color: #333; }
+    .detail-close {
+        background: none;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+        padding: 6px 14px;
+        color: #555;
+    }
+    .detail-close:hover { background: #f0f0f0; }
+
+    .detail-meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+        gap: 14px;
+        padding: 16px;
+        background: #f8f8f8;
+        border-radius: 8px;
+        margin-bottom: 22px;
+    }
+    .meta-field { display: flex; flex-direction: column; gap: 4px; }
+    .meta-field .mf-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #999; letter-spacing: 0.4px; }
+    .meta-field .mf-value { font-size: 15px; font-weight: 600; color: #222; }
+
+    .panel-section-title {
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #555;
+        margin: 20px 0 10px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid #eee;
+    }
+
+    /* Custody event list */
+    .custody-list { list-style: none; }
+    .custody-item {
+        display: flex;
+        gap: 14px;
+        padding: 10px 14px;
+        border-left: 3px solid #7b1e1e;
+        background: #faf8f8;
+        border-radius: 0 8px 8px 0;
+        margin-bottom: 8px;
+        font-size: 13px;
+    }
+    .custody-item .ci-time { font-weight: 700; color: #333; white-space: nowrap; min-width: 140px; }
+    .custody-item .ci-detail { color: #555; }
+    .no-events-hint {
+        padding: 14px;
+        color: #999;
+        font-size: 13px;
+        font-style: italic;
+        border: 1px dashed #ddd;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    /* Mark In Transit button */
+    .transit-btn {
+        padding: 10px 22px;
+        background: #155724;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 14px;
+        margin-bottom: 18px;
+    }
+    .transit-btn:hover { background: #0d3d19; }
+
+    .undo-transit-btn {
+        padding: 7px 16px;
+        background: white;
+        color: #7b1e1e;
+        border: 1.5px solid #7b1e1e;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 13px;
+    }
+    .undo-transit-btn:hover { background: #faf0f0; }
+
+    /* Handoff form */
+    .handoff-form {
+        background: #fdf8f8;
+        border: 1px solid #e8d0d0;
+        border-radius: 10px;
+        padding: 20px;
+    }
+    .handoff-form > h3 { font-size: 15px; margin-bottom: 16px; color: #7b1e1e; }
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 14px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { font-size: 12px; font-weight: 700; text-transform: uppercase; color: #666; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 9px 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        background: white;
+        width: 100%;
+        font-family: inherit;
+    }
+    .form-group textarea { resize: vertical; min-height: 60px; }
+    .lots-checkboxes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background: white;
+        max-height: 110px;
+        overflow-y: auto;
+    }
+    .lot-cb-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 13px;
+        cursor: pointer;
+        padding: 3px 8px;
+        border-radius: 4px;
+        background: #f0f0f0;
+        user-select: none;
+    }
+    .lot-cb-label:hover { background: #e0e0e0; }
+    .form-submit-row { display: flex; justify-content: flex-end; margin-top: 4px; }
+
+    @media (max-width: 1180px) {
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .filters-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 720px) {
+        .header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .header-right {
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .search-bar {
+            width: 100%;
+        }
+
+        .header-icons {
+            justify-content: space-between;
+        }
+
+        .stats-grid,
+        .filters-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+    }
+    /* ── Global Search Dropdown ── */
+    .search-wrapper { position: relative; }
+    .search-results { position: absolute; top: calc(100% + 6px); left: 0; background: white; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); display: none; z-index: 200; max-height: 320px; overflow-y: auto; min-width: 340px; }
+    .search-results.open { display: block; }
+    .search-result-item { padding: 10px 16px; cursor: pointer; border-bottom: 1px solid #f0f0f0; }
+    .search-result-item:last-child { border-bottom: none; }
+    .search-result-item:hover { background: #fdf5f5; }
+    .search-result-label { font-weight: 600; color: #333; font-size: 14px; }
+    .search-result-sub { font-size: 12px; color: #888; margin-top: 2px; }
+    .search-no-results { padding: 12px 16px; color: #888; font-size: 14px; text-align: center; }
+</style>
+</head>
+<body>
+<header class="header">
+    <div class="logo">
+        <span>V</span><span>B</span><span>M</span><span>S</span><span>V</span>
+        <span class="solutions">Sol.</span>
+    </div>
+    <div class="header-right">
+        <input type="text" class="search-bar" placeholder="🔍 Search shipments, trucks, locations...">
+        <div class="header-icons">
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <button class="icon-btn" title="Settings">⚙️</button>
+            <div class="user-avatar">
+                VN
+                <div class="user-dropdown">
+                    <div><strong>Vivian Nguyen</strong></div>
+                    <div>ID: WH-204</div>
+                    <div>Role: Warehouse Employee</div>
+                    <div onclick="location.href='Login_page.html'">Logout</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<nav class="nav-tabs">
+    <a class="nav-tab" href="WarehouseDash.html">Dashboard</a>
+    <a class="nav-tab active" href="WarehouseInboundOutbound.html">In/Outbound</a>
+    <a class="nav-tab" href="WarehouseVendorInfo.html">Vendors &amp; Batches</a>
+    <a class="nav-tab" href="WarehouseCustodyEvent.html">Custody Events</a>
+</nav>
+
+<main class="main-content">
+    <div class="page-header">
+        <div>
+            <h1>In/Outbound</h1>
+            <div class="page-subtext">Monitor inbound and outbound movements.</div>
+        </div>
+        <div class="tab-toggle">
+            <button class="toggle-btn active" data-tab="outbound">Outbound</button>
+            <button class="toggle-btn" data-tab="inbound">Inbound</button>
+        </div>
+    </div>
+
+    <section class="stats-grid" id="statsGrid"></section>
+
+    <section class="section-card">
+        <h2 id="tableTitle">Outbound Shipments</h2>
+
+        <div class="filters-grid">
+            <div class="filter-group">
+                <label for="statusFilter">Status</label>
+                <select id="statusFilter">
+                    <option value="all">All Statuses</option>
+                    <option value="Scheduled">Scheduled</option>
+                    <option value="In Transit">In Transit</option>
+                    <option value="Arrived">Arrived</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Delayed">Delayed</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="startDate" id="startDateLabel">Earliest Departure</label>
+                <input type="date" id="startDate">
+            </div>
+            <div class="filter-group">
+                <label for="endDate" id="endDateLabel">Latest Departure</label>
+                <input type="date" id="endDate">
+            </div>
+            <div class="filter-actions">
+                <button class="btn btn-primary" id="applyFilters">Apply</button>
+                <button class="btn btn-secondary" id="clearFilters">Clear</button>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="shipment-table">
+                <thead>
+                    <tr>
+                        <th>Shipment #</th>
+                        <th>Status</th>
+                        <th id="originDestHeader">Destination</th>
+                        <th>Departure Time</th>
+                        <th>Arrival Time</th>
+                        <th>Truck ID</th>
+                        <th>Lot Count</th>
+                        <th>Open Alerts</th>
+                    </tr>
+                </thead>
+                <tbody id="shipmentTableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button>&lt;</button>
+            <span class="page-num active">1</span>
+            <span class="page-num">2</span>
+            <span class="page-num">3</span>
+            <button>&gt;</button>
+        </div>
+    </section>
+    <!-- Inline detail panel -->
+    <div class="detail-panel" id="detailPanel">
+        <div class="detail-header">
+            <h2 id="detailTitle">Shipment Detail</h2>
+            <button class="detail-close" id="detailClose">✕ Close</button>
+        </div>
+        <div class="detail-meta" id="detailMeta"></div>
+
+        <div id="transitBtnWrap"></div>
+
+        <div class="panel-section-title">Custody Events </div>
+        <ul class="custody-list" id="custodyList"></ul>
+
+        <div class="panel-section-title">Record New Handoff Event</div>
+        <div class="handoff-form">
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label>Lots being transferred</label>
+                    <div class="lots-checkboxes" id="lotsCheckboxes"></div>
+                </div>
+                <div class="form-group">
+                    <label>Handoff date &amp; time</label>
+                    <input type="datetime-local" id="handoffTime">
+                </div>
+                <div class="form-group">
+                    <label>Packaging condition</label>
+                    <select id="handoffCondition">
+                        <option value="Intact">Intact</option>
+                        <option value="Minor Damage">Minor Damage</option>
+                        <option value="Significant Damage">Significant Damage</option>
+                        <option value="Damaged">Damaged</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Moved from</label>
+                    <input type="text" id="handoffFrom" placeholder="e.g. Zone A3, Loading Dock">
+                </div>
+                <div class="form-group">
+                    <label>Moved to</label>
+                    <input type="text" id="handoffTo" placeholder="e.g. TRK-8821, Zone B2">
+                </div>
+                <div class="form-group full">
+                    <label>Notes (optional)</label>
+                    <textarea id="handoffNotes" placeholder="Any observations about the transfer…"></textarea>
+                </div>
+            </div>
+            <div class="form-submit-row">
+                <button class="btn btn-primary" id="submitHandoff">Submit Handoff Event</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    © 2026 VBMSV Solutions
+</footer>
+
+<script>
+    const shipmentData = {
+        outbound: [
+            {
+                shipmentNumber: 'OUT-40127',
+                status: 'Scheduled',
+                location: 'Phoenix Distribution Hub',
+                departureTime: '2026-04-10T09:30',
+                arrivalTime: '2026-04-10T14:15',
+                truckId: 'TRK-8821',
+                lotCount: 18,
+                openAlerts: 2
+            },
+            {
+                shipmentNumber: 'OUT-40119',
+                status: 'In Transit',
+                location: 'San Diego Clinic Network',
+                departureTime: '2026-04-10T07:15',
+                arrivalTime: '2026-04-10T12:40',
+                truckId: 'TRK-7714',
+                lotCount: 12,
+                openAlerts: 0
+            },
+            {
+                shipmentNumber: 'OUT-40103',
+                status: 'Delivered',
+                location: 'Las Vegas Medical Center',
+                departureTime: '2026-04-09T18:40',
+                arrivalTime: '2026-04-09T23:10',
+                truckId: 'TRK-6630',
+                lotCount: 9,
+                openAlerts: 1
+            },
+            {
+                shipmentNumber: 'OUT-40098',
+                status: 'Delayed',
+                location: 'Tucson Partner Warehouse',
+                departureTime: '2026-04-09T14:20',
+                arrivalTime: '2026-04-09T20:30',
+                truckId: 'TRK-6527',
+                lotCount: 15,
+                openAlerts: 4
+            }
+        ],
+        inbound: [
+            {
+                shipmentNumber: 'IN-87214',
+                status: 'Scheduled',
+                location: 'Fresno Consolidation Site',
+                departureTime: '2026-04-10T05:45',
+                arrivalTime: '2026-04-10T11:00',
+                truckId: 'TRK-4592',
+                lotCount: 21,
+                openAlerts: 3
+            },
+            {
+                shipmentNumber: 'IN-87201',
+                status: 'Arrived',
+                location: 'Sacramento Cold Chain Node',
+                departureTime: '2026-04-10T01:50',
+                arrivalTime: '2026-04-10T06:20',
+                truckId: 'TRK-3320',
+                lotCount: 14,
+                openAlerts: 0
+            },
+            {
+                shipmentNumber: 'IN-87188',
+                status: 'In Transit',
+                location: 'Reno Supply Facility',
+                departureTime: '2026-04-09T17:35',
+                arrivalTime: '2026-04-09T22:55',
+                truckId: 'TRK-2844',
+                lotCount: 16,
+                openAlerts: 1
+            },
+            {
+                shipmentNumber: 'IN-87180',
+                status: 'Delivered',
+                location: 'Boise Transfer Site',
+                departureTime: '2026-04-09T12:30',
+                arrivalTime: '2026-04-09T18:10',
+                truckId: 'TRK-2402',
+                lotCount: 10,
+                openAlerts: 0
+            }
+        ]
+    };
+
+    let activeTab = 'outbound';
+
+    const tabButtons = document.querySelectorAll('.toggle-btn');
+    const tableBody = document.getElementById('shipmentTableBody');
+    const statsGrid = document.getElementById('statsGrid');
+    const statusFilter = document.getElementById('statusFilter');
+    const startDate = document.getElementById('startDate');
+    const endDate = document.getElementById('endDate');
+    const startDateLabel = document.getElementById('startDateLabel');
+    const endDateLabel = document.getElementById('endDateLabel');
+    const tableTitle = document.getElementById('tableTitle');
+    const originDestHeader = document.getElementById('originDestHeader');
+
+    function formatDateTime(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleString([], {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    function statusClass(status) {
+        return status.toLowerCase().replace(/\s+/g, '-');
+    }
+
+    function updateFilterLabels() {
+        if (activeTab === 'outbound') {
+            startDateLabel.textContent = 'Earliest Departure';
+            endDateLabel.textContent = 'Latest Departure';
+        } else {
+            startDateLabel.textContent = 'Earliest Arrival';
+            endDateLabel.textContent = 'Latest Arrival';
+        }
+    }
+
+    function getFilteredShipments() {
+        return shipmentData[activeTab].filter(item => {
+            const matchesStatus = statusFilter.value === 'all' || item.status === statusFilter.value;
+
+            const filterDate = activeTab === 'inbound'
+                ? item.arrivalTime.slice(0, 10)
+                : item.departureTime.slice(0, 10);
+
+            const matchesStart = !startDate.value || filterDate >= startDate.value;
+            const matchesEnd = !endDate.value || filterDate <= endDate.value;
+
+            return matchesStatus && matchesStart && matchesEnd;
+        });
+    }
+
+    function renderStats() {
+        const rows = shipmentData[activeTab];
+        const scheduled = rows.filter(r => r.status === 'Scheduled').length;
+        const inTransit = rows.filter(r => r.status === 'In Transit').length;
+        const openAlerts = rows.reduce((sum, row) => sum + row.openAlerts, 0);
+
+        statsGrid.innerHTML = `
+            <div class="stat-card">
+                <h3>${activeTab === 'outbound' ? 'Outbound Shipments' : 'Inbound Shipments'}</h3>
+                <div class="value">${rows.length}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Scheduled</h3>
+                <div class="value">${scheduled}</div>
+            </div>
+            <div class="stat-card">
+                <h3>In Transit</h3>
+                <div class="value">${inTransit}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Open Alerts</h3>
+                <div class="value">${openAlerts}</div>
+            </div>
+        `;
+    }
+
+    // Lots available per shipment for handoff selection
+    const LOTS_BY_SHIPMENT = {
+        'OUT-40127': ['LOT-001', 'LOT-002', 'LOT-003', 'LOT-021', 'LOT-022'],
+        'OUT-40119': ['LOT-011', 'LOT-012', 'LOT-031', 'LOT-032'],
+        'OUT-40103': ['LOT-051', 'LOT-052', 'LOT-053'],
+        'OUT-40098': ['LOT-061', 'LOT-062', 'LOT-071', 'LOT-072', 'LOT-073'],
+        'IN-87214':  ['LOT-081', 'LOT-082', 'LOT-033', 'LOT-034'],
+        'IN-87201':  ['LOT-041', 'LOT-004'],
+        'IN-87188':  ['LOT-003', 'LOT-013'],
+        'IN-87180':  ['LOT-005', 'LOT-014']
+    };
+
+    // Custody event records (persisted in-session)
+    const CUSTODY_EVENTS = {
+        'OUT-40127': [
+            { time: '2026-04-10T09:30', lots: ['LOT-001', 'LOT-002'], from: 'Zone A3', to: 'TRK-8821', condition: 'Intact', notes: '' },
+            { time: '2026-04-10T09:15', lots: ['LOT-003'], from: 'Zone C3', to: 'TRK-8821', condition: 'Intact', notes: 'Temp verified before loading' }
+        ],
+        'OUT-40119': [
+            { time: '2026-04-10T07:15', lots: ['LOT-011', 'LOT-012'], from: 'Zone B1', to: 'TRK-7714', condition: 'Intact', notes: '' }
+        ],
+        'OUT-40103': [
+            { time: '2026-04-09T18:40', lots: ['LOT-051', 'LOT-052', 'LOT-053'], from: 'Zone A1', to: 'TRK-6630', condition: 'Intact', notes: '' }
+        ],
+        'OUT-40098': [
+            { time: '2026-04-09T14:20', lots: ['LOT-061'], from: 'Zone A1', to: 'TRK-6527', condition: 'Significant Damage', notes: 'Outer packaging tear noted' }
+        ],
+        'IN-87214':  [],
+        'IN-87201':  [
+            { time: '2026-04-10T06:20', lots: ['LOT-041'], from: 'TRK-3320', to: 'Zone D2', condition: 'Intact', notes: '' }
+        ],
+        'IN-87188':  [],
+        'IN-87180':  [
+            { time: '2026-04-09T18:10', lots: ['LOT-005', 'LOT-014'], from: 'TRK-2402', to: 'Zone E1', condition: 'Intact', notes: '' }
+        ]
+    };
+
+    let activeShipmentId = null;
+    const recentlyTransitioned = new Set(); // tracks shipments moved to In Transit this session
+
+    function formatDateTimeLocal(iso) {
+        const d = new Date(iso);
+        const pad = n => String(n).padStart(2, '0');
+        return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    function renderCustodyEvents(shipmentId) {
+        const list = document.getElementById('custodyList');
+        const events = CUSTODY_EVENTS[shipmentId] || [];
+        if (events.length === 0) {
+            list.innerHTML = '<li class="no-events-hint">No custody events recorded yet for this shipment.</li>';
+            return;
+        }
+        list.innerHTML = events.map(ev => {
+            const d = new Date(ev.time);
+            const timeStr = d.toLocaleString([], { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            const condHtml = ev.condition !== 'Intact'
+                ? ` &middot; <strong style="color:#7b1e1e">${ev.condition}</strong>`
+                : ' &middot; Condition: Intact';
+            const notesHtml = ev.notes ? ` &middot; ${ev.notes}` : '';
+            return `<li class="custody-item">
+                <span class="ci-time">${timeStr}</span>
+                <span class="ci-detail">Lots: ${ev.lots.join(', ')} &middot; From: <em>${ev.from}</em> &rarr; To: <em>${ev.to}</em>${condHtml}${notesHtml}</span>
+            </li>`;
+        }).join('');
+    }
+
+    function openDetailPanel(shipmentId) {
+        const allShipments = [...shipmentData.outbound, ...shipmentData.inbound];
+        const s = allShipments.find(x => x.shipmentNumber === shipmentId);
+        if (!s) return;
+        activeShipmentId = shipmentId;
+
+        document.querySelectorAll('.shipment-table tbody tr').forEach(tr => {
+            tr.classList.toggle('row-selected', tr.dataset.shipmentId === shipmentId);
+        });
+
+        document.getElementById('detailTitle').textContent = s.shipmentNumber + ' — ' + s.location;
+        document.getElementById('detailMeta').innerHTML = `
+            <div class="meta-field"><span class="mf-label">Status</span><span class="mf-value"><span class="status ${statusClass(s.status)}">${s.status}</span></span></div>
+            <div class="meta-field"><span class="mf-label">${activeTab === 'outbound' ? 'Destination' : 'Origin'}</span><span class="mf-value">${s.location}</span></div>
+            <div class="meta-field"><span class="mf-label">Departure</span><span class="mf-value">${formatDateTime(s.departureTime)}</span></div>
+            <div class="meta-field"><span class="mf-label">Arrival</span><span class="mf-value">${formatDateTime(s.arrivalTime)}</span></div>
+            <div class="meta-field"><span class="mf-label">Truck ID</span><span class="mf-value">${s.truckId}</span></div>
+            <div class="meta-field"><span class="mf-label">Lot Count</span><span class="mf-value">${s.lotCount}</span></div>
+            <div class="meta-field"><span class="mf-label">Open Alerts</span><span class="mf-value">${s.openAlerts}</span></div>
+        `;
+
+        // Mark In Transit / Undo button
+        const transitWrap = document.getElementById('transitBtnWrap');
+        if (s.status === 'Scheduled') {
+            transitWrap.innerHTML = '<button class="transit-btn" id="transitBtn">🚛 Mark as In Transit</button>';
+            document.getElementById('transitBtn').addEventListener('click', () => {
+                s.status = 'In Transit';
+                recentlyTransitioned.add(shipmentId);
+                renderStats();
+                renderTable();
+                openDetailPanel(shipmentId);
+            });
+        } else if (s.status === 'In Transit' && recentlyTransitioned.has(shipmentId)) {
+            transitWrap.innerHTML =
+                '<div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">' +
+                '<span style="font-size:13px;color:#155724;font-weight:600">✅ Marked as In Transit</span>' +
+                '<button class="undo-transit-btn" id="undoTransitBtn">↩ Undo</button>' +
+                '</div>';
+            document.getElementById('undoTransitBtn').addEventListener('click', () => {
+                s.status = 'Scheduled';
+                recentlyTransitioned.delete(shipmentId);
+                renderStats();
+                renderTable();
+                openDetailPanel(shipmentId);
+            });
+        } else {
+            transitWrap.innerHTML = '';
+        }
+
+        renderCustodyEvents(shipmentId);
+
+        // Populate lot checkboxes
+        const lots = LOTS_BY_SHIPMENT[shipmentId] || [];
+        const lotsContainer = document.getElementById('lotsCheckboxes');
+        if (lots.length === 0) {
+            lotsContainer.innerHTML = '<span style="color:#999;font-size:13px">No lots recorded for this shipment.</span>';
+        } else {
+            lotsContainer.innerHTML = lots.map(lot =>
+                `<label class="lot-cb-label"><input type="checkbox" value="${lot}"> ${lot}</label>`
+            ).join('');
+        }
+
+        // Default handoff time to now
+        document.getElementById('handoffTime').value = formatDateTimeLocal(new Date().toISOString());
+        document.getElementById('handoffCondition').value = 'Intact';
+        document.getElementById('handoffFrom').value = '';
+        document.getElementById('handoffTo').value = '';
+        document.getElementById('handoffNotes').value = '';
+
+        const panel = document.getElementById('detailPanel');
+        panel.classList.add('visible');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderTable() {
+        const filtered = getFilteredShipments();
+        tableTitle.textContent = activeTab === 'outbound' ? 'Outbound Shipments' : 'Inbound Shipments';
+        originDestHeader.textContent = activeTab === 'outbound' ? 'Destination' : 'Origin';
+        updateFilterLabels();
+
+        if (!filtered.length) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="8">
+                        <div class="empty-state">No shipments match the selected filters.</div>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tableBody.innerHTML = filtered.map(item => `
+            <tr class="clickable-row${item.openAlerts > 0 ? ' has-alerts' : ''}" data-shipment-id="${item.shipmentNumber}">
+                <td>${item.shipmentNumber}</td>
+                <td><span class="status ${statusClass(item.status)}">${item.status}</span></td>
+                <td>${item.location}</td>
+                <td>${formatDateTime(item.departureTime)}</td>
+                <td>${formatDateTime(item.arrivalTime)}</td>
+                <td>${item.truckId}</td>
+                <td>${item.lotCount}</td>
+                <td><span class="alerts-pill">${item.openAlerts}</span></td>
+            </tr>
+        `).join('');
+
+        tableBody.querySelectorAll('.clickable-row').forEach(row => {
+            row.addEventListener('click', () => {
+                openDetailPanel(row.dataset.shipmentId);
+            });
+        });
+    }
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            activeTab = button.dataset.tab;
+            renderStats();
+            renderTable();
+        });
+    });
+
+    document.getElementById('applyFilters').addEventListener('click', () => {
+        renderTable();
+    });
+
+    document.getElementById('clearFilters').addEventListener('click', () => {
+        statusFilter.value = 'all';
+        startDate.value = '';
+        endDate.value = '';
+        renderTable();
+    });
+
+    document.getElementById('detailClose').addEventListener('click', () => {
+        document.getElementById('detailPanel').classList.remove('visible');
+        document.querySelectorAll('.shipment-table tbody tr').forEach(tr => tr.classList.remove('row-selected'));
+        activeShipmentId = null;
+    });
+
+    document.getElementById('submitHandoff').addEventListener('click', () => {
+        if (!activeShipmentId) return;
+        const selectedLots = [...document.querySelectorAll('#lotsCheckboxes input[type="checkbox"]:checked')]
+            .map(cb => cb.value);
+        const from = document.getElementById('handoffFrom').value.trim();
+        const to = document.getElementById('handoffTo').value.trim();
+        const time = document.getElementById('handoffTime').value;
+        const condition = document.getElementById('handoffCondition').value;
+        const notes = document.getElementById('handoffNotes').value.trim();
+
+        if (!from || !to) {
+            alert('Please fill in both the “Moved from” and “Moved to” fields.');
+            return;
+        }
+        if (!time) {
+            alert('Please set the handoff date and time.');
+            return;
+        }
+        if (selectedLots.length === 0) {
+            alert('Please select at least one lot being transferred.');
+            return;
+        }
+
+        if (!CUSTODY_EVENTS[activeShipmentId]) CUSTODY_EVENTS[activeShipmentId] = [];
+        CUSTODY_EVENTS[activeShipmentId].unshift({ time, lots: selectedLots, from, to, condition, notes });
+        renderCustodyEvents(activeShipmentId);
+
+        // Reset form fields
+        document.querySelectorAll('#lotsCheckboxes input[type="checkbox"]').forEach(cb => cb.checked = false);
+        document.getElementById('handoffFrom').value = '';
+        document.getElementById('handoffTo').value = '';
+        document.getElementById('handoffNotes').value = '';
+        document.getElementById('handoffCondition').value = 'Intact';
+
+        alert('Handoff event recorded and added to the custody record.');
+    });
+
+    renderStats();
+    renderTable();
+
+    // Profile dropdown toggle
+    const userAvatar = document.querySelector('.user-avatar');
+    userAvatar.addEventListener('click', function(e) {
+        e.stopPropagation();
+        this.classList.toggle('open');
+    });
+    document.addEventListener('click', function() {
+        userAvatar.classList.remove('open');
+    });
+</script>
+<script src="search.js"></script>
+</body>
+</html>
