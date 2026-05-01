@@ -249,25 +249,26 @@
             display: inline-block;
         }
 
-        .status.delivered {
-            background: #d4edda;
-            color: #155724;
-        }
+    .status.delivered {
+        background: #d4edda;
+        color: #155724;
+        cursor: not-allowed;
+    }
 
-        .status.in-transit {
-            background: #fff3cd;
-            color: #856404;
-        }
+    .status.in-transit {
+        background: #6da5ff;
+        color: #0027b2;
+    }
 
-        .status.pending {
-            background: #cce5ff;
-            color: #004085;
-        }
+    .status.scheduled {
+        background: #bbbbbb;
+        color: #4c4c4c;
+    }
 
-        .status.delayed {
-            background: #f8d7da;
-            color: #721c24;
-        }
+    .status.delayed {
+        background: #f8d7da;
+        color: #721c24;
+    }
 
         /* Timeline Section */
         .content-row {
@@ -409,50 +410,79 @@
         }
 
         /* Temperature Chart */
-        .temp-chart-section {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
+.temp-chart-section {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
 
-        .temp-chart-section h2 {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 16px;
-        }
+.temp-chart-section h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 16px;
+}
 
-        .temp-chart-wrap {
-            width: 100%;
-            overflow-x: auto;
-        }
+.chart-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
 
-        .temp-chart-wrap svg {
-            width: 100%;
-            height: 260px;
-            display: block;
-        }
+.chart-notice {
+    display: none;
+    padding: 5px 10px;
+    border-radius: 999px;
+    border: 1px solid #f0c36d;
+    background: #fff7e6;
+    color: #8a5a00;
+    font-size: 12px;
+    font-weight: 600;
+}
 
-        .temp-legend {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-            font-size: 12px;
-            color: #555;
-        }
+.chart-notice.visible {
+    display: inline-flex;
+}
 
-        .temp-legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+.temp-chart-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fafafa;
+    padding: 12px;
+}
 
-        .temp-legend-swatch {
-            width: 28px;
-            height: 4px;
-            border-radius: 2px;
-        }
+.temp-chart-wrap svg {
+    width: 100%;
+    min-width: 560px;
+    height: 300px;
+    display: block;
+}
+
+.temp-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #555;
+}
+
+.temp-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.temp-legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    display: inline-block;
+}
 
         /* Lot Manifest Table */
         .load-monitor-section {
@@ -518,10 +548,10 @@
         .search-no-results { padding: 12px 16px; color: #888; font-size: 14px; text-align: center; }
     </style>
 </head>
+<script src="../User_Login/user.js"></script>
+
 
 <body>
-
-<!-- Header -->
 <header class="header">
     <div class="logo">
         <span>V</span><span>B</span><span>M</span><span>S</span><span>V</span>
@@ -529,20 +559,17 @@
     </div>
 
     <div class="header-right">
-        <input type="text" class="search-bar" data-scope="driver" placeholder="🔍 Search...">
-
+      <input type="text" class="search-bar" placeholder="🔍 Search...">
         <div class="header-icons">
-            <button class="icon-btn" title="Notifications">🔔</button>
             <button class="icon-btn" title="Settings">⚙️</button>
-
-            <div class="user-avatar">
-                VN
-                <div class="user-dropdown">
-                    <div><strong>Vivian Nguyen</strong></div>
-                    <div>ID: EMP-001</div>
-                    <div>Type: Administrator</div>
-                    <div onclick="location.href='Login_page.html'">Logout</div>
-                </div>
+            <div class="user-avatar"> 
+              <span id="user-initials">--</span>
+              <div class="user-dropdown">
+                  <div><strong id="user-name">Loading...</strong></div>
+                  <div id="user-id">ID: --</div>
+                  <div id="user-role">Role: --</div>
+                  <div onclick="location.href='../index.html'">Logout</div>
+              </div>
             </div>
         </div>
     </div>
@@ -562,7 +589,7 @@
     <!-- Shipment Header -->
     <div class="shipment-header">
         <div class="shp-top">
-            <h1 id="shipmentId">SHP-2024-001</h1>
+            <h1 id="shipmentId">Loading...</h1>
             <span class="status" id="shipmentStatus">In Transit</span>
         </div>
         <div class="shp-body">
@@ -597,19 +624,22 @@
         </div>
 
         <!-- Temperature Chart Section -->
-        <div class="temp-chart-section">
-            <h2>Temperature Monitor</h2>
-            <div class="temp-chart-wrap">
-                <svg id="tempSvg" viewBox="0 0 760 260" preserveAspectRatio="none" aria-label="Temperature line chart"></svg>
-            </div>
-            <div class="temp-legend">
-                <div class="temp-legend-item"><div class="temp-legend-swatch" style="background:#2a9d6f"></div>In-range reading</div>
-                <div class="temp-legend-item"><div class="temp-legend-swatch" style="background:#e63946"></div>Out-of-range reading</div>
-                <div class="temp-legend-item"><div class="temp-legend-swatch" style="background:#e6394633;height:12px;width:28px;border-radius:2px"></div>Excursion window</div>
-                <div class="temp-legend-item"><div class="temp-legend-swatch" style="background:#1a5c8b;border-top:2px dashed #1a5c8b;height:0"></div>Min / Max limit</div>
-            </div>
-        </div>
+<div class="temp-chart-section">
+
+    <div class="chart-header">
+        <h2>Temperature Monitor</h2>
+        <span class="chart-notice" id="tempChartNotice">
+            Potential temperature excursion detected
+        </span>
     </div>
+
+    <div class="temp-chart-wrap">
+        <svg id="tempSvg" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+
+    <div class="temp-legend" id="tempLegend"></div>
+
+</div>
 
     <!-- Lot Manifest Table -->
     <div class="load-monitor-section">
@@ -637,7 +667,9 @@
 <script>
     // Get shipment ID from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
-    const shipmentId = urlParams.get('id');
+    const shipmentId = urlParams.get('shipment_id');
+    const loggedInEmployeeId = "<?php echo $_SESSION['employee_id']; ?>";
+    document.getElementById('shipmentId').textContent = shipmentId || 'No shipment selected';
 
     // Lot manifest data per shipment
     const manifestData = {
@@ -669,20 +701,39 @@
         ]
     };
 
-    function renderManifest(id) {
-        const tbody = document.getElementById('manifestBody');
-        const rows = manifestData[id];
-        if (!rows) return;
-        tbody.innerHTML = rows.map(r =>
-            `<tr>
+    async function loadManifestFromPHP(id) {
+    const tbody = document.getElementById('manifestBody');
+    tbody.innerHTML = `<tr><td colspan="5">Loading manifest...</td></tr>`;
+
+    try {
+        const res = await fetch(`kpi/lot_manifest.php?shipment_id=${encodeURIComponent(id)}&t=${Date.now()}`);
+        const rows = await res.json();
+
+        if (rows.error) {
+            tbody.innerHTML = `<tr><td colspan="5">${rows.error}</td></tr>`;
+            return;
+        }
+
+        if (!rows.length) {
+            tbody.innerHTML = `<tr><td colspan="5">No lots found for this shipment.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = rows.map(r => `
+            <tr>
                 <td class="item-name">${r.vendor}</td>
                 <td>${r.batch}</td>
                 <td>${r.lot}</td>
-                <td>${r.qty}</td>
+                <td>${r.quantity}</td>
                 <td>${r.expiry}</td>
-            </tr>`
-        ).join('');
+            </tr>
+        `).join('');
+
+    } catch (err) {
+        console.error("Manifest load error:", err);
+        tbody.innerHTML = `<tr><td colspan="5">Could not load manifest.</td></tr>`;
     }
+}
 
     // Temperature chart data per shipment
     // tempMin / tempMax = required storage range for products on board
@@ -753,131 +804,165 @@
         }
     };
 
-    function renderTempChart(id) {
-        const svg = document.getElementById('tempSvg');
-        if (!svg) return;
-        const d = tempChartData[id];
-        if (!d || d.readings.length === 0) {
-            svg.innerHTML = '<text x="380" y="130" text-anchor="middle" font-size="14" fill="#aaa">No temperature data available</text>';
+  function renderTempChart(id) {
+    const svg = document.getElementById('tempSvg');
+    const legend = document.getElementById('tempLegend');
+    const notice = document.getElementById('tempChartNotice');
+
+    if (!svg) return;
+
+    const d = tempChartData[id];
+
+    if (!d || !d.readings || d.readings.length === 0) {
+        svg.innerHTML = '<text x="400" y="150" text-anchor="middle" font-size="16" fill="#777">No temperature data available</text>';
+        if (legend) legend.innerHTML = '';
+        if (notice) notice.classList.remove('visible');
+        return;
+    }
+
+    const readings = d.readings.map(function(r, index) {
+        return {
+            index: index,
+            label: r.label,
+            temp: parseFloat(r.temp)
+        };
+    });
+
+    const tempMin = parseFloat(d.tempMin);
+    const tempMax = parseFloat(d.tempMax);
+    const excursions = d.excursions || [];
+
+    if (notice) {
+        notice.classList.toggle('visible', excursions.length > 0);
+    }
+
+    const W = 800, H = 300;
+    const padL = 56, padR = 24, padT = 20, padB = 40;
+    const chartW = W - padL - padR;
+    const chartH = H - padT - padB;
+
+    const vals = readings.map(function(r) { return r.temp; });
+    const vmin = Math.min(tempMin, Math.min.apply(null, vals)) - 2;
+    const vmax = Math.max(tempMax, Math.max.apply(null, vals)) + 2;
+
+    function xScale(i) {
+        if (readings.length === 1) return padL + chartW / 2;
+        return padL + (i / (readings.length - 1)) * chartW;
+    }
+
+    function yScale(v) {
+        return padT + (1 - (v - vmin) / (vmax - vmin)) * chartH;
+    }
+
+    let parts = [];
+
+    parts.push('<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="#fafafa"/>');
+
+    parts.push(
+        '<rect x="' + padL +
+        '" y="' + yScale(tempMax) +
+        '" width="' + chartW +
+        '" height="' + (yScale(tempMin) - yScale(tempMax)) +
+        '" fill="rgba(46,125,50,0.06)"/>'
+    );
+
+    excursions.forEach(function(ex) {
+        const from = parseInt(ex.from);
+        const to = parseInt(ex.to);
+
+        if (isNaN(from) || isNaN(to) || from < 0 || to < from) return;
+
+        const startX = xScale(from);
+        const endX = xScale(Math.min(to, readings.length - 1));
+        const width = Math.max(3, endX - startX);
+
+        parts.push(
+            '<rect x="' + startX +
+            '" y="' + padT +
+            '" width="' + width +
+            '" height="' + chartH +
+            '" fill="rgba(192,57,43,0.12)"/>'
+        );
+    });
+
+    parts.push('<line x1="' + padL + '" y1="' + yScale(tempMin) + '" x2="' + (padL + chartW) + '" y2="' + yScale(tempMin) + '" stroke="#2e7d32" stroke-width="2" stroke-dasharray="8 5"/>');
+
+    parts.push('<line x1="' + padL + '" y1="' + yScale(tempMax) + '" x2="' + (padL + chartW) + '" y2="' + yScale(tempMax) + '" stroke="#c62828" stroke-width="2" stroke-dasharray="8 5"/>');
+
+    parts.push('<rect x="' + padL + '" y="' + padT + '" width="' + chartW + '" height="' + chartH + '" fill="none" stroke="#bbb" stroke-width="1"/>');
+
+    for (let i = 1; i < readings.length; i++) {
+        const a = readings[i - 1];
+        const b = readings[i];
+
+        const out =
+            a.temp < tempMin || a.temp > tempMax ||
+            b.temp < tempMin || b.temp > tempMax;
+
+        parts.push(
+    '<line x1="' + xScale(i - 1) +
+    '" y1="' + yScale(a.temp) +
+    '" x2="' + xScale(i) +
+    '" y2="' + yScale(b.temp) +
+    '" stroke="' + (out ? '#c0392b' : '#1565c0') +
+            '" stroke-width="2.5" stroke-linecap="round"/>'
+        );
+    }
+
+    readings.forEach(function(r, i) {
+        const outPoint = r.temp < tempMin || r.temp > tempMax;
+
+        parts.push(
+    '<circle cx="' + xScale(i) +
+    '" cy="' + yScale(r.temp) +
+    '" r="2.5" fill="' + (outPoint ? '#c0392b' : '#1565c0') + '">' +
+            '</circle>'
+        );
+    });
+
+    parts.push('<text x="' + (padL - 8) + '" y="' + (yScale(tempMin) + 4) + '" text-anchor="end" font-size="11" fill="#2e7d32">Min ' + tempMin + '°C</text>');
+
+    parts.push('<text x="' + (padL - 8) + '" y="' + (yScale(tempMax) + 4) + '" text-anchor="end" font-size="11" fill="#c62828">Max ' + tempMax + '°C</text>');
+
+    parts.push('<text x="' + padL + '" y="' + (H - 12) + '" font-size="11" fill="#555">' + readings[0].label + '</text>');
+
+    parts.push('<text x="' + (padL + chartW) + '" y="' + (H - 12) + '" text-anchor="end" font-size="11" fill="#555">' + readings[readings.length - 1].label + '</text>');
+
+    parts.push('<text x="' + (padL + chartW / 2) + '" y="14" text-anchor="middle" font-size="12" font-weight="600" fill="#333">Shipment sensor readings (°C)</text>');
+
+    svg.innerHTML = parts.join('');
+
+    if (legend) {
+        legend.innerHTML =
+            '<div class="temp-legend-item"><span class="temp-legend-swatch" style="background:rgba(46,125,50,0.35)"></span>Allowed band</div>' +
+            '<div class="temp-legend-item"><span class="temp-legend-swatch" style="background:rgba(192,57,43,0.22)"></span>Excursion window</div>' +
+            '<div class="temp-legend-item"><span class="temp-legend-swatch" style="background:#1565c0"></span>In-range reading</div>' +
+            '<div class="temp-legend-item"><span class="temp-legend-swatch" style="background:#c0392b"></span>Out-of-range reading</div>' +
+            '<div class="temp-legend-item"><span class="temp-legend-swatch" style="border:2px dashed #2e7d32;background:transparent;height:10px"></span>Min limit</div>' +
+            '<div class="temp-legend-item"><span class="temp-legend-swatch" style="border:2px dashed #c62828;background:transparent;height:10px"></span>Max limit</div>';
+    }
+}
+
+async function loadTempChartFromPHP(id) {
+    const svg = document.getElementById('tempSvg');
+
+    try {
+        const res = await fetch(`kpi/temperature_chart.php?shipment_id=${encodeURIComponent(id)}&t=${Date.now()}`);
+        const data = await res.json();
+
+        if (data.error) {
+            svg.innerHTML = `<text x="380" y="130" text-anchor="middle" font-size="14" fill="#aaa">${data.error}</text>`;
             return;
         }
 
-        const W = 760, H = 260;
-        const padL = 48, padR = 20, padT = 20, padB = 36;
-        const chartW = W - padL - padR;
-        const chartH = H - padT - padB;
+        tempChartData[id] = data;
+        renderTempChart(id);
 
-        const allTemps = d.readings.map(r => r.temp).concat([d.tempMin, d.tempMax]);
-        const rawMin = Math.min(...allTemps);
-        const rawMax = Math.max(...allTemps);
-        const margin = (rawMax - rawMin) * 0.2 || 2;
-        const yMin = rawMin - margin;
-        const yMax = rawMax + margin;
-
-        const n = d.readings.length;
-        const xStep = chartW / (n - 1 || 1);
-
-        function xPos(i)  { return padL + i * xStep; }
-        function yPos(t)  { return padT + chartH - ((t - yMin) / (yMax - yMin)) * chartH; }
-        function yRef(t)  { return Math.min(Math.max(yPos(t), padT), padT + chartH); }
-
-        let html = '';
-
-        // Safe range band
-        const yTop  = yRef(d.tempMax);
-        const yBot  = yRef(d.tempMin);
-        html += `<rect x="${padL}" y="${yTop}" width="${chartW}" height="${yBot - yTop}" fill="rgba(42,157,111,0.08)"/>`;
-
-        // Excursion shading
-        d.excursions.forEach(ex => {
-            const x1 = xPos(ex.from);
-            const x2 = xPos(ex.to);
-            html += `<rect x="${x1}" y="${padT}" width="${x2 - x1}" height="${chartH}" fill="rgba(230,57,70,0.12)"/>`;
-        });
-
-        // Grid lines (y-axis ticks)
-        const ticks = 5;
-        for (let i = 0; i <= ticks; i++) {
-            const t = yMin + (yMax - yMin) * (i / ticks);
-            const y = yPos(t);
-            html += `<line x1="${padL}" y1="${y}" x2="${padL + chartW}" y2="${y}" stroke="#eee" stroke-width="1"/>`;
-            html += `<text x="${padL - 6}" y="${y + 4}" text-anchor="end" font-size="10" fill="#999">${t.toFixed(1)}</text>`;
-        }
-
-        // Reference lines (min / max)
-        const refY_max = yRef(d.tempMax);
-        const refY_min = yRef(d.tempMin);
-        html += `<line x1="${padL}" y1="${refY_max}" x2="${padL + chartW}" y2="${refY_max}" stroke="#1a5c8b" stroke-width="1.5" stroke-dasharray="6,4"/>`;
-        html += `<text x="${padL + chartW + 4}" y="${refY_max + 4}" font-size="10" fill="#1a5c8b">${d.tempMax}°C max</text>`;
-        html += `<line x1="${padL}" y1="${refY_min}" x2="${padL + chartW}" y2="${refY_min}" stroke="#1a5c8b" stroke-width="1.5" stroke-dasharray="6,4"/>`;
-        html += `<text x="${padL + chartW + 4}" y="${refY_min + 4}" font-size="10" fill="#1a5c8b">${d.tempMin}°C min</text>`;
-
-        // Line segments (green in-range, red out-of-range)
-        for (let i = 0; i < n - 1; i++) {
-            const t1 = d.readings[i].temp, t2 = d.readings[i + 1].temp;
-            const outOfRange = t1 < d.tempMin || t1 > d.tempMax || t2 < d.tempMin || t2 > d.tempMax;
-            const color = outOfRange ? '#e63946' : '#2a9d6f';
-            html += `<line x1="${xPos(i)}" y1="${yPos(t1)}" x2="${xPos(i+1)}" y2="${yPos(t2)}" stroke="${color}" stroke-width="2.5" stroke-linecap="round"/>`;
-        }
-
-        // Dots
-        d.readings.forEach((r, i) => {
-            const outOfRange = r.temp < d.tempMin || r.temp > d.tempMax;
-            const color = outOfRange ? '#e63946' : '#2a9d6f';
-            html += `<circle cx="${xPos(i)}" cy="${yPos(r.temp)}" r="5" fill="white" stroke="${color}" stroke-width="2.5"/>`;
-            // Tooltip label on hover via title
-            html += `<circle cx="${xPos(i)}" cy="${yPos(r.temp)}" r="8" fill="transparent"><title>${r.label}: ${r.temp}°C</title></circle>`;
-        });
-
-        // X-axis labels
-        d.readings.forEach((r, i) => {
-            html += `<text x="${xPos(i)}" y="${H - 6}" text-anchor="middle" font-size="10" fill="#666">${r.label}</text>`;
-        });
-
-        // Axes
-        html += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + chartH}" stroke="#ccc" stroke-width="1"/>`;
-        html += `<line x1="${padL}" y1="${padT + chartH}" x2="${padL + chartW}" y2="${padT + chartH}" stroke="#ccc" stroke-width="1"/>`;
-
-        svg.innerHTML = html;
+    } catch (err) {
+        console.error("Temperature chart load error:", err);
+        svg.innerHTML = '<text x="380" y="130" text-anchor="middle" font-size="14" fill="#aaa">Could not load temperature data</text>';
     }
-
-    // Timeline data per shipment
-    const timelineData = {
-        'SHP-2024-001': [
-            { label: 'Picked Up',        time: 'Jan 15, 2024 · 10:00 AM', location: 'Los Angeles, CA',   done: true,  seal: 'intact',  driverHandoff: true },
-            { label: 'In Transit',       time: 'Jan 17, 2024 · 2:00 PM',  location: 'Albuquerque, NM',  done: true,  seal: 'intact' },
-            { label: 'Checkpoint Scan',  time: 'Jan 18, 2024 · 9:30 AM',  location: 'Oklahoma City, OK', done: true,  seal: 'intact' },
-            { label: 'Delivered',        time: 'Jan 20, 2024 · 2:00 PM',  location: 'New York, NY',      done: true,  seal: 'intact',  driverHandoff: true }
-        ],
-        'SHP-2024-002': [
-            { label: 'Picked Up',        time: 'Jan 18, 2024 · 8:30 AM',  location: 'Chicago, IL',       done: true,  seal: 'intact',  driverHandoff: true },
-            { label: 'In Transit',       time: 'Currently in Motion',      location: 'Nashville, TN',    done: true,  seal: 'intact' },
-            { label: 'Delivery',         time: 'Est. Jan 23, 2024',        location: 'Miami, FL',         done: false, seal: null,      driverHandoff: true }
-        ],
-        'SHP-2024-003': [
-            { label: 'Picked Up',        time: 'Jan 16, 2024 · 7:00 AM',  location: 'Seattle, WA',       done: true,  seal: 'intact',  driverHandoff: true },
-            { label: 'Checkpoint Scan',  time: 'Jan 17, 2024 · 11:00 AM', location: 'Portland, OR',      done: true,  seal: 'damaged' },
-            { label: 'In Transit',       time: 'Jan 19, 2024 · 4:00 PM',  location: 'Sacramento, CA',   done: true,  seal: 'damaged' },
-            { label: 'Delivered',        time: 'Jan 21, 2024 · 3:30 PM',  location: 'Dallas, TX',        done: true,  seal: 'damaged', driverHandoff: true }
-        ],
-        'SHP-2024-004': [
-            { label: 'Picked Up',        time: 'Jan 19, 2024 · 9:15 AM',  location: 'Boston, MA',        done: true,  seal: 'intact',  driverHandoff: true },
-            { label: 'In Transit',       time: 'Jan 20, 2024 · 3:00 PM',  location: 'Philadelphia, PA',  done: true,  seal: 'intact' },
-            { label: 'Delayed — Hold',   time: 'Jan 21, 2024 · 8:00 AM',  location: 'Charlotte, NC',     done: true,  seal: 'intact' },
-            { label: 'Delivery',         time: 'Est. Jan 26, 2024',        location: 'Phoenix, AZ',       done: false, seal: null,      driverHandoff: true }
-        ],
-        'SHP-2024-005': [
-            { label: 'Picked Up',        time: 'Pending',                  location: 'Denver, CO',        done: false, seal: null,      driverHandoff: true },
-            { label: 'In Transit',       time: 'Pending',                  location: 'En Route',          done: false, seal: null },
-            { label: 'Delivery',         time: 'Pending',                  location: 'Atlanta, GA',       done: false, seal: null,      driverHandoff: true }
-        ],
-        'SHP-2024-006': [
-            { label: 'Picked Up',        time: 'Jan 17, 2024 · 11:00 AM', location: 'San Francisco, CA', done: true,  seal: 'intact',  driverHandoff: true },
-            { label: 'Checkpoint Scan',  time: 'Jan 18, 2024 · 6:00 PM',  location: 'Los Angeles, CA',   done: true,  seal: 'intact' },
-            { label: 'In Transit',       time: 'Jan 20, 2024 · 1:00 PM',  location: 'El Paso, TX',       done: true,  seal: 'intact' },
-            { label: 'Delivered',        time: 'Jan 22, 2024 · 4:45 PM',  location: 'Houston, TX',       done: true,  seal: 'intact',  driverHandoff: true }
-        ]
-    };
+}
 
     function renderTimeline(id) {
         const container = document.getElementById('timeline');
@@ -923,85 +1008,149 @@
         }
     }
 
-    // Sample shipment data
-    const shipmentData = {
-        'SHP-2024-001': {
-            originName:    'Los Angeles Dispatch Hub',
-            originAddr:    '3200 E 26th St, Los Angeles, CA 90023',
-            destName:      'New York Receiving Center',
-            destAddr:      '55 Water St, New York, NY 10041',
-            departureTime: 'Jan 15, 2024 · 10:00 AM',
-            arrivalTime:   'Jan 20, 2024 · 2:00 PM',
-            status: 'delivered'
-        },
-        'SHP-2024-002': {
-            originName:    'Chicago Central Depot',
-            originAddr:    '4600 W Roosevelt Rd, Chicago, IL 60644',
-            destName:      'Miami Distribution Point',
-            destAddr:      '100 NW 37th Ave, Miami, FL 33125',
-            departureTime: 'Jan 18, 2024 · 8:30 AM',
-            arrivalTime:   '',
-            status: 'in-transit'
-        },
-        'SHP-2024-003': {
-            originName:    'Seattle Freight Terminal',
-            originAddr:    '2401 Utah Ave S, Seattle, WA 98134',
-            destName:      'Dallas Logistics Center',
-            destAddr:      '9400 Reeder Rd, Dallas, TX 75220',
-            departureTime: 'Jan 16, 2024 · 7:00 AM',
-            arrivalTime:   'Jan 21, 2024 · 3:30 PM',
-            status: 'delivered'
-        },
-        'SHP-2024-004': {
-            originName:    'Boston Transfer Station',
-            originAddr:    '100 Conley St, Boston, MA 02127',
-            destName:      'Phoenix Receiving Yard',
-            destAddr:      '4150 E Washington St, Phoenix, AZ 85034',
-            departureTime: 'Jan 19, 2024 · 9:15 AM',
-            arrivalTime:   '',
-            status: 'delayed'
-        },
-        'SHP-2024-005': {
-            originName:    'Denver Staging Facility',
-            originAddr:    '5000 N Pecos St, Denver, CO 80221',
-            destName:      'Atlanta Supply Hub',
-            destAddr:      '675 Ponce De Leon Ave NE, Atlanta, GA 30308',
-            departureTime: '',
-            arrivalTime:   '',
-            status: 'pending'
-        },
-        'SHP-2024-006': {
-            originName:    'San Francisco Cargo Port',
-            originAddr:    '1 Ferry Building, San Francisco, CA 94111',
-            destName:      'Houston Industrial Terminal',
-            destAddr:      '8900 Kempwood Dr, Houston, TX 77080',
-            departureTime: 'Jan 17, 2024 · 11:00 AM',
-            arrivalTime:   'Jan 22, 2024 · 4:45 PM',
-            status: 'delivered'
+    async function loadTimelineFromPHP(id) {
+    const container = document.getElementById('timeline');
+    container.innerHTML = "<div>Loading timeline...</div>";
+
+    try {
+        const res = await fetch(`kpi/shipment_timeline.php?shipment_id=${encodeURIComponent(id)}&t=${Date.now()}`);
+        const text = await res.text();
+        console.log("Raw timeline response:", text);
+
+        const events = JSON.parse(text);
+
+        if (events.error) {
+            container.innerHTML = `<div>${events.error}</div>`;
+            return;
         }
-    };
 
-    // Load shipment data
-    if (shipmentId && shipmentData[shipmentId]) {
-        const data = shipmentData[shipmentId];
+        if (!Array.isArray(events) || events.length === 0) {
+            container.innerHTML = `
+    <div style="
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:150px;
+        text-align:center;
+        color:#666;
+        font-size:16px;
+    ">
+        No custody events found for this shipment.
+    </div>
+`;
+            return;
+        }
 
-        document.getElementById('shipmentId').textContent = shipmentId;
-        document.getElementById('originName').textContent = data.originName;
-        document.getElementById('originAddr').textContent = data.originAddr;
-        document.getElementById('destName').textContent   = data.destName;
-        document.getElementById('destAddr').textContent   = data.destAddr;
-        document.getElementById('departureTime').textContent = data.departureTime || '—';
-        document.getElementById('arrivalTime').textContent  = data.arrivalTime   || '';
+       container.innerHTML = events.map(e => `
+    <div class="timeline-item completed">
+        <h4>${e.person || 'Unknown'} (${e.role || 'Unknown Role'})</h4>
+        <div class="time">${e.time || '—'}</div>
+        <div class="location">${e.movement || '—'}</div>
 
-        // Update status badge
-        const statusEl = document.getElementById('shipmentStatus');
-        statusEl.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1).replace(/-/g, ' ');
-        statusEl.className = 'status ' + data.status;
+        ${
+            e.role === "Driver" && e.employee_id == loggedInEmployeeId
+            ? `
+                <select class="seal-select ${
+                    e.condition && e.condition.toLowerCase().includes('damaged') ? 'damaged' : 'intact'
+                }"
+                onchange="updateDriverCondition('${shipmentId}', '${e.time}', this.value, this)">
+                    <option value="Seal Intact" ${e.condition === 'Seal Intact' ? 'selected' : ''}>✔ Seal Intact</option>
+                    <option value="Packaging Damaged" ${e.condition === 'Packaging Damaged' ? 'selected' : ''}>✖ Packaging Damaged</option>
+                </select>
+              `
+            : `
+                <div class="seal-badge ${
+                    e.condition && e.condition.toLowerCase().includes('damaged')
+                        ? 'seal-damaged'
+                        : 'seal-intact'
+                }">
+                    ${e.condition || 'Seal Intact'}
+                </div>
+              `
+        }
+    </div>
+`).join('');
 
-        renderTimeline(shipmentId);
-        renderManifest(shipmentId);
-        renderTempChart(shipmentId);
+    } catch (err) {
+        console.error("Timeline load error:", err);
+        container.innerHTML = "<div>Could not load custody timeline.</div>";
     }
+}
+async function updateDriverCondition(shipmentId, eventTime, condition, selectEl)  {
+    try {
+        const formData = new FormData();
+        formData.append('shipment_id', shipmentId);
+        formData.append('event_time', eventTime);
+        formData.append('condition', condition);
+
+        const res = await fetch('kpi/update_driver_condition.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const text = await res.text();
+        console.log("Raw update response:", text);
+
+        const data = JSON.parse(text);
+
+        if (!data.success) {
+            alert(data.error || "Update failed");
+            return;
+        }
+
+        selectEl.className = 'seal-select ' +
+            (condition.toLowerCase().includes('damaged') ? 'damaged' : 'intact');
+
+    } catch (err) {
+        console.error("Condition update error:", err);
+        alert("Update failed.");
+    }
+}
+    // Load shipment data
+  async function loadShipmentDetailsFromPHP() {
+    if (!shipmentId) {
+        alert("No shipment ID provided.");
+        return;
+    }
+
+    try {
+        const res = await fetch(`kpi/shipment_details.php?shipment_id=${encodeURIComponent(shipmentId)}&t=${Date.now()}`);
+        const text = await res.text();
+        console.log("Raw PHP response:", text);
+
+        const data = JSON.parse(text);
+
+        if (data.error) {
+            alert(data.error);
+            console.error(data);
+            return;
+        }
+
+        document.getElementById('shipmentId').textContent = data.shipment_id;
+        document.getElementById('originName').textContent = data.origin;
+        document.getElementById('originAddr').textContent = '';
+        document.getElementById('destName').textContent = data.destination;
+        document.getElementById('destAddr').textContent = '';
+        document.getElementById('departureTime').textContent = data.departed_at || '—';
+        document.getElementById('arrivalTime').textContent = data.arrived_at || '—';
+
+        const statusEl = document.getElementById('shipmentStatus');
+        const statusClass = data.status.toLowerCase().replace(/\s+/g, '-');
+
+        statusEl.textContent = data.status;
+        statusEl.className = 'status ' + statusClass;
+
+        loadTimelineFromPHP(shipmentId);
+        loadManifestFromPHP(shipmentId);
+        loadTempChartFromPHP(shipmentId);
+
+    } catch (err) {
+        console.error("Shipment details load error:", err);
+        alert("Could not load shipment details.");
+    }
+}
+
+loadShipmentDetailsFromPHP();
 
     // Profile dropdown toggle
     const userAvatar = document.querySelector('.user-avatar');
@@ -1014,6 +1163,6 @@
     });
 </script>
 
-<script src="search.js"></script>
+<script src="../search.js"></script>
 </body>
 </html>
